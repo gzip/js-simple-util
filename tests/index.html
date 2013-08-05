@@ -13,6 +13,7 @@
 <script>
 mocha.setup('bdd');
 mocha.checkLeaks();
+mocha.globals(['SimpleUtil']);
 
 describe('SimpleUtil', function(){
     var util = SimpleUtil,
@@ -79,10 +80,32 @@ describe('SimpleUtil', function(){
             eq(false, set(false, 'foo'));
             eq('foo', set('foo', false));
         });
+        it('should fail', function(){
+            eq(false, true);
+        });
     });
 });
 
-mocha.run();
+console.log('Starting tests...');
+
+var passed = 0,
+    failed = 0,
+    runner = mocha.run();
+
+runner.on('pass', function(test) {
+    passed++;
+    console.log('PASS: ' + test.fullTitle());
+});
+
+runner.on('fail', function(test, err) {
+    failed++;
+    console.log('FAIL: ' + test.fullTitle() + ':: ' + err.message);
+});
+
+runner.on('end', function() {
+    console.log('TOTAL: ' + (passed + failed) + ', PASSED: ' + passed + ', FAILED: ' + failed);
+});
+
 </script>
 </body>
 </html>
