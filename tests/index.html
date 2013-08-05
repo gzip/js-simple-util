@@ -82,6 +82,11 @@ describe('SimpleUtil', function(){
         });
     });
 });
+
+// run directly when opened in browser
+if (!window.isPhantom) {
+    mocha.run();
+}
 </script>
 </body>
 </html>

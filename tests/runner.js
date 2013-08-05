@@ -1,3 +1,5 @@
+// https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage
+
 var status = 0,
     page = require('webpage').create();
 
@@ -12,6 +14,12 @@ page.onConsoleMessage = function(msg) {
         status = 1;
     }
 }
+
+page.onInitialized = function() {
+    page.evaluate(function() {
+        window.isPhantom = true;
+    });
+};
 
 page.onLoadFinished = function(status) {
     if (status !== 'success') {
