@@ -1,2 +1,2 @@
 before_script: cd tests
-script: phantomjs index.js
+script: phantomjs runner.js

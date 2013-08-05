@@ -82,27 +82,6 @@ describe('SimpleUtil', function(){
         });
     });
 });
-
-console.log('Starting tests...');
-
-var passed = 0,
-    failed = 0,
-    runner = mocha.run();
-
-runner.on('pass', function(test) {
-    passed++;
-    console.log('PASS: ' + test.fullTitle());
-});
-
-runner.on('fail', function(test, err) {
-    failed++;
-    console.log('FAIL: ' + test.fullTitle() + ':: ' + err.message);
-});
-
-runner.on('end', function() {
-    console.log('TOTAL: ' + (passed + failed) + ', PASSED: ' + passed + ', FAILED: ' + failed);
-});
-
 </script>
 </body>
 </html>
