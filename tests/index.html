@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SimpleUtil Test Suite</title>
+<link rel="stylesheet" href="lib/mocha.css">
+<script src="lib/chai.js"></script>
+<script src="lib/mocha.js"></script>
+<script src="../src/util.js"></script>
+<script src="src/util.js"></script>
+<body>
+<div id="mocha"></div>
+<script>
+mocha.setup('bdd');
+mocha.checkLeaks();
+
+describe('SimpleUtil', function(){
+    var util = SimpleUtil,
+        assert = chai.assert;
+
+    describe('isArray()', function(){
+        it('should only return true for arrays', function(){
+            assert.isTrue(util.isArray([1,2,3]));
+            assert.isTrue(util.isArray([]));
+            assert.isFalse(util.isArray({}));
+            assert.isFalse(util.isArray({"0":1}));
+        });
+    });
+
+    describe('args()', function(){
+        it('should return an array for arguments', function(){
+            assert.isTrue(util.isArray(util.args(arguments)));
+        });
+    });
+})
+
+mocha.run();
+</script>
+</body>
+</html>
