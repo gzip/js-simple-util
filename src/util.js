@@ -83,26 +83,25 @@ SimpleUtil = function()
         {
             var isObj = util.isObj(obj),
                 props = isObj && util.isStr(path) ? path.split('.') : [],
-                prop,
-                pl,
-                p;
+                pl = props.length,
+                p = 0;
             
-            for (p=0,pl=props.length; p<pl && obj; p++)
+            for (; p<pl && obj; p++)
             {
-                obj = obj[props[p]]
+                obj = obj[props[p]];
             }
             
-            return !isObj || util.isUnd(obj) ? def : obj;
+            return !isObj || !pl || util.isUnd(obj) ? def : obj;
         },
         
         set : function(obj, path, val, conditional)
         {
-            var props = util.isStr(path) ? path.split('.') : [],
+            var props = util.isObj(obj) && util.isStr(path) ? path.split('.') : [],
                 prop,
-                pl,
-                p;
+                pl = props.length,
+                p = 0;
             
-            for (p=0,pl=props.length; p<pl; p++)
+            for (; p<pl; p++)
             {
                 prop = props[p];
                 if (!obj[owns](prop) || (p === pl-1 && !conditional)) {

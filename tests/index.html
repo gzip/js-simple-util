@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8">
 <title>SimpleUtil Test Suite</title>
 <link rel="stylesheet" href="lib/mocha.css">
 <script src="lib/chai.js"></script>
@@ -15,7 +16,15 @@ mocha.checkLeaks();
 
 describe('SimpleUtil', function(){
     var util = SimpleUtil,
-        assert = chai.assert;
+        // http://chaijs.com/api/assert/
+        assert = chai.assert,
+        // match phpunit arg order
+        eq = function(expected, actual, msg) {
+            assert.equal(actual, expected, msg);
+        },
+        und = function(val, msg) {
+            assert.isUndefined(val, msg);
+        };
 
     describe('isArray()', function(){
         it('should only return true for arrays', function(){
@@ -31,7 +40,47 @@ describe('SimpleUtil', function(){
             assert.isTrue(util.isArray(util.args(arguments)));
         });
     });
-})
+
+    describe('get()', function(){
+        var get = util.get;
+        it('should work on root', function(){
+            eq(document.body.bgColor, get(document, 'body.bgColor'));
+        });
+        it('should work on literals', function(){
+            eq(1, get([1], 'length'));
+        });
+        it('should handle non-objects gracefully', function(){
+            und(get(false, 'foo'));
+        });
+        it('should handle bad paths gracefully', function(){
+            und(get(document, null));
+        });
+        it('should return default for non-object', function(){
+            eq('def', get(false, 'foo', 'def'));
+        });
+        it('should return default for bad path', function(){
+            eq('def', get(document, null, 'def'));
+        });
+    });
+
+    describe('set()', function(){
+        var set = util.set;
+        it('should go deep', function(){
+            var obj = {};
+            eq('BAZ', set(obj, 'foo.bar.baz', 'BAZ'));
+            eq('BAZ', obj.foo.bar.baz);
+        });
+        it('should not clobber when conditional', function(){
+            var obj = {foo: {bar: 'BAR'}};
+            set(obj, 'foo.bar', 'BAZ', true);
+            eq('BAR', obj.foo.bar);
+        });
+        it('should return original object on error', function(){
+            eq(false, set(false, 'foo'));
+            eq('foo', set('foo', false));
+        });
+    });
+});
 
 mocha.run();
 </script>
