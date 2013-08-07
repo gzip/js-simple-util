@@ -27,6 +27,7 @@ SimpleUtil = function()
         },
         regexTrim = /^\s+|\s+$/g,
         vendorPrefix = null,
+        vendorPrefixCss = null,
         vendors = ['Webkit','Moz','O','ms'],
         // FF: transitionend, Opera: oTransitionEnd: (otransitionend v12), WebKit: webkitTransitionEnd, IE: MSTransitionEnd
         vendorExceptions = {
@@ -44,9 +45,14 @@ SimpleUtil = function()
             return isA(obj, 'undefined');
         },
         
+        isNull : function(obj)
+        {
+            return obj === null;
+        },
+        
         isObj : function(obj)
         {
-            return isA(obj, 'object');
+            return isA(obj, 'object') && obj !== null;
         },
         
         isStr : function(obj)
@@ -115,19 +121,29 @@ SimpleUtil = function()
         
         merge : function(mergeTo, mergeFrom, clone)
         {
+            var obj = util.isObj;
             if (clone) {
                 mergeTo = util.merge({}, mergeTo);
             }
             
-            if (util.isObj(mergeTo) && util.isObj(mergeFrom)) {
+            if (obj(mergeTo) && obj(mergeFrom)) {
                 for (var prop in mergeFrom) {
                     if (mergeFrom[owns](prop)) {
-                        mergeTo[prop] = mergeFrom[prop];
+                        if (obj(mergeFrom[prop]) && !util.isNull(mergeTo[prop])) {
+                            mergeTo[prop] = util.merge(mergeTo[prop], mergeFrom[prop], clone);
+                        } else {
+                            mergeTo[prop] = mergeFrom[prop];
+                        }
                     }
                 }
             }
             
             return mergeTo;
+        },
+        
+        clone : function(obj)
+        {
+            return util.merge({}, obj, true);
         },
         
         each : function(obj, fn)
@@ -150,7 +166,8 @@ SimpleUtil = function()
         extend : function(target, source /*, methods, methods, methods...*/)
         {
             var c = 'constructor',
-                p = 'parent';
+                p = 'parent',
+                methods = util.args(arguments).slice(2);
             
             target[proto] = new source();
             target[proto][c] = target;
@@ -158,17 +175,16 @@ SimpleUtil = function()
             target[p][c] = source;
             
             // merge methods to prototype
-            util.args(arguments).slice(2).forEach(function(m)
+            util.each(methods, function(m)
             {
                 util.merge(target[proto], m);
             });
         },
         
-        bind : function(func, obj)
+        bind : function(func, obj, prefill, postfill)
         {
-            var args = util.args(arguments).slice(2);
             return function() {
-                return func.apply(obj, args.concat(util.args(arguments)));
+                return func.apply(obj || win, [].concat(prefill || [], util.args(arguments), postfill || []));
             }
         },
         
@@ -180,20 +196,20 @@ SimpleUtil = function()
         setStyle : function(obj, style, val, resolve)
         {
             var objStyle = obj ? obj.style : null;
-            //var objStyle = util.get(obj, 'style');
             if (objStyle) {
                 if (resolve) {
                     style = util.resolvePrefix(style, objStyle);
                 }
                 objStyle[style] = util.isNum(val) && style !== 'zIndex' ? val + 'px' : val;
-                //util.set(objStyle, resolve ? util.resolvePrefix(style) : style, val)
             }
         },
         
         setStyles : function(obj, styles, resolve)
         {
-            for (var style in styles) {
-                util.setStyle(obj, style, styles[style], resolve);
+            if (util.isObj(styles)) {
+                for (var style in styles) {
+                    util.setStyle(obj, style, styles[style], resolve);
+                }
             }
         },
         
@@ -202,21 +218,26 @@ SimpleUtil = function()
             // resolve vendor prefix on first call
             if (vendorPrefix === null)
             {
-                var cap = util.capitalize,
-                    prop = prop || 'transform';
-                
+                // TODO util.each
                 vendors.forEach(function(vendor)
                 {
-                    if (vendor + util.capitalize(prop) in docStyle) {
+                    if (vendor + util.capitalize(prop || 'transform') in docStyle) {
                         vendorPrefix = vendor;
+                        vendorPrefixCss = '-' + vendor.toLowerCase() + '-';
                     }
                 });
             }
             
-            return vendorPrefix && forCss ? '-' + vendorPrefix.toLowerCase() + '-' : vendorPrefix;
+            return forCss ? vendorPrefixCss : vendorPrefix;
         },
         
-        // TODO make more robust
+        // for unit testing
+        resetPrefix : function(val)
+        {
+            vendorPrefix = val || null;
+        },
+        
+        // TODO rename resolveProperty and make more robust
         resolveStyle : function(prop)
         {
             return util.getVendorPrefix(null, true) + prop;
@@ -226,7 +247,7 @@ SimpleUtil = function()
         {
             if (obj || prop.substr(0, 5) === 'trans')
             {
-                var prefix = util.getVendorPrefix(),
+                var prefix = util.getVendorPrefix(prop),
                     exception = util.get(vendorExceptions, prefix + '.' + prop),
                     obj = obj || docStyle,
                     prefixed;
@@ -355,11 +376,15 @@ SimpleUtil = function()
             return el || {};
         },
         
-        addScript : function (src)
+        addScript : function (src, opts)
         {
             var script = util.create('script', {src:src});
             
-            util.listen(script, 'load', function() { util.remove(this); });
+            opts = opts || {};
+            util.listen(script, 'load', opts.load || function() { util.remove(this); });
+            if (opts.error) {
+                util.listen(script, 'error', opts.error);
+            }
             util.byTag('head').appendChild(script);
         },
         
@@ -531,4 +556,5 @@ var win = window,
 
 util.onFrame = wrap('requestAnimationFrame');
 util.cancelFrame = wrap('cancelAnimationFrame');
+util.resetPrefix();
 })();

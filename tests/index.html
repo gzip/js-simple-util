@@ -7,7 +7,6 @@
 <script src="lib/chai.js"></script>
 <script src="lib/mocha.js"></script>
 <script src="../src/util.js"></script>
-<script src="src/util.js"></script>
 <body>
 <div id="mocha"></div>
 <script>
@@ -81,7 +80,190 @@ describe('SimpleUtil', function(){
             eq('foo', set('foo', false));
         });
     });
+
+    describe('merge()', function(){
+        it('should clobber', function(){
+            var to = {foo: {bar: 'BAR'}};
+            util.merge(to, {foo: 'FOO'});
+            eq('FOO', to.foo);
+        });
+        it('should go deep', function(){
+            var to = {foo: {bar: {baz: 'BAZ'}}};
+            util.merge(to, {foo: {bar: {quuz:''}}});
+            eq('BAZ', to.foo.bar.baz);
+        });
+        it('should handle null', function(){
+            var to = {foo: null};
+            util.merge(to, {foo: {bar: 'BAR'}});
+            eq('BAR', to.foo.bar);
+            util.merge(to, {foo: null});
+            eq(null, to.foo);
+        });
+        it('should be able to clone', function(){
+            var og = {foo: null},
+                to = util.merge(og, {foo: {bar: 'BAR'}}, true);
+            eq('BAR', to.foo.bar);
+            eq(null, og.foo);
+        });
+    });
+
+    describe('clone()', function(){
+        it('should go deep', function(){
+            var from = {foo: {bar: {baz: 'BAZ'}}},
+                to = util.clone(from);
+            to.foo.bar = 'BAR';
+            eq('BAZ', from.foo.bar.baz);
+        });
+    });
+
+    describe('each()', function(){
+        var each = util.each,
+            uc = function(val, key, obj) {
+                obj[key] = val.toUpperCase();
+            };
+        it('should work on objects', function(){
+            var obj = {foo: 'foo', bar: 'bar', baz: 'baz'};
+            each(obj, uc);
+            eq('FOO', obj.foo);
+            eq('BAZ', obj.baz);
+        });
+        it('should work on arrays', function(){
+            var ar = ['foo', 'bar', 'baz'];
+            each(ar, uc);
+            eq('FOO', ar[0]);
+            eq('BAZ', ar[2]);
+        });
+        it('should be error tolerant', function(){
+            each(null, uc);
+            each({});
+            each([]);
+        });
+    });
+
+    describe('extend()', function(){
+        var proto = 'prototype',
+            extend = util.extend;
+        function C1(){}
+        C1[proto].m1 = function(){ return 1; }
+        function C2(){}
+        function C3(){}
+        it('should support single', function(){
+            extend(C2, C1, {m2: function(){ return 2; }});
+            var obj = new C2;
+            eq(1, obj.m1());
+            eq(2, obj.m2());
+        });
+        it('should support double', function(){
+            extend(C3, C2, {m3: function(){ return 3; }, foo: function(){ return 'foo'; }});
+            var obj = new C3;
+            eq(1, obj.m1());
+            eq(2, obj.m2());
+            eq(3, obj.m3());
+            eq('foo', obj.foo());
+        });
+    });
+
+    describe('bind()', function(){
+        var bind = util.bind;
+        it('should change scope', function(){
+            var obj = {foo: 'FOO'},
+                fn = bind(function(){ return this.foo; }, obj);
+            eq('FOO', fn());
+        });
+        it('should pass additional args', function(){
+            var fn = function(pre1, pre2, arg1, post1, post2){ return util.args(arguments); },
+                bound = bind(fn, null, ['pre1', 'pre2'], ['post1', 'post2']),
+                result = bound('arg1');
+            eq('pre2', result[1]);
+            eq('arg1', result[2]);
+            eq('post1', result[3]);
+        });
+    });
+
+    describe('getStyle()', function(){
+        var style = util.getStyle;
+        it('should return properties', function(){
+            var obj = {style: {border: '1px'}};
+            eq('1px', style(obj, 'border'));
+        });
+        it('should support defaults', function(){
+            var obj = {style: {}};
+            eq('2px', style(obj, 'border', '2px'));
+        });
+        it('should be error tolerant', function(){
+            eq('2px', style(null, 'border', '2px'));
+            eq('2px', style({}, null, '2px'));
+        });
+    });
+
+    describe('setStyle()', function(){
+        var style = util.setStyle;
+        it('should set properties', function(){
+            var obj = {style: {}};
+            style(obj, 'foo', 'foo');
+            eq('foo', obj.style.foo);
+        });
+        it('should resolve properties', function(){
+            var obj = {style: {MozTransform: ''}};
+            style(obj, 'transform', 'tr', true);
+            eq('tr', obj.style.MozTransform);
+        });
+        it('should handle default units', function(){
+            var obj = {style: {}};
+            style(obj, 'border', 0);
+            eq('0px', obj.style.border);
+            style(obj, 'zIndex', 0);
+            eq('0', obj.style.zIndex);
+        });
+        it('should be error tolerant', function(){
+            style();
+            style({style: {}});
+        });
+    });
+
+    describe('setStyles()', function(){
+        var style = util.setStyles;
+        it('should set properties', function(){
+            var obj = {style: {}};
+            style(obj, {foo: 'foo', bar: 'bar'});
+            eq('foo', obj.style.foo);
+            eq('bar', obj.style.bar);
+        });
+        it('should be error tolerant', function(){
+            style(null, {});
+            style({});
+            style({}, {});
+        });
+    });
+
+    describe('getVendorPrefix()', function(){
+        var prefix = util.getVendorPrefix,
+            reset = util.resetPrefix;
+        it('should resolve prefix', function(){
+            reset();
+            eq('Moz', prefix());
+        });
+        it('should resolve css prefix', function(){
+            eq('-moz-', prefix(null, true));
+        });
+    });
+
+    describe('resolvePrefix()', function(){
+        var prefix = util.resolvePrefix;
+        it('should resolve prefix', function(){
+            eq('MozTransform', prefix('transform'));
+            eq('border', prefix('border'));
+        });
+        it('should resolve exceptions', function(){
+            util.resetPrefix('Webkit');
+            var obj = {webkitTransitionEnd: ''};
+            eq('webkitTransitionEnd', prefix('transitionend', obj));
+        });
+    });
 });
+
+// set up for resolve css methods
+document.documentElement.style.MozTransform = '';
 
 // run directly when opened in browser
 if (!window.isPhantom) {
