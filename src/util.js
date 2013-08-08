@@ -218,8 +218,7 @@ SimpleUtil = function()
             // resolve vendor prefix on first call
             if (vendorPrefix === null)
             {
-                // TODO util.each
-                vendors.forEach(function(vendor)
+                util.each(vendors, function(vendor)
                 {
                     if (vendor + util.capitalize(prop || 'transform') in docStyle) {
                         vendorPrefix = vendor;
@@ -237,8 +236,7 @@ SimpleUtil = function()
             vendorPrefix = val || null;
         },
         
-        // TODO rename resolveProperty and make more robust
-        resolveStyle : function(prop)
+        resolveProperty : function(prop)
         {
             return util.getVendorPrefix(null, true) + prop;
         },
@@ -261,7 +259,7 @@ SimpleUtil = function()
                 prop = prefixed && prefixed in obj ? prefixed : prop;
             }
             
-            return prop;//(obj || docStyle)[prop] ? prop : null;
+            return prop;
         },
         
         capitalize : function(str)
@@ -390,6 +388,7 @@ SimpleUtil = function()
         
         request : function (url, opts)
         {
+            opts = opts || {};
             var req = new XMLHttpRequest(),
                 cb = opts.callback,
                 method = opts.method || 'GET',
@@ -415,6 +414,7 @@ SimpleUtil = function()
             if (url)
             {
                 req.open(method, url);
+                
                 util.each(headers, function(value, key)
                 {
                     req.setRequestHeader(key, value);
@@ -429,6 +429,7 @@ SimpleUtil = function()
                     var resp, status, headers;
                     if (req.readyState === 4) {
                         status = req.status;
+                        // TODO follow redirects? (opts.follow, opts.depth)
                         if (status < 300 & status > 199) {
                             if (opts.parseHeaders) {
                                 req.headers = {};
@@ -442,18 +443,19 @@ SimpleUtil = function()
                                 });
                             }
                             
+                            resp = req.responseText;
+                            
                             if (!util.isUnd(json)) {
                                 try {
-                                    resp = JSON.stringify(json);
+                                    resp = JSON.parse(resp);
                                 } catch(e) {
-                                    cb(e, null, req);
+                                    cb(e, resp, req);
                                 }
-                            } else {
-                                resp = req.responseText;
                             }
+                            
                             cb(null, resp, req);
                         } else {
-                            cb({message: resp}, null, req);
+                            cb({status: status, message: 'Non-200 returned.'}, null, req);
                         }
                     }
                 };
@@ -558,3 +560,4 @@ util.onFrame = wrap('requestAnimationFrame');
 util.cancelFrame = wrap('cancelAnimationFrame');
 util.resetPrefix();
 })();
+

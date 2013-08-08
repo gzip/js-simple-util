@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="lib/mocha.css">
 <script src="lib/chai.js"></script>
 <script src="lib/mocha.js"></script>
+<script src="lib/xhr.js"></script>
 <script src="../src/util.js"></script>
 <body>
 <div id="mocha"></div>
@@ -258,6 +259,69 @@ describe('SimpleUtil', function(){
             util.resetPrefix('Webkit');
             var obj = {webkitTransitionEnd: ''};
             eq('webkitTransitionEnd', prefix('transitionend', obj));
+        });
+    });
+
+    describe('request()', function(){
+        var request = util.request;
+        before(function(){
+            mockXhr.setup();
+        });
+        it('should execute callback on success', function(done){
+            try {
+                request('foo', {callback: function(err, resp, req){
+                    eq(null, err);
+                    eq('bar', resp);
+                    done();
+                }, props: {responseText: 'bar'}});
+            } catch(e) {
+                done(e);
+            }
+        });
+        it('should execute callback on error', function(done){
+            try {
+                request('foo', {callback: function(err, resp, req){
+                    eq(true, err !== null);
+                    done();
+                }, props: {status: 500}});
+            } catch(e) {
+                done(e);
+            }
+        });
+        it('should send headers', function(done){
+            try {
+                request('foo', {callback: function(err, resp, req){
+                    eq('foo', req.headers.Foo);
+                    done();
+                }, headers: {Foo: 'foo'}});
+            } catch(e) {
+                done(e);
+            }
+        });
+        it('should support json', function(done){
+            try {
+                request('foo', {callback: function(err, resp, req){
+                    eq('application/json', req.headers['Content-Type']);
+                    eq('{"foo":"FOO"}', req.data);
+                    eq('BAR', resp.bar);
+                    done();
+                }, json: {foo: 'FOO'}, props: {responseText: '{"bar":"BAR"}'}});
+            } catch(e) {
+                done(e);
+            }
+        });
+        it('should parse headers', function(done){
+            try {
+                request('foo', {callback: function(err, resp, req){
+                    eq('BAR', req.headers.bar);
+                    done();
+                }, parseHeaders: true, props: {responseHeaders: {Bar: 'BAR'}}});
+            } catch(e) {
+                done(e);
+            }
+        });
+        after(function(){
+            mockXhr.teardown();
         });
     });
 });
