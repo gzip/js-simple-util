@@ -267,58 +267,51 @@ describe('SimpleUtil', function(){
         before(function(){
             mockXhr.setup();
         });
-        it('should execute callback on success', function(done){
+        function test(fn, done) {
             try {
-                request('foo', {callback: function(err, resp, req){
+                fn();
+                done();
+            } catch(e) {
+                done(e);
+            }
+        }
+        it('should execute callback on success', function(done){
+            request('foo', {callback: function(err, resp, req){
+                test(function(){
                     eq(null, err);
                     eq('bar', resp);
-                    done();
-                }, props: {responseText: 'bar'}});
-            } catch(e) {
-                done(e);
-            }
+                }, done);
+            }, props: {responseText: 'bar'}});
         });
         it('should execute callback on error', function(done){
-            try {
-                request('foo', {callback: function(err, resp, req){
+            request('foo', {callback: function(err, resp, req){
+                test(function(){
                     eq(true, err !== null);
-                    done();
-                }, props: {status: 500}});
-            } catch(e) {
-                done(e);
-            }
+                }, done);
+            }, props: {status: 500}});
         });
         it('should send headers', function(done){
-            try {
-                request('foo', {callback: function(err, resp, req){
+            request('foo', {callback: function(err, resp, req){
+                test(function(){
                     eq('foo', req.headers.Foo);
-                    done();
-                }, headers: {Foo: 'foo'}});
-            } catch(e) {
-                done(e);
-            }
+                }, done);
+            }, headers: {Foo: 'foo'}});
         });
         it('should support json', function(done){
-            try {
-                request('foo', {callback: function(err, resp, req){
+            request('foo', {callback: function(err, resp, req){
+                test(function(){
                     eq('application/json', req.headers['Content-Type']);
                     eq('{"foo":"FOO"}', req.data);
                     eq('BAR', resp.bar);
-                    done();
-                }, json: {foo: 'FOO'}, props: {responseText: '{"bar":"BAR"}'}});
-            } catch(e) {
-                done(e);
-            }
+                }, done);
+            }, json: {foo: 'FOO'}, props: {responseText: '{"bar":"BAR"}'}});
         });
         it('should parse headers', function(done){
-            try {
-                request('foo', {callback: function(err, resp, req){
+            request('foo', {callback: function(err, resp, req){
+                test(function(){
                     eq('BAR', req.headers.bar);
-                    done();
-                }, parseHeaders: true, props: {responseHeaders: {Bar: 'BAR'}}});
-            } catch(e) {
-                done(e);
-            }
+                }, done);
+            }, parseHeaders: true, props: {responseHeaders: {Bar: 'BAR'}}});
         });
         after(function(){
             mockXhr.teardown();
