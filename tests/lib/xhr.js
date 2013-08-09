@@ -9,7 +9,6 @@ mockXhr = function() {
             self.headers = {};
             self.responseHeaders = {};
             self.method = 'GET';
-            self.time = opts.responseTime || 0;
             self.timer = null;
         };
     
@@ -40,7 +39,7 @@ mockXhr = function() {
             self.data= data;
             setTimeout(function(){
                 self.onreadystatechange();
-            }, self.timer);
+            }, self.responseTime || 0);
         },
         setRequestHeader: function(key, val){
             this.headers[key] = val;
