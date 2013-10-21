@@ -40,51 +40,103 @@ SimpleUtil = function()
         };
     
     return {
+        /**
+         * Test for undefined.
+         * @param  {mixed}  obj
+         * @return {Boolean}
+         */
         isUnd : function(obj)
         {
             return isA(obj, 'undefined');
         },
-        
+ 
+        /**
+         * Test for null.
+         * @param  {mixed}  obj
+         * @return {Boolean}
+         */
         isNull : function(obj)
         {
             return obj === null;
         },
-        
+
+        /**
+         * Test for an object.
+         * @param  {mixed}  obj
+         * @return {Boolean}
+         */
         isObj : function(obj)
         {
             return isA(obj, 'object') && obj !== null;
         },
-        
+
+        /**
+         * Test for a string.
+         * @param  {mixed}  obj
+         * @return {Boolean}
+         */
         isStr : function(obj)
         {
             return isA(obj, 'string');
         },
-        
+
+        /**
+         * Test for a function.
+         * @param  {mixed}  obj
+         * @return {Boolean}
+         */
         isFunc : function(obj)
         {
             return isA(obj, 'function');
         },
-        
+
+        /**
+         * Test for a number.
+         * @param  {mixed}  obj
+         * @return {Boolean}
+         */
         isNum : function(obj)
         {
             return isA(obj, 'number');
         },
-        
+
+        /**
+         * Test for a boolean.
+         * @param  {mixed}  obj
+         * @return {Boolean}
+         */
         isBool : function(obj)
         {
             return isA(obj, 'boolean');
         },
-        
+
+        /**
+         * Test for an array.
+         * @param  {mixed}  obj
+         * @return {Boolean}
+         */
         isArray : function(ar)
         {
             return Object[proto].toString.call(ar) === '[object Array]';
         },
-        
+
+        /**
+         * Convert `arguments` to an array.
+         * @param  {object} Arguments object.
+         * @return {array} Arguments
+         */
         args : function(args)
         {
             return Array[proto].slice.apply(args);
         },
-        
+
+        /**
+         * Get a value [deep] in an object.
+         * @param  {object} Object to get a value from.
+         * @param  {string} Property "path", e.g. "foo.bar.baz"
+         * @param  {mixed} Default value if nothing is found.
+         * @return {mixed} Value or default.
+         */
         get : function(obj, path, def)
         {
             var isObj = util.isObj(obj),
@@ -99,7 +151,14 @@ SimpleUtil = function()
             
             return !isObj || !pl || util.isUnd(obj) ? def : obj;
         },
-        
+
+        /**
+         * Set a value [deep] in an object.
+         * @param  {object} Object to set a value on.
+         * @param  {string} Property "path", e.g. "foo.bar.baz"
+         * @param  {mixed} Value to set.
+         * @return {boolean} Only set if not already present.
+         */
         set : function(obj, path, val, conditional)
         {
             var props = util.isObj(obj) && util.isStr(path) ? path.split('.') : [],
@@ -118,7 +177,14 @@ SimpleUtil = function()
             
             return obj;
         },
-        
+
+        /**
+         * Merge properties from one object to another.
+         * @param  {object} Object to merge to.
+         * @param  {object} Object to merge from.
+         * @param  {boolean} Clone the object rather than augment.
+         * @return {object}
+         */
         merge : function(mergeTo, mergeFrom, clone)
         {
             var obj = util.isObj;
@@ -140,12 +206,22 @@ SimpleUtil = function()
             
             return mergeTo;
         },
-        
+
+        /**
+         * Clone an object.
+         * @param  {object} Object to clone.
+         * @return {object} Cloned object.
+         */
         clone : function(obj)
         {
             return util.merge({}, obj, true);
         },
-        
+ 
+        /**
+         * Apply a function to each value in an array or object.
+         * @param  {object,array}   Collection to apply to.
+         * @param  {function} Function to apply.
+         */
         each : function(obj, fn)
         {
             if (util.isFunc(fn)) {
@@ -162,7 +238,14 @@ SimpleUtil = function()
                 }
             }
         },
-        
+
+        /**
+         * Extend one class with another.
+         * @param  {function} Target class.
+         * @param  {function} Source class.
+         * @param  {array} Additional methods.
+         * @param  {array} Additional methods.
+         */
         extend : function(target, source /*, methods, methods, methods...*/)
         {
             var c = 'constructor',
@@ -180,19 +263,41 @@ SimpleUtil = function()
                 util.merge(target[proto], m);
             });
         },
-        
+
+        /**
+         * Bind a function to a particular scope (`this`).
+         * @param  {function} Function to bind.
+         * @param  {object} Scope object (`this` when function executes).
+         * @param  {array} Prefill arguments.
+         * @param  {array} Postfill arguments.
+         * @return {function} Bound function.
+         */
         bind : function(func, obj, prefill, postfill)
         {
             return function() {
                 return func.apply(obj || win, [].concat(prefill || [], util.args(arguments), postfill || []));
             }
         },
-        
+
+        /**
+         * Get a CSS property from a DOM Node.
+         * @param  {object} DOM Node to get a CSS property from.
+         * @param  {string} CSS property in camelCase.
+         * @param  {string} Default value if property is not set.
+         * @return {string} Property value.
+         */
         getStyle : function(obj, style, def)
         {
             return util.get(obj, 'style.' + style, def);
         },
-        
+
+        /**
+         * Set a CSS property on a DOM Node.
+         * @param  {object} DOM Node to set a CSS property on.
+         * @param  {string} CSS property in camelCase.
+         * @param  {string} Property value. Note that "px" will automatically be appended to numeric values.
+         * @param  {boolean} Resolve vendor prefix (default false).
+         */
         setStyle : function(obj, style, val, resolve)
         {
             var objStyle = obj ? obj.style : null;
@@ -203,7 +308,13 @@ SimpleUtil = function()
                 objStyle[style] = util.isNum(val) && style !== 'zIndex' ? val + 'px' : val;
             }
         },
-        
+
+        /**
+         * Set multiple CSS properties on a DOM Node.
+         * @param  {object} DOM Node to set CSS properties on.
+         * @param  {string} Object containing key/values for CSS properties in camelCase.
+         * @param  {boolean} Resolve vendor prefix (default false).
+         */
         setStyles : function(obj, styles, resolve)
         {
             if (util.isObj(styles)) {
@@ -212,7 +323,13 @@ SimpleUtil = function()
                 }
             }
         },
-        
+
+        /**
+         * Get the vendor prefix for the current browser.
+         * @param  {string} CSS property to test.
+         * @param  {boolean} Return CSS formatting (e.g. "-moz-" instead of "Moz"). 
+         * @return {string} Vendor prefix.
+         */
         getVendorPrefix : function(prop, forCss)
         {
             // resolve vendor prefix on first call
@@ -235,12 +352,24 @@ SimpleUtil = function()
         {
             vendorPrefix = val || null;
         },
-        
+
+        /**
+         * Get the vendor prefixed property name.
+         * @param  {string} CSS property to prefix.
+         * @return {string} Vendor prefix.
+         * @todo  Test that the property is actually prefixed.
+         */
         resolveProperty : function(prop)
         {
             return util.getVendorPrefix(null, true) + prop;
         },
-        
+
+        /**
+         * Get the vendor prefixed property name.
+         * @param  {string} CSS property to resolve.
+         * @param {boolean} Use camelCase instead of CapitalCase.
+         * @return {string} Prefixed property.
+         */
         resolvePrefix : function(prop, obj, lower)
         {
             if (obj || prop.substr(0, 5) === 'trans')
@@ -261,7 +390,12 @@ SimpleUtil = function()
             
             return prop;
         },
-        
+
+        /**
+         * Capitalize a string of text.
+         * @param  {string} String to capitalize.
+         * @return {string} Capitalized string.
+         */
         capitalize : function(str)
         {
             if (util.isStr(str) && str) {
@@ -269,12 +403,23 @@ SimpleUtil = function()
             }
             return str;
         },
-        
+
+        /**
+         * Trim whitespace from the beginning and ending of a string.
+         * @param  {string} String to trim.
+         * @return {string} Trimmed string.
+         */
         trim : function(str)
         {
             return str.replace(regexTrim, '');
         },
-        
+
+        /**
+         * Test if a DOM Node has a particular class.
+         * @param  {object}  DOM Node to check.
+         * @param  {string}  Class name to check for.
+         * @return {boolean}
+         */
         hasClass : function(el, cl)
         {
             return clRegex(cl).test(util.get(el, cln));
