@@ -1,4 +1,5 @@
 // https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage
+// npm i -g phantomjs; phantomjs runner.js
 
 var status = 0,
     page = require('webpage').create();
@@ -51,4 +52,3 @@ page.onLoadFinished = function(status) {
 };
 
 page.open('./index.html');
-
