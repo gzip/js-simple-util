@@ -424,19 +424,34 @@ SimpleUtil = function()
         {
             return clRegex(cl).test(util.get(el, cln));
         },
-        
+
+        /**
+         * Add a class to DOM Node.
+         * @param {object} DOM Node to add a class to.
+         * @param {string} The class to add.
+         */
         addClass : function(el, cl)
         {
             if (!util.hasClass(el, cl)) {
                 util.setClass(el, util.trim(util.get(el, cln) + ' ' + cl));
             }
         },
-        
+
+        /**
+         * Set the class on a DOM Node.
+         * @param {object} DOM Node to set the class on.
+         * @param {string} The class to set.
+         */
         setClass : function(el, cl)
         {
             util.set(el, cln, cl);
         },
-        
+
+        /**
+         * Remove a class from a DOM Node.
+         * @param {object} DOM Node to remove a class from.
+         * @param {string} The class to remove.
+         */
         delClass : function(el, cl)
         {
             var c = util.get(el, cln),
@@ -447,24 +462,48 @@ SimpleUtil = function()
                 util.set(el, cln, c.replace(regex, ''));
             }
         },
-        
+
+        /**
+         * Get a DOM Node by name. 
+         * @param  {string} Name.
+         * @return {object} DOM Node or empty object.
+         */
         byName : function(n)
         {
             var el = doc.getElementsByName(n);
             return el ? el[0] : {};
         },
-        
+
+        /**
+         * Get an element by tag name.
+         * @param  {string} Tag name.
+         * @param  {object} Optional DOM Node to start from.
+         * @return {object} DOM Node or empty object.
+         */
         byTag : function(tag, parent)
         {
             var el = (parent || doc).getElementsByTagName(tag);
             return el ? el[0] : {};
         },
-        
+
+        /**
+         * Get an element by id.
+         * @param  {string} Element ID.
+         * @return {object} DOM Node or empty object.
+         */
         byId : function(id)
         {
-            return doc.getElementById(id);
+            return doc.getElementById(id) || {};
         },
-        
+
+        /**
+         * Set attributes and properties on an element.
+         * @param {object} DOM Node
+         * @param {object} Key/value pairs including special handling for className,
+         *  innerHTML, parentNode, and styles. Anything else will be set as an attribute.
+         * @param {object} Optional collection of listener functions keyed by event name.
+         * @return {object} The DOM Node.
+         */
         setAttrs : function(el, attrs, events)
         {
             if (el) {
@@ -498,18 +537,35 @@ SimpleUtil = function()
             }
             return el;
         },
-        
+
+        /**
+         * Create a new DOM Node.
+         * @param  {string} Tag name.
+         * @param  {object} Optional attributes passed to setAttrs.
+         * @param  {object} Optional event passed to setAttrs.
+         * @return {object} New DOM Node.
+         */
         create : function(el, attrs, events)
         {
             var el = doc.createElement(el);
             return util.setAttrs(el, attrs, events);
         },
-        
+
+        /**
+         * Remove a DOM Node from the DOM.
+         * @param  {object} DOM Node
+         */
         remove : function(el)
         {
             util.parent(el).removeChild(el);
         },
-        
+
+        /**
+         * Get the parentNode for a given DOM Node.
+         * @param  {object} DOM Node.
+         * @param  {int} The number of levels to traverse.
+         * @return {object} DOM Node or empty object.
+         */
         parent : function(el, level)
         {
             level = level || 1;
@@ -518,7 +574,12 @@ SimpleUtil = function()
             } while (--level);
             return el || {};
         },
-        
+
+        /**
+         * Add a script to the page.
+         * @param {string} Script src.
+         * @param {object} Optional listeners for "load" and/or "error".
+         */
         addScript : function (src, opts)
         {
             var script = util.create('script', {src:src});
@@ -530,7 +591,15 @@ SimpleUtil = function()
             }
             util.byTag('head').appendChild(script);
         },
-        
+
+        /**
+         * Make an XHR request.
+         * @param  {string} URL.
+         * @param  {object} Options containing any of: callback (function),
+         *  data (string), headers (object), json (object), method (string),
+         *  parseHeaders (boolean), and props (object).
+         * @return {object} XMLHttpRequest object.
+         */
         request : function (url, opts)
         {
             opts = opts || {};
@@ -609,7 +678,13 @@ SimpleUtil = function()
             
             return req;
         },
-        
+
+        /**
+         * Listen to an event.
+         * @param  {object}   DOM Node to listen for events on.
+         * @param  {string}   Event type, e.g. "click".
+         * @param  {function} Callback function.
+         */
         listen : function(obj, type, fn)
         {
             if(!util.isObj(obj)) return;
@@ -626,27 +701,43 @@ SimpleUtil = function()
                 obj[ev] = fn;
             }
         },
-        
-        processEvent : function(e, prevent)
+
+        /**
+         * Process an event.
+         * @param  {object} Event object.
+         * @param  {boolean} Prevent default.
+         * @param  {boolean} Stop propagation.
+         * @return {object} Event target.
+         */
+        processEvent : function(e, prevent, stop)
         {
             e = e || window.event;
             var el = e.target || e.srcElement;
             if (prevent) {
                 if (e.preventDefault) {
                     e.preventDefault();
-                    e.stopPropagation();
+                    if (stop) {
+                        e.stopPropagation();
+                    }
                 }
                 e.returnValue = false;
-                e.cancelBubble = true;
+                if (stop) {
+                    e.cancelBubble = true;
+                }
             }
             return el;
         },
-        
-        parseQuery : function()
+
+        /**
+         * Parse a query string into an object of key/value pairs.
+         * @param Optional query string, otherwise use current URL.
+         * @return {object} Query params object.
+         */
+        parseQuery : function(str)
         {
             var params = {},
                 split = 'split',
-                query = location.href[split](/[?#]/)[1];
+                query = str || location.href[split](/[?#]/)[1];
             
             if (query) {
                 query = query[split](/&/);
@@ -658,13 +749,22 @@ SimpleUtil = function()
             
             return params;
         },
-        
+
+        /**
+         * Get the scroll position of the current window.
+         * @return {integer} Scroll position.
+         */
         getScroll : function ()
         {
             var scrollTop = 'scrollTop';
             return docEl[scrollTop] || docBody[scrollTop];
         },
-        
+
+        /**
+         * Get the  offset position of an element.
+         * @param  {object} DOM Node to get offset for.
+         * @return {object} Object containing "x" and "y".
+         */
         getOffset : function(el)
         {
             var parentNode = el,
@@ -684,11 +784,19 @@ SimpleUtil = function()
             
             return {x: x, y: y};
         },
-        
+
+        /**
+         * Listen for animation frame.
+         * @param {function} Function to execute for each frame.
+         */
         onFrame : function ()
         {
         },
-        
+
+        /**
+         * Cancel for animation frame
+         * @param {function} Function to cancel.
+         */
         cancelFrame : function ()
         {
         }
@@ -705,4 +813,3 @@ util.onFrame = wrap('requestAnimationFrame');
 util.cancelFrame = wrap('cancelAnimationFrame');
 util.resetPrefix();
 })();
-
