@@ -4,6 +4,10 @@ Copyrights licensed under the MIT License. See the accompanying LICENSE file for
 // TODO SimpleStyle SimpleDom
 
 (function() {
+/**
+ * A lightweight utility library when a full Javascript framework isn't necessary.
+ * @namespace SimpleUtil
+ */
 SimpleUtil = function()
 {
     var doc = document,
@@ -42,7 +46,7 @@ SimpleUtil = function()
     return {
         /**
          * Test for undefined.
-         * @param  {mixed}  obj
+         * @param  {mixed}  [obj] Object to test.
          * @return {Boolean}
          */
         isUnd : function(obj)
@@ -52,7 +56,7 @@ SimpleUtil = function()
  
         /**
          * Test for null.
-         * @param  {mixed}  obj
+         * @param  {mixed}  [obj] Object to test.
          * @return {Boolean}
          */
         isNull : function(obj)
@@ -62,7 +66,7 @@ SimpleUtil = function()
 
         /**
          * Test for an object.
-         * @param  {mixed}  obj
+         * @param  {mixed}  [obj] Object to test.
          * @return {Boolean}
          */
         isObj : function(obj)
@@ -72,7 +76,7 @@ SimpleUtil = function()
 
         /**
          * Test for a string.
-         * @param  {mixed}  obj
+         * @param  {mixed}  [obj] Object to test.
          * @return {Boolean}
          */
         isStr : function(obj)
@@ -82,7 +86,7 @@ SimpleUtil = function()
 
         /**
          * Test for a function.
-         * @param  {mixed}  obj
+         * @param  {mixed}  [obj] Object to test.
          * @return {Boolean}
          */
         isFunc : function(obj)
@@ -92,7 +96,7 @@ SimpleUtil = function()
 
         /**
          * Test for a number.
-         * @param  {mixed}  obj
+         * @param  {mixed}  [obj] Object to test.
          * @return {Boolean}
          */
         isNum : function(obj)
@@ -102,7 +106,7 @@ SimpleUtil = function()
 
         /**
          * Test for a boolean.
-         * @param  {mixed}  obj
+         * @param  {mixed}  [obj] Object to test.
          * @return {Boolean}
          */
         isBool : function(obj)
@@ -112,7 +116,7 @@ SimpleUtil = function()
 
         /**
          * Test for an array.
-         * @param  {mixed}  obj
+         * @param  {mixed}  [obj] Object to test.
          * @return {Boolean}
          */
         isArray : function(ar)
@@ -122,7 +126,7 @@ SimpleUtil = function()
 
         /**
          * Convert `arguments` to an array.
-         * @param  {object} Arguments object.
+         * @param  {object} [args] Arguments object.
          * @return {array} Arguments
          */
         args : function(args)
@@ -132,9 +136,9 @@ SimpleUtil = function()
 
         /**
          * Get a value [deep] in an object.
-         * @param  {object} Object to get a value from.
-         * @param  {string} Property "path", e.g. "foo.bar.baz"
-         * @param  {mixed} Default value if nothing is found.
+         * @param  {object} [obj] Object to get a value from.
+         * @param  {string} [path] Property "path", e.g. "foo.bar.baz"
+         * @param  {mixed} [def] Default value if nothing is found.
          * @return {mixed} Value or default.
          */
         get : function(obj, path, def)
