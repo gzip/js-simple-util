@@ -46,7 +46,7 @@ SimpleUtil = function()
     return {
         /**
          * Test for undefined.
-         * @param  {mixed}  [obj] Object to test.
+         * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
         isUnd : function(obj)
@@ -56,7 +56,7 @@ SimpleUtil = function()
  
         /**
          * Test for null.
-         * @param  {mixed}  [obj] Object to test.
+         * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
         isNull : function(obj)
@@ -66,7 +66,7 @@ SimpleUtil = function()
 
         /**
          * Test for an object.
-         * @param  {mixed}  [obj] Object to test.
+         * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
         isObj : function(obj)
@@ -76,7 +76,7 @@ SimpleUtil = function()
 
         /**
          * Test for a string.
-         * @param  {mixed}  [obj] Object to test.
+         * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
         isStr : function(obj)
@@ -86,7 +86,7 @@ SimpleUtil = function()
 
         /**
          * Test for a function.
-         * @param  {mixed}  [obj] Object to test.
+         * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
         isFunc : function(obj)
@@ -96,7 +96,7 @@ SimpleUtil = function()
 
         /**
          * Test for a number.
-         * @param  {mixed}  [obj] Object to test.
+         * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
         isNum : function(obj)
@@ -106,7 +106,7 @@ SimpleUtil = function()
 
         /**
          * Test for a boolean.
-         * @param  {mixed}  [obj] Object to test.
+         * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
         isBool : function(obj)
@@ -116,7 +116,7 @@ SimpleUtil = function()
 
         /**
          * Test for an array.
-         * @param  {mixed}  [obj] Object to test.
+         * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
         isArray : function(ar)
@@ -126,7 +126,7 @@ SimpleUtil = function()
 
         /**
          * Convert `arguments` to an array.
-         * @param  {object} [args] Arguments object.
+         * @param  {object} args Arguments object.
          * @return {array} Arguments
          */
         args : function(args)
@@ -136,8 +136,8 @@ SimpleUtil = function()
 
         /**
          * Get a value [deep] in an object.
-         * @param  {object} [obj] Object to get a value from.
-         * @param  {string} [path] Property "path", e.g. "foo.bar.baz"
+         * @param  {object} obj Object to get a value from.
+         * @param  {string} path Property "path", e.g. "foo.bar.baz"
          * @param  {mixed} [def] Default value if nothing is found.
          * @return {mixed} Value or default.
          */
@@ -158,10 +158,11 @@ SimpleUtil = function()
 
         /**
          * Set a value [deep] in an object.
-         * @param  {object} Object to set a value on.
-         * @param  {string} Property "path", e.g. "foo.bar.baz"
-         * @param  {mixed} Value to set.
-         * @return {boolean} Only set if not already present.
+         * @param  {object} obj Object to set a value on.
+         * @param  {string} path Property "path", e.g. "foo.bar.baz"
+         * @param  {mixed} val Value to set.
+         * @param {boolean} [conditional] Only set if not already present.
+         * @return {object} Object.
          */
         set : function(obj, path, val, conditional)
         {
@@ -184,9 +185,9 @@ SimpleUtil = function()
 
         /**
          * Merge properties from one object to another.
-         * @param  {object} Object to merge to.
-         * @param  {object} Object to merge from.
-         * @param  {boolean} Clone the object rather than augment.
+         * @param  {object} mergeTo Object to merge to.
+         * @param  {object} mergeFrom Object to merge from.
+         * @param  {boolean} [clone] Clone the object rather than augment.
          * @return {object}
          */
         merge : function(mergeTo, mergeFrom, clone)
@@ -213,7 +214,7 @@ SimpleUtil = function()
 
         /**
          * Clone an object.
-         * @param  {object} Object to clone.
+         * @param  {object} obj Object to clone.
          * @return {object} Cloned object.
          */
         clone : function(obj)
@@ -223,8 +224,8 @@ SimpleUtil = function()
  
         /**
          * Apply a function to each value in an array or object.
-         * @param  {object,array}   Collection to apply to.
-         * @param  {function} Function to apply.
+         * @param  {object,array}  obj Collection to apply to.
+         * @param  {function} fn Function to apply.
          */
         each : function(obj, fn)
         {
@@ -245,10 +246,10 @@ SimpleUtil = function()
 
         /**
          * Extend one class with another.
-         * @param  {function} Target class.
-         * @param  {function} Source class.
-         * @param  {array} Additional methods.
-         * @param  {array} Additional methods.
+         * @param  {function} target Target class.
+         * @param  {function} source Source class.
+         * @param  {array} [methods] Additional methods.
+         * @param  {array} [methods] Additional methods.
          */
         extend : function(target, source /*, methods, methods, methods...*/)
         {
@@ -270,24 +271,24 @@ SimpleUtil = function()
 
         /**
          * Bind a function to a particular scope (`this`).
-         * @param  {function} Function to bind.
-         * @param  {object} Scope object (`this` when function executes).
-         * @param  {array} Prefill arguments.
-         * @param  {array} Postfill arguments.
+         * @param  {function} fn Function to bind.
+         * @param  {object} [obj=window] Scope object (`this` when function executes).
+         * @param  {array} [prefill] Prefill arguments.
+         * @param  {array} [postfill] Postfill arguments.
          * @return {function} Bound function.
          */
-        bind : function(func, obj, prefill, postfill)
+        bind : function(fn, obj, prefill, postfill)
         {
             return function() {
-                return func.apply(obj || win, [].concat(prefill || [], util.args(arguments), postfill || []));
+                return fn.apply(obj || win, [].concat(prefill || [], util.args(arguments), postfill || []));
             }
         },
 
         /**
          * Get a CSS property from a DOM Node.
-         * @param  {object} DOM Node to get a CSS property from.
-         * @param  {string} CSS property in camelCase.
-         * @param  {string} Default value if property is not set.
+         * @param  {object} obj DOM Node to get a CSS property from.
+         * @param  {string} style CSS property in camelCase.
+         * @param  {string} [def] Default value if property is not set.
          * @return {string} Property value.
          */
         getStyle : function(obj, style, def)
@@ -297,10 +298,10 @@ SimpleUtil = function()
 
         /**
          * Set a CSS property on a DOM Node.
-         * @param  {object} DOM Node to set a CSS property on.
-         * @param  {string} CSS property in camelCase.
-         * @param  {string} Property value. Note that "px" will automatically be appended to numeric values.
-         * @param  {boolean} Resolve vendor prefix (default false).
+         * @param  {object} obj DOM Node to set a CSS property on.
+         * @param  {string} style CSS property in camelCase.
+         * @param  {string} val Property value. Note that "px" will automatically be appended to numeric values.
+         * @param  {boolean} [resolve=false] Resolve vendor prefix.
          */
         setStyle : function(obj, style, val, resolve)
         {
@@ -315,9 +316,9 @@ SimpleUtil = function()
 
         /**
          * Set multiple CSS properties on a DOM Node.
-         * @param  {object} DOM Node to set CSS properties on.
-         * @param  {string} Object containing key/values for CSS properties in camelCase.
-         * @param  {boolean} Resolve vendor prefix (default false).
+         * @param  {object} obj DOM Node to set CSS properties on.
+         * @param  {string} styles Object containing key/values for CSS properties in camelCase.
+         * @param  {boolean} [resolve=false] Resolve vendor prefix.
          */
         setStyles : function(obj, styles, resolve)
         {
@@ -330,8 +331,8 @@ SimpleUtil = function()
 
         /**
          * Get the vendor prefix for the current browser.
-         * @param  {string} CSS property to test.
-         * @param  {boolean} Return CSS formatting (e.g. "-moz-" instead of "Moz"). 
+         * @param  {string} prop CSS property to test.
+         * @param  {boolean} [forCss=false] Return CSS formatting (e.g. "-moz-" instead of "Moz"). 
          * @return {string} Vendor prefix.
          */
         getVendorPrefix : function(prop, forCss)
@@ -359,7 +360,7 @@ SimpleUtil = function()
 
         /**
          * Get the vendor prefixed property name.
-         * @param  {string} CSS property to prefix.
+         * @param  {string} prop CSS property to prefix.
          * @return {string} Vendor prefix.
          * @todo  Test that the property is actually prefixed.
          */
@@ -370,8 +371,9 @@ SimpleUtil = function()
 
         /**
          * Get the vendor prefixed property name.
-         * @param  {string} CSS property to resolve.
-         * @param {boolean} Use camelCase instead of CapitalCase.
+         * @param  {string} prop CSS property to resolve.
+         * @param {boolean} obj Optional object to test against.
+         * @param {boolean} [lower] Use camelCase instead of CapitalCase.
          * @return {string} Prefixed property.
          */
         resolvePrefix : function(prop, obj, lower)
@@ -397,7 +399,7 @@ SimpleUtil = function()
 
         /**
          * Capitalize a string of text.
-         * @param  {string} String to capitalize.
+         * @param  {string} str String to capitalize.
          * @return {string} Capitalized string.
          */
         capitalize : function(str)
@@ -410,7 +412,7 @@ SimpleUtil = function()
 
         /**
          * Trim whitespace from the beginning and ending of a string.
-         * @param  {string} String to trim.
+         * @param  {string} str String to trim.
          * @return {string} Trimmed string.
          */
         trim : function(str)
@@ -420,8 +422,8 @@ SimpleUtil = function()
 
         /**
          * Test if a DOM Node has a particular class.
-         * @param  {object}  DOM Node to check.
-         * @param  {string}  Class name to check for.
+         * @param  {object}  el DOM Node to check.
+         * @param  {string}  cl Class name to check for.
          * @return {boolean}
          */
         hasClass : function(el, cl)
@@ -431,8 +433,8 @@ SimpleUtil = function()
 
         /**
          * Add a class to DOM Node.
-         * @param {object} DOM Node to add a class to.
-         * @param {string} The class to add.
+         * @param {object} el DOM Node to add a class to.
+         * @param {string} cl The class to add.
          */
         addClass : function(el, cl)
         {
@@ -443,8 +445,8 @@ SimpleUtil = function()
 
         /**
          * Set the class on a DOM Node.
-         * @param {object} DOM Node to set the class on.
-         * @param {string} The class to set.
+         * @param {object} el DOM Node to set the class on.
+         * @param {string} cl The class to set.
          */
         setClass : function(el, cl)
         {
@@ -453,8 +455,8 @@ SimpleUtil = function()
 
         /**
          * Remove a class from a DOM Node.
-         * @param {object} DOM Node to remove a class from.
-         * @param {string} The class to remove.
+         * @param {object} el DOM Node to remove a class from.
+         * @param {string} cl The class to remove.
          */
         delClass : function(el, cl)
         {
@@ -469,7 +471,7 @@ SimpleUtil = function()
 
         /**
          * Get a DOM Node by name. 
-         * @param  {string} Name.
+         * @param  {string} name Node name.
          * @return {object} DOM Node or empty object.
          */
         byName : function(n)
@@ -480,8 +482,8 @@ SimpleUtil = function()
 
         /**
          * Get an element by tag name.
-         * @param  {string} Tag name.
-         * @param  {object} Optional DOM Node to start from.
+         * @param  {string} tag Tag name.
+         * @param  {object} [parent=document] Optional DOM Node to start from.
          * @return {object} DOM Node or empty object.
          */
         byTag : function(tag, parent)
@@ -492,7 +494,7 @@ SimpleUtil = function()
 
         /**
          * Get an element by id.
-         * @param  {string} Element ID.
+         * @param  {string} id Element ID.
          * @return {object} DOM Node or empty object.
          */
         byId : function(id)
@@ -502,10 +504,10 @@ SimpleUtil = function()
 
         /**
          * Set attributes and properties on an element.
-         * @param {object} DOM Node
-         * @param {object} Key/value pairs including special handling for className,
+         * @param {object} el DOM Node
+         * @param {object} attrs Key/value pairs including special handling for className,
          *  innerHTML, parentNode, and styles. Anything else will be set as an attribute.
-         * @param {object} Optional collection of listener functions keyed by event name.
+         * @param {object} [events] Optional collection of listener functions keyed by event name.
          * @return {object} The DOM Node.
          */
         setAttrs : function(el, attrs, events)
@@ -544,9 +546,10 @@ SimpleUtil = function()
 
         /**
          * Create a new DOM Node.
-         * @param  {string} Tag name.
-         * @param  {object} Optional attributes passed to setAttrs.
-         * @param  {object} Optional event passed to setAttrs.
+         * @param  {string} el Tag name.
+         * @param  {object} attrs Optional attributes passed to setAttrs.
+         * @param  {object} [events] Optional events passed to setAttrs.
+         * @see  <a href="#.setAttrs">setAttrs</a>
          * @return {object} New DOM Node.
          */
         create : function(el, attrs, events)
@@ -557,7 +560,7 @@ SimpleUtil = function()
 
         /**
          * Remove a DOM Node from the DOM.
-         * @param  {object} DOM Node
+         * @param  {object} el DOM Node
          */
         remove : function(el)
         {
@@ -566,8 +569,8 @@ SimpleUtil = function()
 
         /**
          * Get the parentNode for a given DOM Node.
-         * @param  {object} DOM Node.
-         * @param  {int} The number of levels to traverse.
+         * @param  {object} el DOM Node.
+         * @param  {int} [level=1] The number of levels to traverse.
          * @return {object} DOM Node or empty object.
          */
         parent : function(el, level)
@@ -581,8 +584,8 @@ SimpleUtil = function()
 
         /**
          * Add a script to the page.
-         * @param {string} Script src.
-         * @param {object} Optional listeners for "load" and/or "error".
+         * @param {string} src Script src.
+         * @param {object} [opts] Optional listeners for "load" and/or "error".
          */
         addScript : function (src, opts)
         {
@@ -598,8 +601,8 @@ SimpleUtil = function()
 
         /**
          * Make an XHR request.
-         * @param  {string} URL.
-         * @param  {object} Options containing any of: callback (function),
+         * @param  {string} url URL.
+         * @param  {object} [opts] Options containing any of: callback (function),
          *  data (string), headers (object), json (object), method (string),
          *  parseHeaders (boolean), and props (object).
          * @return {object} XMLHttpRequest object.
@@ -685,9 +688,9 @@ SimpleUtil = function()
 
         /**
          * Listen to an event.
-         * @param  {object}   DOM Node to listen for events on.
-         * @param  {string}   Event type, e.g. "click".
-         * @param  {function} Callback function.
+         * @param  {object}   obj DOM Node to listen for events on.
+         * @param  {string}   type Event type, e.g. "click".
+         * @param  {function} fn Callback function.
          */
         listen : function(obj, type, fn)
         {
@@ -708,9 +711,9 @@ SimpleUtil = function()
 
         /**
          * Process an event.
-         * @param  {object} Event object.
-         * @param  {boolean} Prevent default.
-         * @param  {boolean} Stop propagation.
+         * @param  {object} e Event object.
+         * @param  {boolean} [prevent] Prevent default.
+         * @param  {boolean} [stop] Stop propagation.
          * @return {object} Event target.
          */
         processEvent : function(e, prevent, stop)
@@ -734,7 +737,7 @@ SimpleUtil = function()
 
         /**
          * Parse a query string into an object of key/value pairs.
-         * @param Optional query string, otherwise use current URL.
+         * @param str Optional query string, otherwise use current URL.
          * @return {object} Query params object.
          */
         parseQuery : function(str)
@@ -766,7 +769,7 @@ SimpleUtil = function()
 
         /**
          * Get the  offset position of an element.
-         * @param  {object} DOM Node to get offset for.
+         * @param  {object} el DOM Node to get offset for.
          * @return {object} Object containing "x" and "y".
          */
         getOffset : function(el)
@@ -791,7 +794,7 @@ SimpleUtil = function()
 
         /**
          * Listen for animation frame.
-         * @param {function} Function to execute for each frame.
+         * @param {function} fn Function to execute for each frame.
          */
         onFrame : function ()
         {
@@ -799,7 +802,7 @@ SimpleUtil = function()
 
         /**
          * Cancel for animation frame
-         * @param {function} Function to cancel.
+         * @param {function} fn Function to cancel.
          */
         cancelFrame : function ()
         {

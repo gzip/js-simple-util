@@ -261,7 +261,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.addClass">addClass</a></b>(DOM, The)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.addClass">addClass</a></b>(el, cl)
 								</div>
 								<div class="description">Add a class to DOM Node.</div>
 							</td>
@@ -270,7 +270,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.addScript">addScript</a></b>(Script, Optional)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.addScript">addScript</a></b>(src, opts)
 								</div>
 								<div class="description">Add a script to the page.</div>
 							</td>
@@ -288,7 +288,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.bind">bind</a></b>(Function, Scope, Prefill, Postfill)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.bind">bind</a></b>(fn, obj, prefill, postfill)
 								</div>
 								<div class="description">Bind a function to a particular scope (`this`).</div>
 							</td>
@@ -297,7 +297,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.byId">byId</a></b>(Element)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.byId">byId</a></b>(id)
 								</div>
 								<div class="description">Get an element by id.</div>
 							</td>
@@ -306,7 +306,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.byName">byName</a></b>()
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.byName">byName</a></b>(name)
 								</div>
 								<div class="description">Get a DOM Node by name.</div>
 							</td>
@@ -315,7 +315,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.byTag">byTag</a></b>(Tag, Optional)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.byTag">byTag</a></b>(tag, parent)
 								</div>
 								<div class="description">Get an element by tag name.</div>
 							</td>
@@ -324,7 +324,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.cancelFrame">cancelFrame</a></b>(Function)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.cancelFrame">cancelFrame</a></b>(fn)
 								</div>
 								<div class="description">Cancel for animation frame</div>
 							</td>
@@ -333,7 +333,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.capitalize">capitalize</a></b>(String)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.capitalize">capitalize</a></b>(str)
 								</div>
 								<div class="description">Capitalize a string of text.</div>
 							</td>
@@ -342,7 +342,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.clone">clone</a></b>(Object)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.clone">clone</a></b>(obj)
 								</div>
 								<div class="description">Clone an object.</div>
 							</td>
@@ -351,7 +351,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.create">create</a></b>(Tag, Optional, Optional)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.create">create</a></b>(el, attrs, events)
 								</div>
 								<div class="description">Create a new DOM Node.</div>
 							</td>
@@ -360,7 +360,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.delClass">delClass</a></b>(DOM, The)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.delClass">delClass</a></b>(el, cl)
 								</div>
 								<div class="description">Remove a class from a DOM Node.</div>
 							</td>
@@ -369,7 +369,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.each">each</a></b>(Collection, Function)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.each">each</a></b>(obj, fn)
 								</div>
 								<div class="description">Apply a function to each value in an array or object.</div>
 							</td>
@@ -378,7 +378,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.extend">extend</a></b>(Target, Source, Additional, Additional)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.extend">extend</a></b>(target, source, methods, methods)
 								</div>
 								<div class="description">Extend one class with another.</div>
 							</td>
@@ -396,7 +396,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.getOffset">getOffset</a></b>(DOM)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.getOffset">getOffset</a></b>(el)
 								</div>
 								<div class="description">Get the  offset position of an element.</div>
 							</td>
@@ -414,7 +414,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.getStyle">getStyle</a></b>(DOM, CSS, Default)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.getStyle">getStyle</a></b>(obj, style, def)
 								</div>
 								<div class="description">Get a CSS property from a DOM Node.</div>
 							</td>
@@ -423,7 +423,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.getVendorPrefix">getVendorPrefix</a></b>(CSS, Return)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.getVendorPrefix">getVendorPrefix</a></b>(prop, forCss)
 								</div>
 								<div class="description">Get the vendor prefix for the current browser.</div>
 							</td>
@@ -432,7 +432,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.hasClass">hasClass</a></b>(DOM, Class)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.hasClass">hasClass</a></b>(el, cl)
 								</div>
 								<div class="description">Test if a DOM Node has a particular class.</div>
 							</td>
@@ -513,7 +513,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.listen">listen</a></b>(DOM, Event, Callback)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.listen">listen</a></b>(obj, type, fn)
 								</div>
 								<div class="description">Listen to an event.</div>
 							</td>
@@ -522,7 +522,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.merge">merge</a></b>(Object, Object, Clone)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.merge">merge</a></b>(mergeTo, mergeFrom, clone)
 								</div>
 								<div class="description">Merge properties from one object to another.</div>
 							</td>
@@ -531,7 +531,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.onFrame">onFrame</a></b>(Function)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.onFrame">onFrame</a></b>(fn)
 								</div>
 								<div class="description">Listen for animation frame.</div>
 							</td>
@@ -540,7 +540,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.parent">parent</a></b>(DOM, The)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.parent">parent</a></b>(el, level)
 								</div>
 								<div class="description">Get the parentNode for a given DOM Node.</div>
 							</td>
@@ -549,7 +549,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.parseQuery">parseQuery</a></b>(Optional)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.parseQuery">parseQuery</a></b>(str)
 								</div>
 								<div class="description">Parse a query string into an object of key/value pairs.</div>
 							</td>
@@ -558,7 +558,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.processEvent">processEvent</a></b>(Event, Prevent, Stop)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.processEvent">processEvent</a></b>(e, prevent, stop)
 								</div>
 								<div class="description">Process an event.</div>
 							</td>
@@ -567,7 +567,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.remove">remove</a></b>(DOM)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.remove">remove</a></b>(el)
 								</div>
 								<div class="description">Remove a DOM Node from the DOM.</div>
 							</td>
@@ -576,7 +576,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.request">request</a></b>(Options)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.request">request</a></b>(url, opts)
 								</div>
 								<div class="description">Make an XHR request.</div>
 							</td>
@@ -585,7 +585,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.resolvePrefix">resolvePrefix</a></b>(CSS, Use, lower)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.resolvePrefix">resolvePrefix</a></b>(prop, obj, lower)
 								</div>
 								<div class="description">Get the vendor prefixed property name.</div>
 							</td>
@@ -594,7 +594,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.resolveProperty">resolveProperty</a></b>(CSS)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.resolveProperty">resolveProperty</a></b>(prop)
 								</div>
 								<div class="description">Get the vendor prefixed property name.</div>
 							</td>
@@ -603,7 +603,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.set">set</a></b>(Object, Property, Value, conditional)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.set">set</a></b>(obj, path, val, conditional)
 								</div>
 								<div class="description">Set a value [deep] in an object.</div>
 							</td>
@@ -612,7 +612,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.setAttrs">setAttrs</a></b>(DOM, Key/value, Optional)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.setAttrs">setAttrs</a></b>(el, attrs, events)
 								</div>
 								<div class="description">Set attributes and properties on an element.</div>
 							</td>
@@ -621,7 +621,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.setClass">setClass</a></b>(DOM, The)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.setClass">setClass</a></b>(el, cl)
 								</div>
 								<div class="description">Set the class on a DOM Node.</div>
 							</td>
@@ -630,7 +630,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.setStyle">setStyle</a></b>(DOM, CSS, Property, Resolve)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.setStyle">setStyle</a></b>(obj, style, val, resolve)
 								</div>
 								<div class="description">Set a CSS property on a DOM Node.</div>
 							</td>
@@ -639,7 +639,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.setStyles">setStyles</a></b>(DOM, Object, Resolve)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.setStyles">setStyles</a></b>(obj, styles, resolve)
 								</div>
 								<div class="description">Set multiple CSS properties on a DOM Node.</div>
 							</td>
@@ -648,7 +648,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.trim">trim</a></b>(String)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.trim">trim</a></b>(str)
 								</div>
 								<div class="description">Trim whitespace from the beginning and ending of a string.</div>
 							</td>
@@ -706,7 +706,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>addClass</b>(DOM, The)
+					<span class="light">SimpleUtil.</span><b>addClass</b>(el, cl)
 					
 					</div>
 					<div class="description">
@@ -722,16 +722,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>DOM</b>
+									<span class="light fixedFont">{object}</span> <b>el</b>
 									
 								</dt>
-								<dd>Node to add a class to.</dd>
+								<dd>DOM Node to add a class to.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>The</b>
+									<span class="light fixedFont">{string}</span> <b>cl</b>
 									
 								</dt>
-								<dd>class to add.</dd>
+								<dd>The class to add.</dd>
 							
 							</dl>
 						
@@ -748,7 +748,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>addScript</b>(Script, Optional)
+					<span class="light">SimpleUtil.</span><b>addScript</b>(src, opts)
 					
 					</div>
 					<div class="description">
@@ -764,16 +764,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>Script</b>
+									<span class="light fixedFont">{string}</span> <b>src</b>
 									
 								</dt>
-								<dd>src.</dd>
+								<dd>Script src.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Optional</b>
-									
+									<span class="light fixedFont">{object}</span> <b>opts</b>
+									<i>Optional</i>
 								</dt>
-								<dd>listeners for "load" and/or "error".</dd>
+								<dd>Optional listeners for "load" and/or "error".</dd>
 							
 							</dl>
 						
@@ -807,7 +807,7 @@ ul.inheritsList
 							
 								<dt>
 									<span class="light fixedFont">{object}</span> <b>args</b>
-									<i>Optional</i>
+									
 								</dt>
 								<dd>Arguments object.</dd>
 							
@@ -833,7 +833,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{function}</span>
-					<span class="light">SimpleUtil.</span><b>bind</b>(Function, Scope, Prefill, Postfill)
+					<span class="light">SimpleUtil.</span><b>bind</b>(fn, obj, prefill, postfill)
 					
 					</div>
 					<div class="description">
@@ -849,28 +849,28 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{function}</span> <b>Function</b>
+									<span class="light fixedFont">{function}</span> <b>fn</b>
 									
 								</dt>
-								<dd>to bind.</dd>
+								<dd>Function to bind.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Scope</b>
-									
+									<span class="light fixedFont">{object}</span> <b>obj</b>
+									<i>Optional, Default: window</i>
 								</dt>
-								<dd>object (`this` when function executes).</dd>
+								<dd>Scope object (`this` when function executes).</dd>
 							
 								<dt>
-									<span class="light fixedFont">{array}</span> <b>Prefill</b>
-									
+									<span class="light fixedFont">{array}</span> <b>prefill</b>
+									<i>Optional</i>
 								</dt>
-								<dd>arguments.</dd>
+								<dd>Prefill arguments.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{array}</span> <b>Postfill</b>
-									
+									<span class="light fixedFont">{array}</span> <b>postfill</b>
+									<i>Optional</i>
 								</dt>
-								<dd>arguments.</dd>
+								<dd>Postfill arguments.</dd>
 							
 							</dl>
 						
@@ -894,7 +894,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>byId</b>(Element)
+					<span class="light">SimpleUtil.</span><b>byId</b>(id)
 					
 					</div>
 					<div class="description">
@@ -910,10 +910,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>Element</b>
+									<span class="light fixedFont">{string}</span> <b>id</b>
 									
 								</dt>
-								<dd>ID.</dd>
+								<dd>Element ID.</dd>
 							
 							</dl>
 						
@@ -937,7 +937,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>byName</b>()
+					<span class="light">SimpleUtil.</span><b>byName</b>(name)
 					
 					</div>
 					<div class="description">
@@ -953,10 +953,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>Name.</b>
+									<span class="light fixedFont">{string}</span> <b>name</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>Node name.</dd>
 							
 							</dl>
 						
@@ -980,7 +980,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>byTag</b>(Tag, Optional)
+					<span class="light">SimpleUtil.</span><b>byTag</b>(tag, parent)
 					
 					</div>
 					<div class="description">
@@ -996,16 +996,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>Tag</b>
+									<span class="light fixedFont">{string}</span> <b>tag</b>
 									
 								</dt>
-								<dd>name.</dd>
+								<dd>Tag name.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Optional</b>
-									
+									<span class="light fixedFont">{object}</span> <b>parent</b>
+									<i>Optional, Default: document</i>
 								</dt>
-								<dd>DOM Node to start from.</dd>
+								<dd>Optional DOM Node to start from.</dd>
 							
 							</dl>
 						
@@ -1029,7 +1029,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>cancelFrame</b>(Function)
+					<span class="light">SimpleUtil.</span><b>cancelFrame</b>(fn)
 					
 					</div>
 					<div class="description">
@@ -1045,10 +1045,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{function}</span> <b>Function</b>
+									<span class="light fixedFont">{function}</span> <b>fn</b>
 									
 								</dt>
-								<dd>to cancel.</dd>
+								<dd>Function to cancel.</dd>
 							
 							</dl>
 						
@@ -1065,7 +1065,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{string}</span>
-					<span class="light">SimpleUtil.</span><b>capitalize</b>(String)
+					<span class="light">SimpleUtil.</span><b>capitalize</b>(str)
 					
 					</div>
 					<div class="description">
@@ -1081,10 +1081,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>String</b>
+									<span class="light fixedFont">{string}</span> <b>str</b>
 									
 								</dt>
-								<dd>to capitalize.</dd>
+								<dd>String to capitalize.</dd>
 							
 							</dl>
 						
@@ -1108,7 +1108,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>clone</b>(Object)
+					<span class="light">SimpleUtil.</span><b>clone</b>(obj)
 					
 					</div>
 					<div class="description">
@@ -1124,10 +1124,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Object</b>
+									<span class="light fixedFont">{object}</span> <b>obj</b>
 									
 								</dt>
-								<dd>to clone.</dd>
+								<dd>Object to clone.</dd>
 							
 							</dl>
 						
@@ -1151,7 +1151,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>create</b>(Tag, Optional, Optional)
+					<span class="light">SimpleUtil.</span><b>create</b>(el, attrs, events)
 					
 					</div>
 					<div class="description">
@@ -1167,22 +1167,22 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>Tag</b>
+									<span class="light fixedFont">{string}</span> <b>el</b>
 									
 								</dt>
-								<dd>name.</dd>
+								<dd>Tag name.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Optional</b>
+									<span class="light fixedFont">{object}</span> <b>attrs</b>
 									
 								</dt>
-								<dd>attributes passed to setAttrs.</dd>
+								<dd>Optional attributes passed to setAttrs.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Optional</b>
-									
+									<span class="light fixedFont">{object}</span> <b>events</b>
+									<i>Optional</i>
 								</dt>
-								<dd>event passed to setAttrs.</dd>
+								<dd>Optional events passed to setAttrs.</dd>
 							
 							</dl>
 						
@@ -1199,6 +1199,13 @@ ul.inheritsList
 						
 						
 						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="#.setAttrs">setAttrs</a></dd>
+							
+							</dl>
+						
 
 					<hr />
 				
@@ -1206,7 +1213,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>delClass</b>(DOM, The)
+					<span class="light">SimpleUtil.</span><b>delClass</b>(el, cl)
 					
 					</div>
 					<div class="description">
@@ -1222,16 +1229,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>DOM</b>
+									<span class="light fixedFont">{object}</span> <b>el</b>
 									
 								</dt>
-								<dd>Node to remove a class from.</dd>
+								<dd>DOM Node to remove a class from.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>The</b>
+									<span class="light fixedFont">{string}</span> <b>cl</b>
 									
 								</dt>
-								<dd>class to remove.</dd>
+								<dd>The class to remove.</dd>
 							
 							</dl>
 						
@@ -1248,7 +1255,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>each</b>(Collection, Function)
+					<span class="light">SimpleUtil.</span><b>each</b>(obj, fn)
 					
 					</div>
 					<div class="description">
@@ -1264,16 +1271,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object|array}</span> <b>Collection</b>
+									<span class="light fixedFont">{object|array}</span> <b>obj</b>
 									
 								</dt>
-								<dd>to apply to.</dd>
+								<dd>Collection to apply to.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{function}</span> <b>Function</b>
+									<span class="light fixedFont">{function}</span> <b>fn</b>
 									
 								</dt>
-								<dd>to apply.</dd>
+								<dd>Function to apply.</dd>
 							
 							</dl>
 						
@@ -1290,7 +1297,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>extend</b>(Target, Source, Additional, Additional)
+					<span class="light">SimpleUtil.</span><b>extend</b>(target, source, methods, methods)
 					
 					</div>
 					<div class="description">
@@ -1306,28 +1313,28 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{function}</span> <b>Target</b>
+									<span class="light fixedFont">{function}</span> <b>target</b>
 									
 								</dt>
-								<dd>class.</dd>
+								<dd>Target class.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{function}</span> <b>Source</b>
+									<span class="light fixedFont">{function}</span> <b>source</b>
 									
 								</dt>
-								<dd>class.</dd>
+								<dd>Source class.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{array}</span> <b>Additional</b>
-									
+									<span class="light fixedFont">{array}</span> <b>methods</b>
+									<i>Optional</i>
 								</dt>
-								<dd>methods.</dd>
+								<dd>Additional methods.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{array}</span> <b>Additional</b>
-									
+									<span class="light fixedFont">{array}</span> <b>methods</b>
+									<i>Optional</i>
 								</dt>
-								<dd>methods.</dd>
+								<dd>Additional methods.</dd>
 							
 							</dl>
 						
@@ -1361,13 +1368,13 @@ ul.inheritsList
 							
 								<dt>
 									<span class="light fixedFont">{object}</span> <b>obj</b>
-									<i>Optional</i>
+									
 								</dt>
 								<dd>Object to get a value from.</dd>
 							
 								<dt>
 									<span class="light fixedFont">{string}</span> <b>path</b>
-									<i>Optional</i>
+									
 								</dt>
 								<dd>Property "path", e.g. "foo.bar.baz"</dd>
 							
@@ -1399,7 +1406,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>getOffset</b>(DOM)
+					<span class="light">SimpleUtil.</span><b>getOffset</b>(el)
 					
 					</div>
 					<div class="description">
@@ -1415,10 +1422,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>DOM</b>
+									<span class="light fixedFont">{object}</span> <b>el</b>
 									
 								</dt>
-								<dd>Node to get offset for.</dd>
+								<dd>DOM Node to get offset for.</dd>
 							
 							</dl>
 						
@@ -1474,7 +1481,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{string}</span>
-					<span class="light">SimpleUtil.</span><b>getStyle</b>(DOM, CSS, Default)
+					<span class="light">SimpleUtil.</span><b>getStyle</b>(obj, style, def)
 					
 					</div>
 					<div class="description">
@@ -1490,22 +1497,22 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>DOM</b>
+									<span class="light fixedFont">{object}</span> <b>obj</b>
 									
 								</dt>
-								<dd>Node to get a CSS property from.</dd>
+								<dd>DOM Node to get a CSS property from.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>CSS</b>
+									<span class="light fixedFont">{string}</span> <b>style</b>
 									
 								</dt>
-								<dd>property in camelCase.</dd>
+								<dd>CSS property in camelCase.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>Default</b>
-									
+									<span class="light fixedFont">{string}</span> <b>def</b>
+									<i>Optional</i>
 								</dt>
-								<dd>value if property is not set.</dd>
+								<dd>Default value if property is not set.</dd>
 							
 							</dl>
 						
@@ -1529,7 +1536,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{string}</span>
-					<span class="light">SimpleUtil.</span><b>getVendorPrefix</b>(CSS, Return)
+					<span class="light">SimpleUtil.</span><b>getVendorPrefix</b>(prop, forCss)
 					
 					</div>
 					<div class="description">
@@ -1545,16 +1552,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>CSS</b>
+									<span class="light fixedFont">{string}</span> <b>prop</b>
 									
 								</dt>
-								<dd>property to test.</dd>
+								<dd>CSS property to test.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{boolean}</span> <b>Return</b>
-									
+									<span class="light fixedFont">{boolean}</span> <b>forCss</b>
+									<i>Optional, Default: false</i>
 								</dt>
-								<dd>CSS formatting (e.g. "-moz-" instead of "Moz").</dd>
+								<dd>Return CSS formatting (e.g. "-moz-" instead of "Moz").</dd>
 							
 							</dl>
 						
@@ -1578,7 +1585,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{boolean}</span>
-					<span class="light">SimpleUtil.</span><b>hasClass</b>(DOM, Class)
+					<span class="light">SimpleUtil.</span><b>hasClass</b>(el, cl)
 					
 					</div>
 					<div class="description">
@@ -1594,16 +1601,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>DOM</b>
+									<span class="light fixedFont">{object}</span> <b>el</b>
 									
 								</dt>
-								<dd>Node to check.</dd>
+								<dd>DOM Node to check.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>Class</b>
+									<span class="light fixedFont">{string}</span> <b>cl</b>
 									
 								</dt>
-								<dd>name to check for.</dd>
+								<dd>Class name to check for.</dd>
 							
 							</dl>
 						
@@ -1644,7 +1651,7 @@ ul.inheritsList
 							
 								<dt>
 									<span class="light fixedFont">{mixed}</span> <b>obj</b>
-									<i>Optional</i>
+									
 								</dt>
 								<dd>Object to test.</dd>
 							
@@ -1687,7 +1694,7 @@ ul.inheritsList
 							
 								<dt>
 									<span class="light fixedFont">{mixed}</span> <b>obj</b>
-									<i>Optional</i>
+									
 								</dt>
 								<dd>Object to test.</dd>
 							
@@ -1730,7 +1737,7 @@ ul.inheritsList
 							
 								<dt>
 									<span class="light fixedFont">{mixed}</span> <b>obj</b>
-									<i>Optional</i>
+									
 								</dt>
 								<dd>Object to test.</dd>
 							
@@ -1773,7 +1780,7 @@ ul.inheritsList
 							
 								<dt>
 									<span class="light fixedFont">{mixed}</span> <b>obj</b>
-									<i>Optional</i>
+									
 								</dt>
 								<dd>Object to test.</dd>
 							
@@ -1816,7 +1823,7 @@ ul.inheritsList
 							
 								<dt>
 									<span class="light fixedFont">{mixed}</span> <b>obj</b>
-									<i>Optional</i>
+									
 								</dt>
 								<dd>Object to test.</dd>
 							
@@ -1859,7 +1866,7 @@ ul.inheritsList
 							
 								<dt>
 									<span class="light fixedFont">{mixed}</span> <b>obj</b>
-									<i>Optional</i>
+									
 								</dt>
 								<dd>Object to test.</dd>
 							
@@ -1902,7 +1909,7 @@ ul.inheritsList
 							
 								<dt>
 									<span class="light fixedFont">{mixed}</span> <b>obj</b>
-									<i>Optional</i>
+									
 								</dt>
 								<dd>Object to test.</dd>
 							
@@ -1945,7 +1952,7 @@ ul.inheritsList
 							
 								<dt>
 									<span class="light fixedFont">{mixed}</span> <b>obj</b>
-									<i>Optional</i>
+									
 								</dt>
 								<dd>Object to test.</dd>
 							
@@ -1971,7 +1978,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>listen</b>(DOM, Event, Callback)
+					<span class="light">SimpleUtil.</span><b>listen</b>(obj, type, fn)
 					
 					</div>
 					<div class="description">
@@ -1987,22 +1994,22 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>DOM</b>
+									<span class="light fixedFont">{object}</span> <b>obj</b>
 									
 								</dt>
-								<dd>Node to listen for events on.</dd>
+								<dd>DOM Node to listen for events on.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>Event</b>
+									<span class="light fixedFont">{string}</span> <b>type</b>
 									
 								</dt>
-								<dd>type, e.g. "click".</dd>
+								<dd>Event type, e.g. "click".</dd>
 							
 								<dt>
-									<span class="light fixedFont">{function}</span> <b>Callback</b>
+									<span class="light fixedFont">{function}</span> <b>fn</b>
 									
 								</dt>
-								<dd>function.</dd>
+								<dd>Callback function.</dd>
 							
 							</dl>
 						
@@ -2019,7 +2026,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>merge</b>(Object, Object, Clone)
+					<span class="light">SimpleUtil.</span><b>merge</b>(mergeTo, mergeFrom, clone)
 					
 					</div>
 					<div class="description">
@@ -2035,22 +2042,22 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Object</b>
+									<span class="light fixedFont">{object}</span> <b>mergeTo</b>
 									
 								</dt>
-								<dd>to merge to.</dd>
+								<dd>Object to merge to.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Object</b>
+									<span class="light fixedFont">{object}</span> <b>mergeFrom</b>
 									
 								</dt>
-								<dd>to merge from.</dd>
+								<dd>Object to merge from.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{boolean}</span> <b>Clone</b>
-									
+									<span class="light fixedFont">{boolean}</span> <b>clone</b>
+									<i>Optional</i>
 								</dt>
-								<dd>the object rather than augment.</dd>
+								<dd>Clone the object rather than augment.</dd>
 							
 							</dl>
 						
@@ -2074,7 +2081,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>onFrame</b>(Function)
+					<span class="light">SimpleUtil.</span><b>onFrame</b>(fn)
 					
 					</div>
 					<div class="description">
@@ -2090,10 +2097,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{function}</span> <b>Function</b>
+									<span class="light fixedFont">{function}</span> <b>fn</b>
 									
 								</dt>
-								<dd>to execute for each frame.</dd>
+								<dd>Function to execute for each frame.</dd>
 							
 							</dl>
 						
@@ -2110,7 +2117,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>parent</b>(DOM, The)
+					<span class="light">SimpleUtil.</span><b>parent</b>(el, level)
 					
 					</div>
 					<div class="description">
@@ -2126,16 +2133,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>DOM</b>
+									<span class="light fixedFont">{object}</span> <b>el</b>
 									
 								</dt>
-								<dd>Node.</dd>
+								<dd>DOM Node.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{int}</span> <b>The</b>
-									
+									<span class="light fixedFont">{int}</span> <b>level</b>
+									<i>Optional, Default: 1</i>
 								</dt>
-								<dd>number of levels to traverse.</dd>
+								<dd>The number of levels to traverse.</dd>
 							
 							</dl>
 						
@@ -2159,7 +2166,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>parseQuery</b>(Optional)
+					<span class="light">SimpleUtil.</span><b>parseQuery</b>(str)
 					
 					</div>
 					<div class="description">
@@ -2175,10 +2182,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>Optional</b>
+									<b>str</b>
 									
 								</dt>
-								<dd>query string, otherwise use current URL.</dd>
+								<dd>Optional query string, otherwise use current URL.</dd>
 							
 							</dl>
 						
@@ -2202,7 +2209,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>processEvent</b>(Event, Prevent, Stop)
+					<span class="light">SimpleUtil.</span><b>processEvent</b>(e, prevent, stop)
 					
 					</div>
 					<div class="description">
@@ -2218,22 +2225,22 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Event</b>
+									<span class="light fixedFont">{object}</span> <b>e</b>
 									
 								</dt>
-								<dd>object.</dd>
+								<dd>Event object.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{boolean}</span> <b>Prevent</b>
-									
+									<span class="light fixedFont">{boolean}</span> <b>prevent</b>
+									<i>Optional</i>
 								</dt>
-								<dd>default.</dd>
+								<dd>Prevent default.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{boolean}</span> <b>Stop</b>
-									
+									<span class="light fixedFont">{boolean}</span> <b>stop</b>
+									<i>Optional</i>
 								</dt>
-								<dd>propagation.</dd>
+								<dd>Stop propagation.</dd>
 							
 							</dl>
 						
@@ -2257,7 +2264,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>remove</b>(DOM)
+					<span class="light">SimpleUtil.</span><b>remove</b>(el)
 					
 					</div>
 					<div class="description">
@@ -2273,10 +2280,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>DOM</b>
+									<span class="light fixedFont">{object}</span> <b>el</b>
 									
 								</dt>
-								<dd>Node</dd>
+								<dd>DOM Node</dd>
 							
 							</dl>
 						
@@ -2293,7 +2300,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>request</b>(Options)
+					<span class="light">SimpleUtil.</span><b>request</b>(url, opts)
 					
 					</div>
 					<div class="description">
@@ -2309,16 +2316,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>URL.</b>
+									<span class="light fixedFont">{string}</span> <b>url</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>URL.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Options</b>
-									
+									<span class="light fixedFont">{object}</span> <b>opts</b>
+									<i>Optional</i>
 								</dt>
-								<dd>containing any of: callback (function),
+								<dd>Options containing any of: callback (function),
  data (string), headers (object), json (object), method (string),
  parseHeaders (boolean), and props (object).</dd>
 							
@@ -2344,7 +2351,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{string}</span>
-					<span class="light">SimpleUtil.</span><b>resolvePrefix</b>(CSS, Use, lower)
+					<span class="light">SimpleUtil.</span><b>resolvePrefix</b>(prop, obj, lower)
 					
 					</div>
 					<div class="description">
@@ -2360,22 +2367,22 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>CSS</b>
+									<span class="light fixedFont">{string}</span> <b>prop</b>
 									
 								</dt>
-								<dd>property to resolve.</dd>
+								<dd>CSS property to resolve.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{boolean}</span> <b>Use</b>
+									<span class="light fixedFont">{boolean}</span> <b>obj</b>
 									
 								</dt>
-								<dd>camelCase instead of CapitalCase.</dd>
+								<dd>Optional object to test against.</dd>
 							
 								<dt>
-									<b>lower</b>
-									
+									<span class="light fixedFont">{boolean}</span> <b>lower</b>
+									<i>Optional</i>
 								</dt>
-								<dd></dd>
+								<dd>Use camelCase instead of CapitalCase.</dd>
 							
 							</dl>
 						
@@ -2399,7 +2406,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{string}</span>
-					<span class="light">SimpleUtil.</span><b>resolveProperty</b>(CSS)
+					<span class="light">SimpleUtil.</span><b>resolveProperty</b>(prop)
 					
 					</div>
 					<div class="description">
@@ -2415,10 +2422,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>CSS</b>
+									<span class="light fixedFont">{string}</span> <b>prop</b>
 									
 								</dt>
-								<dd>property to prefix.</dd>
+								<dd>CSS property to prefix.</dd>
 							
 							</dl>
 						
@@ -2441,8 +2448,8 @@ ul.inheritsList
 					<a name=".set"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					<span class="light">{boolean}</span>
-					<span class="light">SimpleUtil.</span><b>set</b>(Object, Property, Value, conditional)
+					<span class="light">{object}</span>
+					<span class="light">SimpleUtil.</span><b>set</b>(obj, path, val, conditional)
 					
 					</div>
 					<div class="description">
@@ -2458,28 +2465,28 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Object</b>
+									<span class="light fixedFont">{object}</span> <b>obj</b>
 									
 								</dt>
-								<dd>to set a value on.</dd>
+								<dd>Object to set a value on.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>Property</b>
+									<span class="light fixedFont">{string}</span> <b>path</b>
 									
 								</dt>
-								<dd>"path", e.g. "foo.bar.baz"</dd>
+								<dd>Property "path", e.g. "foo.bar.baz"</dd>
 							
 								<dt>
-									<span class="light fixedFont">{mixed}</span> <b>Value</b>
+									<span class="light fixedFont">{mixed}</span> <b>val</b>
 									
 								</dt>
-								<dd>to set.</dd>
+								<dd>Value to set.</dd>
 							
 								<dt>
-									<b>conditional</b>
-									
+									<span class="light fixedFont">{boolean}</span> <b>conditional</b>
+									<i>Optional</i>
 								</dt>
-								<dd></dd>
+								<dd>Only set if not already present.</dd>
 							
 							</dl>
 						
@@ -2490,7 +2497,7 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{boolean}</span> Only set if not already present.</dd>
+								<dd><span class="light fixedFont">{object}</span> Object.</dd>
 							
 							</dl>
 						
@@ -2503,7 +2510,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>setAttrs</b>(DOM, Key/value, Optional)
+					<span class="light">SimpleUtil.</span><b>setAttrs</b>(el, attrs, events)
 					
 					</div>
 					<div class="description">
@@ -2519,23 +2526,23 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>DOM</b>
+									<span class="light fixedFont">{object}</span> <b>el</b>
 									
 								</dt>
-								<dd>Node</dd>
+								<dd>DOM Node</dd>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Key/value</b>
+									<span class="light fixedFont">{object}</span> <b>attrs</b>
 									
 								</dt>
-								<dd>pairs including special handling for className,
+								<dd>Key/value pairs including special handling for className,
  innerHTML, parentNode, and styles. Anything else will be set as an attribute.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>Optional</b>
-									
+									<span class="light fixedFont">{object}</span> <b>events</b>
+									<i>Optional</i>
 								</dt>
-								<dd>collection of listener functions keyed by event name.</dd>
+								<dd>Optional collection of listener functions keyed by event name.</dd>
 							
 							</dl>
 						
@@ -2559,7 +2566,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>setClass</b>(DOM, The)
+					<span class="light">SimpleUtil.</span><b>setClass</b>(el, cl)
 					
 					</div>
 					<div class="description">
@@ -2575,16 +2582,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>DOM</b>
+									<span class="light fixedFont">{object}</span> <b>el</b>
 									
 								</dt>
-								<dd>Node to set the class on.</dd>
+								<dd>DOM Node to set the class on.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>The</b>
+									<span class="light fixedFont">{string}</span> <b>cl</b>
 									
 								</dt>
-								<dd>class to set.</dd>
+								<dd>The class to set.</dd>
 							
 							</dl>
 						
@@ -2601,7 +2608,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>setStyle</b>(DOM, CSS, Property, Resolve)
+					<span class="light">SimpleUtil.</span><b>setStyle</b>(obj, style, val, resolve)
 					
 					</div>
 					<div class="description">
@@ -2617,28 +2624,28 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>DOM</b>
+									<span class="light fixedFont">{object}</span> <b>obj</b>
 									
 								</dt>
-								<dd>Node to set a CSS property on.</dd>
+								<dd>DOM Node to set a CSS property on.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>CSS</b>
+									<span class="light fixedFont">{string}</span> <b>style</b>
 									
 								</dt>
-								<dd>property in camelCase.</dd>
+								<dd>CSS property in camelCase.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>Property</b>
+									<span class="light fixedFont">{string}</span> <b>val</b>
 									
 								</dt>
-								<dd>value. Note that "px" will automatically be appended to numeric values.</dd>
+								<dd>Property value. Note that "px" will automatically be appended to numeric values.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{boolean}</span> <b>Resolve</b>
-									
+									<span class="light fixedFont">{boolean}</span> <b>resolve</b>
+									<i>Optional, Default: false</i>
 								</dt>
-								<dd>vendor prefix (default false).</dd>
+								<dd>Resolve vendor prefix.</dd>
 							
 							</dl>
 						
@@ -2655,7 +2662,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>setStyles</b>(DOM, Object, Resolve)
+					<span class="light">SimpleUtil.</span><b>setStyles</b>(obj, styles, resolve)
 					
 					</div>
 					<div class="description">
@@ -2671,22 +2678,22 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{object}</span> <b>DOM</b>
+									<span class="light fixedFont">{object}</span> <b>obj</b>
 									
 								</dt>
-								<dd>Node to set CSS properties on.</dd>
+								<dd>DOM Node to set CSS properties on.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>Object</b>
+									<span class="light fixedFont">{string}</span> <b>styles</b>
 									
 								</dt>
-								<dd>containing key/values for CSS properties in camelCase.</dd>
+								<dd>Object containing key/values for CSS properties in camelCase.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{boolean}</span> <b>Resolve</b>
-									
+									<span class="light fixedFont">{boolean}</span> <b>resolve</b>
+									<i>Optional, Default: false</i>
 								</dt>
-								<dd>vendor prefix (default false).</dd>
+								<dd>Resolve vendor prefix.</dd>
 							
 							</dl>
 						
@@ -2703,7 +2710,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{string}</span>
-					<span class="light">SimpleUtil.</span><b>trim</b>(String)
+					<span class="light">SimpleUtil.</span><b>trim</b>(str)
 					
 					</div>
 					<div class="description">
@@ -2719,10 +2726,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>String</b>
+									<span class="light fixedFont">{string}</span> <b>str</b>
 									
 								</dt>
-								<dd>to trim.</dd>
+								<dd>String to trim.</dd>
 							
 							</dl>
 						
@@ -2754,7 +2761,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Mon Oct 21 2013 23:40:55 GMT-0700 (PDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Thu Oct 24 2013 22:03:05 GMT-0700 (PDT)
 		</div>
 	</body>
 </html>
