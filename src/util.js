@@ -423,7 +423,7 @@ SimpleUtil = function()
         /**
          * Test if a DOM Node has a particular class.
          * @param  {object}  el DOM Node to check.
-         * @param  {string}  cl Class name to check for.
+         * @param  {string}  class Class name to check for.
          * @return {boolean}
          */
         hasClass : function(el, cl)
@@ -434,7 +434,7 @@ SimpleUtil = function()
         /**
          * Add a class to DOM Node.
          * @param {object} el DOM Node to add a class to.
-         * @param {string} cl The class to add.
+         * @param {string} class The class to add.
          */
         addClass : function(el, cl)
         {
@@ -446,7 +446,7 @@ SimpleUtil = function()
         /**
          * Set the class on a DOM Node.
          * @param {object} el DOM Node to set the class on.
-         * @param {string} cl The class to set.
+         * @param {string} class The class to set.
          */
         setClass : function(el, cl)
         {
@@ -456,7 +456,7 @@ SimpleUtil = function()
         /**
          * Remove a class from a DOM Node.
          * @param {object} el DOM Node to remove a class from.
-         * @param {string} cl The class to remove.
+         * @param {string} class The class to remove.
          */
         delClass : function(el, cl)
         {
@@ -470,7 +470,7 @@ SimpleUtil = function()
         },
 
         /**
-         * Get a DOM Node by name. 
+         * Get an element by name. 
          * @param  {string} name Node name.
          * @return {object} DOM Node or empty object.
          */
@@ -500,6 +500,46 @@ SimpleUtil = function()
         byId : function(id)
         {
             return doc.getElementById(id) || {};
+        },
+
+        /**
+         * Get an array of elements by class name.
+         * @param  {string} class Class name(s), space separated.
+         * @param  {object} [parent=document] Optional DOM Node to start from.
+         * @return {array} Array of elements.
+         */
+        byClass : function(cl, parent)
+        {
+            var els = [],
+                collection = (parent || doc).getElementsByClassName(cl) || [],
+                cl = collection.length,
+                c = 0;
+
+            for (; c<cl; c++) {
+                els.push(collection.item(c));
+            }
+
+            return els;
+        },
+
+        /**
+         * Get an array of elements by class name.
+         * @param  {string} selector Selector(s), comma separated.
+         * @param  {object} [parent=document] Optional DOM Node to start from.
+         * @return {array} Array of elements.
+         */
+        bySelector : function(s, parent)
+        {
+            var els = [],
+                list = (parent || doc).querySelectorAll(s) || [],
+                cl = list.length,
+                c = 0;
+
+            for (; c<cl; c++) {
+                els.push(list.item(c));
+            }
+
+            return els;
         },
 
         /**
@@ -545,7 +585,7 @@ SimpleUtil = function()
         },
 
         /**
-         * Create a new DOM Node.
+         * Create a new element.
          * @param  {string} el Tag name.
          * @param  {object} attrs Optional attributes passed to setAttrs.
          * @param  {object} [events] Optional events passed to setAttrs.
@@ -559,7 +599,7 @@ SimpleUtil = function()
         },
 
         /**
-         * Remove a DOM Node from the DOM.
+         * Remove an element from the DOM.
          * @param  {object} el DOM Node
          */
         remove : function(el)
@@ -568,7 +608,7 @@ SimpleUtil = function()
         },
 
         /**
-         * Get the parentNode for a given DOM Node.
+         * Get the parentNode for a given element.
          * @param  {object} el DOM Node.
          * @param  {int} [level=1] The number of levels to traverse.
          * @return {object} DOM Node or empty object.
@@ -793,7 +833,7 @@ SimpleUtil = function()
         },
 
         /**
-         * Listen for animation frame.
+         * Listen for animation frame (requestAnimationFrame).
          * @param {function} fn Function to execute for each frame.
          */
         onFrame : function ()
@@ -801,7 +841,7 @@ SimpleUtil = function()
         },
 
         /**
-         * Cancel for animation frame
+         * Cancel animation frame (cancelAnimationFrame).
          * @param {function} fn Function to cancel.
          */
         cancelFrame : function ()
