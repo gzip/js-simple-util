@@ -61,9 +61,11 @@ describe('SimpleUtil', function(){
             var parent = util.create('b', {className: 'bold', parentNode: document.body}),
                 el = util.create('i', {className: 'italic', parentNode: parent}),
                 result = util.bySelector('.bold .italic'),
-                none = util.bySelector('.bold .foo');
+                none = util.bySelector('.bold .foo'),
+                invalid = util.bySelector('-invalid#$$.selector');
             assert.isTrue(util.isArray(result));
             assert.isTrue(util.isArray(none));
+            assert.isTrue(util.isArray(invalid));
             eq(1, result.length);
             eq(0, none.length);
             // clean up

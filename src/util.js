@@ -531,12 +531,18 @@ SimpleUtil = function()
         bySelector : function(s, parent)
         {
             var els = [],
-                list = (parent || doc).querySelectorAll(s) || [],
-                cl = list.length,
-                c = 0;
+                list,
+                ll,
+                l;
 
-            for (; c<cl; c++) {
-                els.push(list.item(c));
+            try {
+                list = (parent || doc).querySelectorAll(s);
+            } catch (e) {
+                list = [];
+            }
+
+            for (l = 0, ll = list.length; l<ll; l++) {
+                els.push(list.item(l));
             }
 
             return els;
