@@ -605,6 +605,15 @@ SimpleUtil = function()
         },
 
         /**
+         * Create a document fragment.
+         * @return {object} Document fragment.
+         */
+        frag : function()
+        {
+            return doc.createDocumentFragment();
+        },
+
+        /**
          * Remove an element from the DOM.
          * @param  {object} el DOM Node
          */
