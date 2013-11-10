@@ -2,7 +2,9 @@
 // npm i -g phantomjs; phantomjs runner.js
 
 var status = 0,
-    page = require('webpage').create();
+    page = require('webpage').create(),
+    sys = require('system'),
+    testFile = sys.args.length == 2 ? sys.args[1] : './index.html';
 
 page.onConsoleMessage = function(msg) {
     console.log(msg);
@@ -51,4 +53,4 @@ page.onLoadFinished = function(status) {
     }
 };
 
-page.open('./index.html');
+page.open(testFile);
