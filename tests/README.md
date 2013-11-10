@@ -3,11 +3,15 @@
 ## From the command line
 
 First install PhantomJS if not already present.
-`$ sudo npm i -g phantomjs`
+```
+$ sudo npm i -g phantomjs
+```
 
 Then execute runner from the tests dir.
-`$ cd tests`
-`$ phantomjs runner.js`
+```
+$ cd tests
+$ phantomjs runner.js
+```
 
 ## From the browser
 
