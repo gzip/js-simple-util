@@ -290,6 +290,7 @@ describe('SimpleUtil', function(){
             util.resetPrefix('Webkit');
             var obj = {webkitTransitionEnd: ''};
             eq('webkitTransitionEnd', prefix('transitionend', obj));
+            util.resetPrefix();
         });
     });
 
