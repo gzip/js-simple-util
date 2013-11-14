@@ -2,16 +2,15 @@
 Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms. */
 
 // TODO SimpleStyle SimpleDom
-
-(function() {
+(function(win) {
 /**
  * A lightweight utility library when a full Javascript framework isn't necessary.
  * @namespace SimpleUtil
  */
 SimpleUtil = function()
 {
-    var doc = document,
-        docEl = doc.documentElement,
+    var doc = win.document || {},
+        docEl = doc.documentElement || {},
         docStyle = docEl.style,
         docBody = doc.body,
         click = 'click',
@@ -285,6 +284,29 @@ SimpleUtil = function()
         },
 
         /**
+         * Capitalize a string of text.
+         * @param  {string} str String to capitalize.
+         * @return {string} Capitalized string.
+         */
+        capitalize : function(str)
+        {
+            if (util.isStr(str) && str) {
+                str = str.charAt(0).toUpperCase() + (str.length > 1 ? str.substr(1) : "");
+            }
+            return str;
+        },
+
+        /**
+         * Trim whitespace from the beginning and ending of a string.
+         * @param  {string} str String to trim.
+         * @return {string} Trimmed string.
+         */
+        trim : function(str)
+        {
+            return str.replace(regexTrim, '');
+        },
+
+        /**
          * Get a CSS property from a DOM Node.
          * @param  {object} obj DOM Node to get a CSS property from.
          * @param  {string} style CSS property in camelCase.
@@ -395,29 +417,6 @@ SimpleUtil = function()
             }
             
             return prop;
-        },
-
-        /**
-         * Capitalize a string of text.
-         * @param  {string} str String to capitalize.
-         * @return {string} Capitalized string.
-         */
-        capitalize : function(str)
-        {
-            if (util.isStr(str) && str) {
-                str = str.charAt(0).toUpperCase() + (str.length > 1 ? str.substr(1) : "");
-            }
-            return str;
-        },
-
-        /**
-         * Trim whitespace from the beginning and ending of a string.
-         * @param  {string} str String to trim.
-         * @return {string} Trimmed string.
-         */
-        trim : function(str)
-        {
-            return str.replace(regexTrim, '');
         },
 
         /**
@@ -864,14 +863,25 @@ SimpleUtil = function()
         }
     }
 }();
-var win = window,
-    util = SimpleUtil,
-    wrap = function(name)
+var util = SimpleUtil;
+
+if (typeof module !== 'undefined') {
+    util.each([
+        'args', 'bind', 'capitalize', 'clone', 'each', 'extend', 'get',
+        'isArray', 'isBool', 'isFunc', 'isNull', 'isObj', 'isStr', 'isUnd',
+        'merge', 'set', 'trim'
+    ], function (method) {
+        module.exports[method] = util[method];
+    });
+} else {
+    var wrap = function(name)
     {
         return function(f){ return win[util.resolvePrefix(name, win, true)](f); };
     };
 
-util.onFrame = wrap('requestAnimationFrame');
-util.cancelFrame = wrap('cancelAnimationFrame');
-util.resetPrefix();
-})();
+    util.onFrame = wrap('requestAnimationFrame');
+    util.cancelFrame = wrap('cancelAnimationFrame');
+    util.resetPrefix();
+}
+
+}(this));
