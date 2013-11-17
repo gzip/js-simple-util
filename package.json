@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git://github.com/gzip/js-simple-util.git"
   },
-  "main": "src/util.js",
+  "main": "build/util.node.js",
   "scripts": {
     "test": "cd tests; phantomjs runner.js",
     "build": "node build"

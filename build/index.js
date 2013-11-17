@@ -10,8 +10,7 @@ var fs = require('fs'),
     outmin = buildv + 'util.min.js',
     outnode = build + 'util.node.js',
     srcin = root + 'src/util.js',
-    src = fs.readFileSync(srcin, 'utf-8'),
-    c = fs.readFileSync(build + 'copyright.js', 'utf-8');
+    src = fs.readFileSync(srcin, 'utf-8');
 
 try {
     var builds = {};

@@ -9,6 +9,15 @@
  */
 SimpleUtil = function()
 {
+    var isA = function(obj, type)
+        {
+            return typeof obj == type;
+        },
+        owns = 'hasOwnProperty',
+        proto = 'prototype',
+        val = 'value',
+        regexTrim = /^\s+|\s+$/g;
+// #ifndef NODE
     var doc = win.document || {},
         docEl = doc.documentElement || {},
         docStyle = docEl.style,
@@ -16,19 +25,11 @@ SimpleUtil = function()
         click = 'click',
         checked = 'checked',
         cln = 'className',
-        owns = 'hasOwnProperty',
         innerHtml = 'innerHTML',
-        proto = 'prototype',
-        val = 'value',
-        isA = function(obj, type)
-        {
-            return typeof obj == type;
-        },
         clRegex = function(cl)
         {
             return new RegExp('(?:^|\\s+)' + cl + '(?:\\s+|$)');
         },
-        regexTrim = /^\s+|\s+$/g,
         vendorPrefix = null,
         vendorPrefixCss = null,
         vendors = ['Webkit','Moz','O','ms'],
@@ -41,7 +42,7 @@ SimpleUtil = function()
                 'optimizeSpeed': 'webkitOptimizeContrast'
             }
         };
-    
+// #endifndef
     return {
         /**
          * Test for undefined.
@@ -305,7 +306,7 @@ SimpleUtil = function()
         {
             return str.replace(regexTrim, '');
         },
-
+// #ifndef NODE
         /**
          * Get a CSS property from a DOM Node.
          * @param  {object} obj DOM Node to get a CSS property from.
@@ -861,13 +862,14 @@ SimpleUtil = function()
         cancelFrame : function ()
         {
         }
+// #endifndef
     };
 }();
 var util = SimpleUtil;
-
+// #ifdef NODE
 if (typeof module !== 'undefined') {
     module.exports = util;
 }
-
+// #endifdef
 }(this));
 
