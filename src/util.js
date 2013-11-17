@@ -1,5 +1,5 @@
-/* Copyright (c) 2013 Yahoo! Inc. All rights reserved.
-Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms. */
+// Copyright (c) 2013 Yahoo! Inc. All rights reserved. Copyrights licensed under the MIT License.
+// See the accompanying LICENSE file for terms.
 
 // TODO SimpleStyle SimpleDom
 (function(win) {
@@ -280,7 +280,7 @@ SimpleUtil = function()
         {
             return function() {
                 return fn.apply(obj || win, [].concat(prefill || [], util.args(arguments), postfill || []));
-            }
+            };
         },
 
         /**
@@ -410,7 +410,7 @@ SimpleUtil = function()
                 if (exception) {
                     prop = exception;
                 } else {
-                    prefixed = (lower ? prefix.toLowerCase() : prefix) + util.capitalize(prop)
+                    prefixed = (lower ? prefix.toLowerCase() : prefix) + util.capitalize(prop);
                 }
                 
                 prop = prefixed && prefixed in obj ? prefixed : prop;
@@ -507,10 +507,10 @@ SimpleUtil = function()
          * @param  {object} [parent=document] Optional DOM Node to start from.
          * @return {array} Array of elements.
          */
-        byClass : function(cl, parent)
+        byClass : function(cln, parent)
         {
             var els = [],
-                collection = (parent || doc).getElementsByClassName(cl) || [],
+                collection = (parent || doc).getElementsByClassName(cln) || [],
                 cl = collection.length,
                 c = 0;
 
@@ -861,27 +861,13 @@ SimpleUtil = function()
         cancelFrame : function ()
         {
         }
-    }
+    };
 }();
 var util = SimpleUtil;
 
 if (typeof module !== 'undefined') {
-    util.each([
-        'args', 'bind', 'capitalize', 'clone', 'each', 'extend', 'get',
-        'isArray', 'isBool', 'isFunc', 'isNull', 'isObj', 'isStr', 'isUnd',
-        'merge', 'set', 'trim'
-    ], function (method) {
-        module.exports[method] = util[method];
-    });
-} else {
-    var wrap = function(name)
-    {
-        return function(f){ return win[util.resolvePrefix(name, win, true)](f); };
-    };
-
-    util.onFrame = wrap('requestAnimationFrame');
-    util.cancelFrame = wrap('cancelAnimationFrame');
-    util.resetPrefix();
+    module.exports = util;
 }
 
 }(this));
+
