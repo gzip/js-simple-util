@@ -43,6 +43,11 @@ SimpleUtil = function()
             }
         };
 // #endifndef
+        
+    function resolvePath(path) {
+        return util.isArray(path) && path || (util.isStr(path) ? path.split('.') : [])
+    }
+    
     return {
         /**
          * Test for undefined.
@@ -137,15 +142,15 @@ SimpleUtil = function()
         /**
          * Get a value [deep] in an object.
          * @param  {object} obj Object to get a value from.
-         * @param  {string} path Property "path", e.g. "foo.bar.baz"
+         * @param  {string|array} path Property path, e.g. "foo.bar.baz".
          * @param  {mixed} [def] Default value if nothing is found.
          * @return {mixed} Value or default.
          */
         get : function(obj, path, def)
         {
             var isObj = util.isObj(obj),
-                props = isObj && util.isStr(path) ? path.split('.') : [],
-                pl = props.length,
+                props = resolvePath(path),
+                pl = isObj ? props.length : 0,
                 p = 0;
             
             for (; p<pl && obj; p++)
@@ -159,14 +164,14 @@ SimpleUtil = function()
         /**
          * Set a value [deep] in an object.
          * @param  {object} obj Object to set a value on.
-         * @param  {string} path Property "path", e.g. "foo.bar.baz"
+         * @param  {string|array} path Property path, e.g. "foo.bar.baz"
          * @param  {mixed} val Value to set.
          * @param {boolean} [conditional] Only set if not already present.
          * @return {object} Object.
          */
         set : function(obj, path, val, conditional)
         {
-            var props = util.isObj(obj) && util.isStr(path) ? path.split('.') : [],
+            var props = util.isObj(obj) ? resolvePath(path) : [],
                 prop,
                 pl = props.length,
                 p = 0;

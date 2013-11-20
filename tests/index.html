@@ -52,7 +52,10 @@ describe('SimpleUtil', function(){
         it('should work on root', function(){
             eq(document.body.bgColor, get(document, 'body.bgColor'));
         });
-        it('should work on literals', function(){
+        it('should work with array path', function(){
+            eq('baz', get({foo: {bar: {baz: 'baz'}}}, ['foo', 'bar', 'baz']));
+        });
+        it('should ork on literals', function(){
             eq(1, get([1], 'length'));
         });
         it('should handle non-objects gracefully', function(){
@@ -74,6 +77,10 @@ describe('SimpleUtil', function(){
         it('should go deep', function(){
             var obj = {};
             eq('BAZ', set(obj, 'foo.bar.baz', 'BAZ'));
+        });
+        it('should work with array path', function(){
+            var obj = {};
+            eq('BAZ', set(obj, ['foo', 'bar', 'baz'], 'BAZ'));
             eq('BAZ', obj.foo.bar.baz);
         });
         it('should not clobber when conditional', function(){
