@@ -261,7 +261,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.addClass">addClass</a></b>(el, cl)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.addClass">addClass</a></b>(el, class)
 								</div>
 								<div class="description">Add a class to DOM Node.</div>
 							</td>
@@ -297,6 +297,15 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.byClass">byClass</a></b>(class, parent)
+								</div>
+								<div class="description">Get an array of elements by class name.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.byId">byId</a></b>(id)
 								</div>
 								<div class="description">Get an element by id.</div>
@@ -308,7 +317,16 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.byName">byName</a></b>(name)
 								</div>
-								<div class="description">Get a DOM Node by name.</div>
+								<div class="description">Get an element by name.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.bySelector">bySelector</a></b>(selector, parent)
+								</div>
+								<div class="description">Get an array of elements by class name.</div>
 							</td>
 						</tr>
 					
@@ -326,7 +344,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.cancelFrame">cancelFrame</a></b>(fn)
 								</div>
-								<div class="description">Cancel for animation frame</div>
+								<div class="description">Cancel animation frame (cancelAnimationFrame).</div>
 							</td>
 						</tr>
 					
@@ -353,14 +371,14 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.create">create</a></b>(el, attrs, events)
 								</div>
-								<div class="description">Create a new DOM Node.</div>
+								<div class="description">Create a new element.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.delClass">delClass</a></b>(el, cl)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.delClass">delClass</a></b>(el, class)
 								</div>
 								<div class="description">Remove a class from a DOM Node.</div>
 							</td>
@@ -381,6 +399,15 @@ ul.inheritsList
 								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.extend">extend</a></b>(target, source, methods, methods)
 								</div>
 								<div class="description">Extend one class with another.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.frag">frag</a></b>()
+								</div>
+								<div class="description">Create a document fragment.</div>
 							</td>
 						</tr>
 					
@@ -432,7 +459,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.hasClass">hasClass</a></b>(el, cl)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.hasClass">hasClass</a></b>(el, class)
 								</div>
 								<div class="description">Test if a DOM Node has a particular class.</div>
 							</td>
@@ -533,7 +560,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.onFrame">onFrame</a></b>(fn)
 								</div>
-								<div class="description">Listen for animation frame.</div>
+								<div class="description">Listen for animation frame (requestAnimationFrame).</div>
 							</td>
 						</tr>
 					
@@ -542,7 +569,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.parent">parent</a></b>(el, level)
 								</div>
-								<div class="description">Get the parentNode for a given DOM Node.</div>
+								<div class="description">Get the parentNode for a given element.</div>
 							</td>
 						</tr>
 					
@@ -569,7 +596,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.remove">remove</a></b>(el)
 								</div>
-								<div class="description">Remove a DOM Node from the DOM.</div>
+								<div class="description">Remove an element from the DOM.</div>
 							</td>
 						</tr>
 					
@@ -621,7 +648,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.setClass">setClass</a></b>(el, cl)
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.setClass">setClass</a></b>(el, class)
 								</div>
 								<div class="description">Set the class on a DOM Node.</div>
 							</td>
@@ -706,7 +733,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>addClass</b>(el, cl)
+					<span class="light">SimpleUtil.</span><b>addClass</b>(el, class)
 					
 					</div>
 					<div class="description">
@@ -728,7 +755,7 @@ ul.inheritsList
 								<dd>DOM Node to add a class to.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>cl</b>
+									<span class="light fixedFont">{string}</span> <b>class</b>
 									
 								</dt>
 								<dd>The class to add.</dd>
@@ -890,6 +917,55 @@ ul.inheritsList
 
 					<hr />
 				
+					<a name=".byClass"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{array}</span>
+					<span class="light">SimpleUtil.</span><b>byClass</b>(class, parent)
+					
+					</div>
+					<div class="description">
+						Get an array of elements by class name.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>class</b>
+									
+								</dt>
+								<dd>Class name(s), space separated.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{object}</span> <b>parent</b>
+									<i>Optional, Default: document</i>
+								</dt>
+								<dd>Optional DOM Node to start from.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{array}</span> Array of elements.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name=".byId"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
@@ -941,7 +1017,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						Get a DOM Node by name.
+						Get an element by name.
 						
 						
 					</div>
@@ -968,6 +1044,55 @@ ul.inheritsList
 							<dt class="heading">Returns:</dt>
 							
 								<dd><span class="light fixedFont">{object}</span> DOM Node or empty object.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".bySelector"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{array}</span>
+					<span class="light">SimpleUtil.</span><b>bySelector</b>(selector, parent)
+					
+					</div>
+					<div class="description">
+						Get an array of elements by class name.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>selector</b>
+									
+								</dt>
+								<dd>Selector(s), comma separated.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{object}</span> <b>parent</b>
+									<i>Optional, Default: document</i>
+								</dt>
+								<dd>Optional DOM Node to start from.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{array}</span> Array of elements.</dd>
 							
 							</dl>
 						
@@ -1033,7 +1158,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						Cancel for animation frame
+						Cancel animation frame (cancelAnimationFrame).
 						
 						
 					</div>
@@ -1155,7 +1280,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						Create a new DOM Node.
+						Create a new element.
 						
 						
 					</div>
@@ -1213,7 +1338,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>delClass</b>(el, cl)
+					<span class="light">SimpleUtil.</span><b>delClass</b>(el, class)
 					
 					</div>
 					<div class="description">
@@ -1235,7 +1360,7 @@ ul.inheritsList
 								<dd>DOM Node to remove a class from.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>cl</b>
+									<span class="light fixedFont">{string}</span> <b>class</b>
 									
 								</dt>
 								<dd>The class to remove.</dd>
@@ -1347,6 +1472,38 @@ ul.inheritsList
 
 					<hr />
 				
+					<a name=".frag"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{object}</span>
+					<span class="light">SimpleUtil.</span><b>frag</b>()
+					
+					</div>
+					<div class="description">
+						Create a document fragment.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{object}</span> Document fragment.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name=".get"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
@@ -1373,10 +1530,10 @@ ul.inheritsList
 								<dd>Object to get a value from.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>path</b>
+									<span class="light fixedFont">{string|array}</span> <b>path</b>
 									
 								</dt>
-								<dd>Property "path", e.g. "foo.bar.baz"</dd>
+								<dd>Property path, e.g. "foo.bar.baz".</dd>
 							
 								<dt>
 									<span class="light fixedFont">{mixed}</span> <b>def</b>
@@ -1585,7 +1742,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{boolean}</span>
-					<span class="light">SimpleUtil.</span><b>hasClass</b>(el, cl)
+					<span class="light">SimpleUtil.</span><b>hasClass</b>(el, class)
 					
 					</div>
 					<div class="description">
@@ -1607,7 +1764,7 @@ ul.inheritsList
 								<dd>DOM Node to check.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>cl</b>
+									<span class="light fixedFont">{string}</span> <b>class</b>
 									
 								</dt>
 								<dd>Class name to check for.</dd>
@@ -2085,7 +2242,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						Listen for animation frame.
+						Listen for animation frame (requestAnimationFrame).
 						
 						
 					</div>
@@ -2121,7 +2278,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						Get the parentNode for a given DOM Node.
+						Get the parentNode for a given element.
 						
 						
 					</div>
@@ -2268,7 +2425,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						Remove a DOM Node from the DOM.
+						Remove an element from the DOM.
 						
 						
 					</div>
@@ -2471,10 +2628,10 @@ ul.inheritsList
 								<dd>Object to set a value on.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>path</b>
+									<span class="light fixedFont">{string|array}</span> <b>path</b>
 									
 								</dt>
-								<dd>Property "path", e.g. "foo.bar.baz"</dd>
+								<dd>Property path, e.g. "foo.bar.baz"</dd>
 							
 								<dt>
 									<span class="light fixedFont">{mixed}</span> <b>val</b>
@@ -2566,7 +2723,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">SimpleUtil.</span><b>setClass</b>(el, cl)
+					<span class="light">SimpleUtil.</span><b>setClass</b>(el, class)
 					
 					</div>
 					<div class="description">
@@ -2588,7 +2745,7 @@ ul.inheritsList
 								<dd>DOM Node to set the class on.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string}</span> <b>cl</b>
+									<span class="light fixedFont">{string}</span> <b>class</b>
 									
 								</dt>
 								<dd>The class to set.</dd>
@@ -2761,7 +2918,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Thu Oct 24 2013 22:03:05 GMT-0700 (PDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Nov 19 2013 22:27:55 GMT-0800 (PST)
 		</div>
 	</body>
 </html>
