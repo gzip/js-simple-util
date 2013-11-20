@@ -7,7 +7,12 @@
 <script src="lib/chai.js"></script>
 <script src="lib/mocha.js"></script>
 <script src="lib/xhr.js"></script>
-<script src="../src/util.js"></script>
+<script>
+// decide which build to load
+var isNode = location.search.indexOf('node=1') !== -1,
+    src = isNode ? '../build/util.node.js' : '../src/util.js';
+document.write('<script src="' + src + '"><\/script>');
+</script>
 <body>
 <div id="mocha"></div>
 <script>
@@ -39,37 +44,6 @@ describe('SimpleUtil', function(){
     describe('args()', function(){
         it('should return an array for arguments', function(){
             assert.isTrue(util.isArray(util.args(arguments)));
-        });
-    });
-
-    describe('byClass()', function(){
-        it('should return an array of elements', function(){
-            var el = util.create('b', {className: 'bold', parentNode: document.body}),
-                result = util.byClass('bold'),
-                none = util.byClass('foo');
-            assert.isTrue(util.isArray(result));
-            assert.isTrue(util.isArray(none));
-            eq(1, result.length);
-            eq(0, none.length);
-            // clean up
-            util.remove(el);
-        });
-    });
-
-    describe('bySelector()', function(){
-        it('should return an array of elements', function(){
-            var parent = util.create('b', {className: 'bold', parentNode: document.body}),
-                el = util.create('i', {className: 'italic', parentNode: parent}),
-                result = util.bySelector('.bold .italic'),
-                none = util.bySelector('.bold .foo'),
-                invalid = util.bySelector('-invalid#$$.selector');
-            assert.isTrue(util.isArray(result));
-            assert.isTrue(util.isArray(none));
-            assert.isTrue(util.isArray(invalid));
-            eq(1, result.length);
-            eq(0, none.length);
-            // clean up
-            util.remove(parent);
         });
     });
 
@@ -212,142 +186,177 @@ describe('SimpleUtil', function(){
         });
     });
 
-    describe('getStyle()', function(){
-        var style = util.getStyle;
-        it('should return properties', function(){
-            var obj = {style: {border: '1px'}};
-            eq('1px', style(obj, 'border'));
+    // don't run the following tests for node
+    if (!isNode) {
+        describe('byClass()', function(){
+            it('should return an array of elements', function(){
+                var el = util.create('b', {className: 'bold', parentNode: document.body}),
+                    result = util.byClass('bold'),
+                    none = util.byClass('foo');
+                assert.isTrue(util.isArray(result));
+                assert.isTrue(util.isArray(none));
+                eq(1, result.length);
+                eq(0, none.length);
+                // clean up
+                util.remove(el);
+            });
         });
-        it('should support defaults', function(){
-            var obj = {style: {}};
-            eq('2px', style(obj, 'border', '2px'));
-        });
-        it('should be error tolerant', function(){
-            eq('2px', style(null, 'border', '2px'));
-            eq('2px', style({}, null, '2px'));
-        });
-    });
 
-    describe('setStyle()', function(){
-        var style = util.setStyle;
-        it('should set properties', function(){
-            var obj = {style: {}};
-            style(obj, 'foo', 'foo');
-            eq('foo', obj.style.foo);
+        describe('bySelector()', function(){
+            it('should return an array of elements', function(){
+                var parent = util.create('b', {className: 'bold', parentNode: document.body}),
+                    el = util.create('i', {className: 'italic', parentNode: parent}),
+                    result = util.bySelector('.bold .italic'),
+                    none = util.bySelector('.bold .foo'),
+                    invalid = util.bySelector('-invalid#$$.selector');
+                assert.isTrue(util.isArray(result));
+                assert.isTrue(util.isArray(none));
+                assert.isTrue(util.isArray(invalid));
+                eq(1, result.length);
+                eq(0, none.length);
+                // clean up
+                util.remove(parent);
+            });
         });
-        it('should resolve properties', function(){
-            var obj = {style: {MozTransform: ''}};
-            style(obj, 'transform', 'tr', true);
-            eq('tr', obj.style.MozTransform);
-        });
-        it('should handle default units', function(){
-            var obj = {style: {}};
-            style(obj, 'border', 0);
-            eq('0px', obj.style.border);
-            style(obj, 'zIndex', 0);
-            eq('0', obj.style.zIndex);
-        });
-        it('should be error tolerant', function(){
-            style();
-            style({style: {}});
-        });
-    });
 
-    describe('setStyles()', function(){
-        var style = util.setStyles;
-        it('should set properties', function(){
-            var obj = {style: {}};
-            style(obj, {foo: 'foo', bar: 'bar'});
-            eq('foo', obj.style.foo);
-            eq('bar', obj.style.bar);
+        describe('getStyle()', function(){
+            var style = util.getStyle;
+            it('should return properties', function(){
+                var obj = {style: {border: '1px'}};
+                eq('1px', style(obj, 'border'));
+            });
+            it('should support defaults', function(){
+                var obj = {style: {}};
+                eq('2px', style(obj, 'border', '2px'));
+            });
+            it('should be error tolerant', function(){
+                eq('2px', style(null, 'border', '2px'));
+                eq('2px', style({}, null, '2px'));
+            });
         });
-        it('should be error tolerant', function(){
-            style(null, {});
-            style({});
-            style({}, {});
-        });
-    });
 
-    describe('getVendorPrefix()', function(){
-        var prefix = util.getVendorPrefix,
-            reset = util.resetPrefix;
-        it('should resolve prefix', function(){
-            reset();
-            eq('Moz', prefix());
+        describe('setStyle()', function(){
+            var style = util.setStyle;
+            it('should set properties', function(){
+                var obj = {style: {}};
+                style(obj, 'foo', 'foo');
+                eq('foo', obj.style.foo);
+            });
+            it('should resolve properties', function(){
+                var obj = {style: {MozTransform: ''}};
+                style(obj, 'transform', 'tr', true);
+                eq('tr', obj.style.MozTransform);
+            });
+            it('should handle default units', function(){
+                var obj = {style: {}};
+                style(obj, 'border', 0);
+                eq('0px', obj.style.border);
+                style(obj, 'zIndex', 0);
+                eq('0', obj.style.zIndex);
+            });
+            it('should be error tolerant', function(){
+                style();
+                style({style: {}});
+            });
         });
-        it('should resolve css prefix', function(){
-            eq('-moz-', prefix(null, true));
-        });
-    });
 
-    describe('resolvePrefix()', function(){
-        var prefix = util.resolvePrefix;
-        it('should resolve prefix', function(){
-            eq('MozTransform', prefix('transform'));
-            eq('border', prefix('border'));
+        describe('setStyles()', function(){
+            var style = util.setStyles;
+            it('should set properties', function(){
+                var obj = {style: {}};
+                style(obj, {foo: 'foo', bar: 'bar'});
+                eq('foo', obj.style.foo);
+                eq('bar', obj.style.bar);
+            });
+            it('should be error tolerant', function(){
+                style(null, {});
+                style({});
+                style({}, {});
+            });
         });
-        it('should resolve exceptions', function(){
-            util.resetPrefix('Webkit');
-            var obj = {webkitTransitionEnd: ''};
-            eq('webkitTransitionEnd', prefix('transitionend', obj));
-        });
-    });
 
-    describe('request()', function(){
-        var request = util.request;
-        before(function(){
-            mockXhr.setup();
+        describe('getVendorPrefix()', function(){
+            var prefix = util.getVendorPrefix,
+                reset = util.resetPrefix;
+            it('should resolve prefix', function(){
+                reset();
+                eq('Moz', prefix());
+            });
+            it('should resolve css prefix', function(){
+                eq('-moz-', prefix(null, true));
+            });
         });
-        function test(fn, done) {
-            try {
-                fn();
-                done();
-            } catch(e) {
-                done(e);
+
+        describe('resolvePrefix()', function(){
+            var prefix = util.resolvePrefix;
+            it('should resolve prefix', function(){
+                eq('MozTransform', prefix('transform'));
+                eq('border', prefix('border'));
+            });
+            it('should resolve exceptions', function(){
+                util.resetPrefix('Webkit');
+                var obj = {webkitTransitionEnd: ''};
+                eq('webkitTransitionEnd', prefix('transitionend', obj));
+                util.resetPrefix();
+            });
+        });
+
+        describe('request()', function(){
+            var request = util.request;
+            before(function(){
+                mockXhr.setup();
+            });
+            function test(fn, done) {
+                try {
+                    fn();
+                    done();
+                } catch(e) {
+                    done(e);
+                }
             }
-        }
-        it('should execute callback on success', function(done){
-            request('foo', {callback: function(err, resp, req){
-                test(function(){
-                    eq(null, err);
-                    eq('bar', resp);
-                }, done);
-            }, props: {responseText: 'bar'}});
+            it('should execute callback on success', function(done){
+                request('foo', {callback: function(err, resp, req){
+                    test(function(){
+                        eq(null, err);
+                        eq('bar', resp);
+                    }, done);
+                }, props: {responseText: 'bar'}});
+            });
+            it('should execute callback on error', function(done){
+                request('foo', {callback: function(err, resp, req){
+                    test(function(){
+                        eq(true, err !== null);
+                    }, done);
+                }, props: {status: 500}});
+            });
+            it('should send headers', function(done){
+                request('foo', {callback: function(err, resp, req){
+                    test(function(){
+                        eq('foo', req.headers.Foo);
+                    }, done);
+                }, headers: {Foo: 'foo'}});
+            });
+            it('should support json', function(done){
+                request('foo', {callback: function(err, resp, req){
+                    test(function(){
+                        eq('application/json', req.headers['Content-Type']);
+                        eq('{"foo":"FOO"}', req.data);
+                        eq('BAR', resp.bar);
+                    }, done);
+                }, json: {foo: 'FOO'}, props: {responseText: '{"bar":"BAR"}'}});
+            });
+            it('should parse headers', function(done){
+                request('foo', {callback: function(err, resp, req){
+                    test(function(){
+                        eq('BAR', req.headers.bar);
+                    }, done);
+                }, parseHeaders: true, props: {responseHeaders: {Bar: 'BAR'}}});
+            });
+            after(function(){
+                mockXhr.teardown();
+            });
         });
-        it('should execute callback on error', function(done){
-            request('foo', {callback: function(err, resp, req){
-                test(function(){
-                    eq(true, err !== null);
-                }, done);
-            }, props: {status: 500}});
-        });
-        it('should send headers', function(done){
-            request('foo', {callback: function(err, resp, req){
-                test(function(){
-                    eq('foo', req.headers.Foo);
-                }, done);
-            }, headers: {Foo: 'foo'}});
-        });
-        it('should support json', function(done){
-            request('foo', {callback: function(err, resp, req){
-                test(function(){
-                    eq('application/json', req.headers['Content-Type']);
-                    eq('{"foo":"FOO"}', req.data);
-                    eq('BAR', resp.bar);
-                }, done);
-            }, json: {foo: 'FOO'}, props: {responseText: '{"bar":"BAR"}'}});
-        });
-        it('should parse headers', function(done){
-            request('foo', {callback: function(err, resp, req){
-                test(function(){
-                    eq('BAR', req.headers.bar);
-                }, done);
-            }, parseHeaders: true, props: {responseHeaders: {Bar: 'BAR'}}});
-        });
-        after(function(){
-            mockXhr.teardown();
-        });
-    });
+    }
 });
 
 // set up for resolve css methods

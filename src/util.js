@@ -1,35 +1,35 @@
-/* Copyright (c) 2013 Yahoo! Inc. All rights reserved.
-Copyrights licensed under the MIT License. See the accompanying LICENSE file for terms. */
+// Copyright (c) 2013 Yahoo! Inc. All rights reserved. Copyrights licensed under the MIT License.
+// See the accompanying LICENSE file for terms.
 
 // TODO SimpleStyle SimpleDom
-
-(function() {
+(function(win) {
 /**
  * A lightweight utility library when a full Javascript framework isn't necessary.
  * @namespace SimpleUtil
  */
 SimpleUtil = function()
 {
-    var doc = document,
-        docEl = doc.documentElement,
+    var isA = function(obj, type)
+        {
+            return typeof obj == type;
+        },
+        owns = 'hasOwnProperty',
+        proto = 'prototype',
+        val = 'value',
+        regexTrim = /^\s+|\s+$/g;
+// #ifndef NODE
+    var doc = win.document || {},
+        docEl = doc.documentElement || {},
         docStyle = docEl.style,
         docBody = doc.body,
         click = 'click',
         checked = 'checked',
         cln = 'className',
-        owns = 'hasOwnProperty',
         innerHtml = 'innerHTML',
-        proto = 'prototype',
-        val = 'value',
-        isA = function(obj, type)
-        {
-            return typeof obj == type;
-        },
         clRegex = function(cl)
         {
             return new RegExp('(?:^|\\s+)' + cl + '(?:\\s+|$)');
         },
-        regexTrim = /^\s+|\s+$/g,
         vendorPrefix = null,
         vendorPrefixCss = null,
         vendors = ['Webkit','Moz','O','ms'],
@@ -42,7 +42,7 @@ SimpleUtil = function()
                 'optimizeSpeed': 'webkitOptimizeContrast'
             }
         };
-    
+// #endifndef
     return {
         /**
          * Test for undefined.
@@ -281,9 +281,32 @@ SimpleUtil = function()
         {
             return function() {
                 return fn.apply(obj || win, [].concat(prefill || [], util.args(arguments), postfill || []));
-            }
+            };
         },
 
+        /**
+         * Capitalize a string of text.
+         * @param  {string} str String to capitalize.
+         * @return {string} Capitalized string.
+         */
+        capitalize : function(str)
+        {
+            if (util.isStr(str) && str) {
+                str = str.charAt(0).toUpperCase() + (str.length > 1 ? str.substr(1) : "");
+            }
+            return str;
+        },
+
+        /**
+         * Trim whitespace from the beginning and ending of a string.
+         * @param  {string} str String to trim.
+         * @return {string} Trimmed string.
+         */
+        trim : function(str)
+        {
+            return str.replace(regexTrim, '');
+        },
+// #ifndef NODE
         /**
          * Get a CSS property from a DOM Node.
          * @param  {object} obj DOM Node to get a CSS property from.
@@ -388,36 +411,13 @@ SimpleUtil = function()
                 if (exception) {
                     prop = exception;
                 } else {
-                    prefixed = (lower ? prefix.toLowerCase() : prefix) + util.capitalize(prop)
+                    prefixed = (lower ? prefix.toLowerCase() : prefix) + util.capitalize(prop);
                 }
                 
                 prop = prefixed && prefixed in obj ? prefixed : prop;
             }
             
             return prop;
-        },
-
-        /**
-         * Capitalize a string of text.
-         * @param  {string} str String to capitalize.
-         * @return {string} Capitalized string.
-         */
-        capitalize : function(str)
-        {
-            if (util.isStr(str) && str) {
-                str = str.charAt(0).toUpperCase() + (str.length > 1 ? str.substr(1) : "");
-            }
-            return str;
-        },
-
-        /**
-         * Trim whitespace from the beginning and ending of a string.
-         * @param  {string} str String to trim.
-         * @return {string} Trimmed string.
-         */
-        trim : function(str)
-        {
-            return str.replace(regexTrim, '');
         },
 
         /**
@@ -508,10 +508,10 @@ SimpleUtil = function()
          * @param  {object} [parent=document] Optional DOM Node to start from.
          * @return {array} Array of elements.
          */
-        byClass : function(cl, parent)
+        byClass : function(cln, parent)
         {
             var els = [],
-                collection = (parent || doc).getElementsByClassName(cl) || [],
+                collection = (parent || doc).getElementsByClassName(cln) || [],
                 cl = collection.length,
                 c = 0;
 
@@ -862,16 +862,14 @@ SimpleUtil = function()
         cancelFrame : function ()
         {
         }
-    }
-}();
-var win = window,
-    util = SimpleUtil,
-    wrap = function(name)
-    {
-        return function(f){ return win[util.resolvePrefix(name, win, true)](f); };
+// #endifndef
     };
+}();
+var util = SimpleUtil;
+// #ifdef NODE
+if (typeof module !== 'undefined') {
+    module.exports = util;
+}
+// #endifdef
+}(this));
 
-util.onFrame = wrap('requestAnimationFrame');
-util.cancelFrame = wrap('cancelAnimationFrame');
-util.resetPrefix();
-})();
