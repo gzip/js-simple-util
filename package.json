@@ -10,7 +10,8 @@
   "main": "build/util.node.js",
   "scripts": {
     "test": "cd tests; phantomjs runner.js",
-    "build": "node build"
+    "build": "node build",
+    "docs": "jsdoc src/ -d=docs/api"
   },
   "engines": {
     "node": "~0.6.11"
