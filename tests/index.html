@@ -26,7 +26,11 @@ describe('SimpleUtil', function(){
         assert = chai.assert,
         // match phpunit arg order
         eq = function(expected, actual, msg) {
-            assert.equal(actual, expected, msg);
+            assert.equal(
+                util.isStr(actual) ? actual : JSON.stringify(actual),
+                util.isStr(expected) ? expected : JSON.stringify(expected),
+                msg
+            );
         },
         und = function(val, msg) {
             assert.isUndefined(val, msg);
@@ -55,7 +59,7 @@ describe('SimpleUtil', function(){
         it('should work with array path', function(){
             eq('baz', get({foo: {bar: {baz: 'baz'}}}, ['foo', 'bar', 'baz']));
         });
-        it('should ork on literals', function(){
+        it('should work on literals', function(){
             eq(1, get([1], 'length'));
         });
         it('should handle non-objects gracefully', function(){
@@ -91,6 +95,22 @@ describe('SimpleUtil', function(){
         it('should return original object on error', function(){
             eq(false, set(false, 'foo'));
             eq('foo', set('foo', false));
+        });
+    });
+
+    describe('remix()', function(){
+        var remix = util.remix;
+        it('should return false by default', function(){
+            eq(false, remix());
+        });
+        it('should remix', function(){
+            var obj = {name: 'foo', foo: 'foo', bar: 'bar', struct: {quuz: 'quuz'}};
+            eq({name: 'foo', b: 'bar', q: 'quuz', g: {z: 'default'}},
+                remix(obj, {name: '', bar: 'b', 'struct.quuz': 'q', f: {path: 'g.z', def: 'default'}})
+            );
+            eq({struct: {quuz: 'quuz'}},
+                remix(obj, {'struct.quuz': null})
+            );
         });
     });
 

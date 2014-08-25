@@ -189,6 +189,30 @@ SimpleUtil = function()
         },
 
         /**
+         * Pick keys from an object to generate a new object.
+         * @param  {object} obj Object to get values from.
+         * @param  {object} keys Object containing the desired keys.
+         * @return {mixed} New object or false on error.
+         */
+        remix : function(obj, keys)
+        {
+            if (!util.isObj(obj) || !util.isObj(keys)) {
+                return false;
+            }
+            
+            var result = {};
+            
+            util.each(keys, function eachKey(srcpath, tgtpath) {
+                util.set(result,
+                    (srcpath && srcpath.path) || srcpath || tgtpath,
+                    util.get(obj, tgtpath, srcpath && srcpath.def)
+                );
+            });
+            
+            return result;
+        },
+
+        /**
          * Merge properties from one object to another.
          * @param  {object} mergeTo Object to merge to.
          * @param  {object} mergeFrom Object to merge from.
