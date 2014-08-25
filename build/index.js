@@ -7,18 +7,25 @@ var fs = require('fs'),
     build = root + 'build/',
     buildv = build + ver + '/',
     out = buildv + 'util.js',
-    outmin = buildv + 'util.min.js',
-    outnode = build + 'util.node.js',
+    outmin = buildv + 'util-min.js',
+    outcoremin = buildv + 'util-core-min.js',
+    outnode = build + 'util-node.js',
     srcin = root + 'src/util.js',
     src = fs.readFileSync(srcin, 'utf-8');
 
-try {
-    var builds = {};
+function min(src, opts) {
+    return uglifyjs.minify(src, opts).code
+}
 
-    // assign path to content
-    builds[out] = src;
-    builds[outmin] = uglifyjs.minify(srcin, {output: {comments: /Copyright/}}).code;
-    builds[outnode] = strip({path: srcin, preprocess: {NODE: true}});
+try {
+    var minOpts = {output: {comments: /Copyright/}},
+        stripOpts = {path: srcin, preprocess: {NODE: true}},
+        builds = [
+            {path: out, src: src},
+            {path: outmin, src: min(srcin, minOpts)},
+            {path: outnode, src: strip(stripOpts)},
+            {path: outcoremin, src: function () { return min(outnode, minOpts) + '\n'; }}
+        ];
 
     // make build dir
     if (!fs.existsSync(buildv)) {
@@ -27,10 +34,11 @@ try {
     }
 
     // write each build file
-    for (var b in builds) {
-        console.log('Writing ' + b + '...');
-        fs.writeFileSync(b, builds[b], 'utf-8');
-    }
+    builds.forEach(function eachBuild(build) {
+        var src = build.src;
+        console.log('Writing ' + build.path + '...');
+        fs.writeFileSync(build.path, typeof src === 'function' ? src() : src, 'utf-8');
+    });
 } catch (e) {
     console.log(e.stack);
     process.exit(1);
