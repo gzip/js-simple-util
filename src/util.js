@@ -204,7 +204,7 @@ SimpleUtil = function()
          * Pick keys from an object to generate a new object.
          * @param  {object} obj Object to get values from.
          * @param  {object} keys Object containing the desired keys.
-         * @return {mixed} New object or false on error.
+         * @return {object|boolean} New object or false on error.
          */
         remix : function(obj, keys)
         {
@@ -265,7 +265,7 @@ SimpleUtil = function()
  
         /**
          * Apply a function to each value in an array or object.
-         * @param  {object,array}  obj Collection to apply to.
+         * @param  {object|array} obj Object or array to apply to.
          * @param  {function} fn Function to apply.
          */
         each : function(obj, fn)
