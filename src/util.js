@@ -47,7 +47,19 @@ SimpleUtil = function()
     function resolvePath(path) {
         return util.isArray(path) && path || (util.isStr(path) ? path.split('.') : [])
     }
-    
+
+    function toArray(collection)
+    {
+        var els = [],
+            c, cl;
+
+        for (c = 0, cl = collection.length; c<cl; c++) {
+            els.push(collection.item(c));
+        }
+
+        return els;
+    }
+
     return {
         /**
          * Test for undefined.
@@ -259,15 +271,15 @@ SimpleUtil = function()
         each : function(obj, fn)
         {
             if (util.isFunc(fn)) {
-                if (util.isObj(obj)) {
+                if (util.isArray(obj)) {
+                    for (var o = 0, ol = obj.length; o<ol; o++) {
+                        fn(obj[o], o, obj);
+                    }
+                } else if (util.isObj(obj)) {
                     for (var o in obj) {
                         if (obj[owns](o)) {
                             fn(obj[o], o, obj);
                         }
-                    }
-                } else if (util.isArray(obj)) {
-                    for (var o = 0, ol = obj.length; o<ol; o++) {
-                        fn(obj[o], o, obj);
                     }
                 }
             }
@@ -513,12 +525,12 @@ SimpleUtil = function()
          * Get an element by tag name.
          * @param  {string} tag Tag name.
          * @param  {object} [parent=document] Optional DOM Node to start from.
-         * @return {object} DOM Node or empty object.
+         * @return {array} An array which will be empty if nothing is found
          */
         byTag : function(tag, parent)
         {
-            var el = (parent || doc).getElementsByTagName(tag);
-            return el ? el[0] : {};
+            var collection = (parent || doc).getElementsByTagName(tag);
+            return toArray(collection);
         },
 
         /**
@@ -552,29 +564,22 @@ SimpleUtil = function()
         },
 
         /**
-         * Get an array of elements by class name.
+         * Get an array of elements by CSS selector.
          * @param  {string} selector Selector(s), comma separated.
          * @param  {object} [parent=document] Optional DOM Node to start from.
          * @return {array} Array of elements.
          */
         bySelector : function(s, parent)
         {
-            var els = [],
-                list,
-                ll,
-                l;
+            var collection;
 
             try {
-                list = (parent || doc).querySelectorAll(s);
+                collection = (parent || doc).querySelectorAll(s);
             } catch (e) {
-                list = [];
+                collection = [];
             }
 
-            for (l = 0, ll = list.length; l<ll; l++) {
-                els.push(list.item(l));
-            }
-
-            return els;
+            return toArray(collection);
         },
 
         /**
@@ -673,14 +678,16 @@ SimpleUtil = function()
          */
         addScript : function (src, opts)
         {
-            var script = util.create('script', {src:src});
-            
+            var script = util.create('script', {src:src}),
+                head = util.byTag('head').pop();
+
             opts = opts || {};
             util.listen(script, 'load', opts.load || function() { util.remove(this); });
             if (opts.error) {
                 util.listen(script, 'error', opts.error);
             }
-            util.byTag('head').appendChild(script);
+
+            (head || doc).appendChild(script);
         },
 
         /**

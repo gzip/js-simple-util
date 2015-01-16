@@ -51,6 +51,19 @@ describe('SimpleUtil', function(){
         });
     });
 
+    describe('byTag()', function(){
+        it('should return an empty array if nothing is found', function(){
+            eq(util.byTag('foo').length, 0);
+        });
+        it('should return an array if elements are found', function(){
+            var i = util.create('i', {parentNode: document.body}),
+                i2 = util.create('i', {parentNode: document.body}),
+                els = util.byTag('i');
+            eq(els.pop().tagName, i2.tagName)
+            eq(els.length, 1);
+        });
+    });
+
     describe('get()', function(){
         var get = util.get;
         it('should work on root', function(){
