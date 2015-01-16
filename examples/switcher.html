@@ -36,87 +36,87 @@ a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
-	<div id="main">
-		<div id="switch">
-			<div class="bd">
-				<div class="cards" id="cards">
-					<div class="card info">
-						<div class="col">
-							<h3>Simple Util</h3>
-							<h2><a href="info.html">A Simple Solution for Your Site.</a></h2>
-							<p>Simple Util is a lightweight set of utilities that are commonly used in development.</p>
-							<a href="info.html" class="more">Read More &#187;</a>
-						</div>
-					</div>
-					<div class="card start">
-						<div class="col">
-							<h3>Simple Util</h3>
-							<h2><a href="start.html">A Simple System. A Better Solution.</a></h2>
-							<p>Easily mastered and modified.</p>
-							<a href="start.html" class="more">Read More &#187;</a>
-						</div>
-					</div>
-					<div class="card faq">
-						<div class="col">
-							<h3>Simple Util</h3>
-							<h2><a href="faq.html">How long does development take?</a></h2>
-							<p>A bit faster and cleaner than plain vanilla.</p>
-							<a href="faq.html" class="more">Read More &#187;</a>
-						</div>
-					</div>
-					<div class="card team">
-						<div class="col">
-							<h3>Simple Util</h3>
-							<h2><a href="team.html">The Right Team to Keep You Smiling.</a></h2>
-							<p>A small team with a small codebase is a happy team.</p>
-							<a href="team.html" class="more">Read More &#187;</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div id="switch-foot" class="ft">
-				<div class="ctrls"></div>
-			</div>
-		</div>
-	</div>
+    <div id="main">
+        <div id="switch">
+            <div class="bd">
+                <div class="cards" id="cards">
+                    <div class="card info">
+                        <div class="col">
+                            <h3>Simple Util</h3>
+                            <h2><a href="info.html">A Simple Solution for Your Site.</a></h2>
+                            <p>Simple Util is a lightweight set of utilities that are commonly used in development.</p>
+                            <a href="info.html" class="more">Read More &#187;</a>
+                        </div>
+                    </div>
+                    <div class="card start">
+                        <div class="col">
+                            <h3>Simple Util</h3>
+                            <h2><a href="start.html">A Simple System. A Better Solution.</a></h2>
+                            <p>Easily mastered and modified.</p>
+                            <a href="start.html" class="more">Read More &#187;</a>
+                        </div>
+                    </div>
+                    <div class="card faq">
+                        <div class="col">
+                            <h3>Simple Util</h3>
+                            <h2><a href="faq.html">How long does development take?</a></h2>
+                            <p>A bit faster and cleaner than plain vanilla.</p>
+                            <a href="faq.html" class="more">Read More &#187;</a>
+                        </div>
+                    </div>
+                    <div class="card team">
+                        <div class="col">
+                            <h3>Simple Util</h3>
+                            <h2><a href="team.html">The Right Team to Keep You Smiling.</a></h2>
+                            <p>A small team with a small codebase is a happy team.</p>
+                            <a href="team.html" class="more">Read More &#187;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="switch-foot" class="ft">
+                <div class="ctrls"></div>
+            </div>
+        </div>
+    </div>
 
 <script src="../src/util.js"></script>
 <script>
 (function(){
 
-	var util = SimpleUtil,
-	    switcher = util.byId('switch'),
-	    wrap = util.byId('cards'),
-	    cards = util.byClass('card', wrap),
-	    foot = util.bySelector('#switch-foot .ctrls').pop(),
-	    state = {
-		    zindex: 0,
-		    totalCards: cards.length,
-		    currentCard: 0,
-		    play: true,
-		    pauseClicked: false,
-		    cards: []
-	    };
+    var util = SimpleUtil,
+        switcher = util.byId('switch'),
+        wrap = util.byId('cards'),
+        cards = util.byClass('card', wrap),
+        foot = util.bySelector('#switch-foot .ctrls').pop(),
+        state = {
+            zindex: 0,
+            totalCards: cards.length,
+            currentCard: 0,
+            play: true,
+            pauseClicked: false,
+            cards: []
+        };
 
-	function toggle(p)
-	{
-		if(util.isUnd(p)){
-			state.play = !state.play;
-			state.pauseClicked = !state.pauseClicked;
-		} else {
-			state.play = p;
-		}
-		util.setClass(switcher, state.play ? 'play' : 'pause');
-	};
+    function toggle(p)
+    {
+        if(util.isUnd(p)){
+            state.play = !state.play;
+            state.pauseClicked = !state.pauseClicked;
+        } else {
+            state.play = p;
+        }
+        util.setClass(switcher, state.play ? 'play' : 'pause');
+    };
 
-	function change(index, force)
-	{
-		if(state.play || force){
-			state.currentCard = index;
-		    util.setStyle(state.cards[index].el, 'zIndex', ++state.zindex);
-		    util.setClass(foot, 'ctrls btn' + (index + 1));
-		}
-	};
+    function change(index, force)
+    {
+        if(state.play || force){
+            state.currentCard = index;
+            util.setStyle(state.cards[index].el, 'zIndex', ++state.zindex);
+            util.setClass(foot, 'ctrls btn' + (index + 1));
+        }
+    };
 
     util.listen(wrap, 'mouseover', function over() { toggle(false); });
     util.listen(wrap, 'mouseout', function out() { if (!state.pauseClicked) { toggle(true); }});
@@ -133,8 +133,8 @@ a:hover { text-decoration: underline; }
         }, {
             click: function(e){
                 util.processEvent(e, true);
-				change(index, true);
-			}
+                change(index, true);
+            }
         });
         state.cards.push({el:card, btn: nav});
     });
@@ -142,13 +142,13 @@ a:hover { text-decoration: underline; }
     // add play/pause button
     util.create('button', {className: 'btn pl', parentNode: foot}, {click: function play() { toggle(); }});
 
-	setInterval(function rotate(){
-		if(state.play){
-			change((state.currentCard + 1 < state.totalCards ? ++state.currentCard : 0));
-		}
-	}, 5550);
+    setInterval(function rotate(){
+        if(state.play){
+            change((state.currentCard + 1 < state.totalCards ? ++state.currentCard : 0));
+        }
+    }, 5550);
 
-	change(0);
+    change(0);
 })();
 </script>
 
