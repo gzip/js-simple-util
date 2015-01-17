@@ -297,6 +297,7 @@ describe('SimpleUtil', function(){
             });
             it('should resolve properties', function(){
                 var obj = {style: {MozTransform: ''}};
+                util.resetPrefix();
                 style(obj, 'transform', 'tr', true);
                 eq('tr', obj.style.MozTransform);
             });
