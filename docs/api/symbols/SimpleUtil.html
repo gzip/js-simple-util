@@ -326,7 +326,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.bySelector">bySelector</a></b>(selector, parent)
 								</div>
-								<div class="description">Get an array of elements by class name.</div>
+								<div class="description">Get an array of elements by CSS selector.</div>
 							</td>
 						</tr>
 					
@@ -405,7 +405,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.frag">frag</a></b>()
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.frag">frag</a></b>(content)
 								</div>
 								<div class="description">Create a document fragment.</div>
 							</td>
@@ -606,6 +606,15 @@ ul.inheritsList
 								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.remove">remove</a></b>(el)
 								</div>
 								<div class="description">Remove an element from the DOM.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">SimpleUtil.<b><a href="../symbols/SimpleUtil.html#.render">render</a></b>(Document, Data)
+								</div>
+								<div class="description">Create a document fragment.</div>
 							</td>
 						</tr>
 					
@@ -1069,7 +1078,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						Get an array of elements by class name.
+						Get an array of elements by CSS selector.
 						
 						
 					</div>
@@ -1113,7 +1122,7 @@ ul.inheritsList
 					<a name=".byTag"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					<span class="light">{object}</span>
+					<span class="light">{array}</span>
 					<span class="light">SimpleUtil.</span><b>byTag</b>(tag, parent)
 					
 					</div>
@@ -1150,7 +1159,7 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{object}</span> DOM Node or empty object.</dd>
+								<dd><span class="light fixedFont">{array}</span> An array which will be empty if nothing is found</dd>
 							
 							</dl>
 						
@@ -1408,7 +1417,7 @@ ul.inheritsList
 									<span class="light fixedFont">{object|array}</span> <b>obj</b>
 									
 								</dt>
-								<dd>Collection to apply to.</dd>
+								<dd>Object or array to apply to.</dd>
 							
 								<dt>
 									<span class="light fixedFont">{function}</span> <b>fn</b>
@@ -1485,7 +1494,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{object}</span>
-					<span class="light">SimpleUtil.</span><b>frag</b>()
+					<span class="light">SimpleUtil.</span><b>frag</b>(content)
 					
 					</div>
 					<div class="description">
@@ -1496,6 +1505,17 @@ ul.inheritsList
 					
 					
 					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{string}</span> <b>content</b>
+									<i>Optional</i>
+								</dt>
+								<dd>Optional html to append to fragment.</dd>
+							
+							</dl>
 						
 						
 						
@@ -2429,7 +2449,7 @@ ul.inheritsList
 					<a name=".remix"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					<span class="light">{mixed}</span>
+					<span class="light">{object|boolean}</span>
 					<span class="light">SimpleUtil.</span><b>remix</b>(obj, keys)
 					
 					</div>
@@ -2466,7 +2486,7 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{mixed}</span> New object or false on error.</dd>
+								<dd><span class="light fixedFont">{object|boolean}</span> New object or false on error.</dd>
 							
 							</dl>
 						
@@ -2505,6 +2525,55 @@ ul.inheritsList
 						
 						
 						
+						
+						
+						
+
+					<hr />
+				
+					<a name=".render"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{object}</span>
+					<span class="light">SimpleUtil.</span><b>render</b>(Document, Data)
+					
+					</div>
+					<div class="description">
+						Create a document fragment.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{object}</span> <b>Document</b>
+									
+								</dt>
+								<dd>fragment to render to.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{object}</span> <b>Data</b>
+									
+								</dt>
+								<dd>to render.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{object}</span> Cloned and rendered fragment ready to append to your document.</dd>
+							
+							</dl>
 						
 						
 						
@@ -2976,7 +3045,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Sun Aug 24 2014 21:16:32 GMT-0700 (PDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Fri Jan 16 2015 19:38:48 GMT-0800 (PST)
 		</div>
 	</body>
 </html>
