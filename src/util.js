@@ -660,9 +660,9 @@ SimpleUtil = function()
         },
 
         /**
-         * Create a document fragment.
-         * @param  {object} Document fragment to render to.
-         * @param  {object} Data to render.
+         * Use a document fragment or node to render a new piece of DOM.
+         * @param  {object} frag Document fragment to render to.
+         * @param  {object} data Data to render.
          * @return {object} Cloned and rendered fragment ready to append to your document.
          */
         render : function(frag, data)
