@@ -660,6 +660,46 @@ SimpleUtil = function()
         },
 
         /**
+         * Create a document fragment.
+         * @param  {object} Document fragment to render to.
+         * @param  {object} Data to render.
+         * @return {object} Cloned and rendered fragment ready to append to your document.
+         */
+        render : function(frag, data)
+        {
+            var node = frag.cloneNode(true);
+            util.each(data, function eachData(attrs, selector) {
+                var target = util.bySelector(selector, node),
+                    num = target.length,
+                    firstTarget;
+                if (num) {
+                    if (util.isStr(attrs)) {
+                        attrs = {innerHTML: attrs};
+                    }
+
+                    if (util.isArray(attrs)) {
+                        firstTarget = target[0];
+                        util.each(attrs, function eachAttr(attr, index) {
+                            var nthTarget = target[index];
+                            if (util.isStr(attr)) {
+                                attr = {innerHTML: attr};
+                            }
+                            if (nthTarget) {
+                                util.setAttrs(nthTarget, attr);
+                            } else {
+                                attr.parentNode = firstTarget.parentNode;
+                                util.setAttrs(firstTarget.cloneNode(true), attr);
+                            }
+                        });
+                    } else {
+                        util.setAttrs(target[0], attrs);
+                    }
+                }
+            });
+            return node;
+        },
+
+        /**
          * Remove an element from the DOM.
          * @param  {object} el DOM Node
          */
@@ -920,4 +960,3 @@ if (typeof module !== 'undefined') {
 }
 // #endifdef
 }(this));
-
