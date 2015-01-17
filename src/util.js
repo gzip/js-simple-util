@@ -452,7 +452,7 @@ SimpleUtil = function()
                 if (exception) {
                     prop = exception;
                 } else {
-                    prefixed = (lower ? prefix.toLowerCase() : prefix) + util.capitalize(prop);
+                    prefixed = (lower && prefix ? prefix.toLowerCase() : prefix || '') + util.capitalize(prop);
                 }
                 
                 prop = prefixed && prefixed in obj ? prefixed : prop;
@@ -954,9 +954,16 @@ SimpleUtil = function()
     };
 }();
 var util = SimpleUtil;
+util.getVendorPrefix();
 // #ifdef NODE
 if (typeof module !== 'undefined') {
     module.exports = util;
 }
 // #endifdef
+function wrap(name)
+{
+    return function(f){ return win[util.resolvePrefix(name, win, true)](f); };
+};
+util.onFrame = wrap('requestAnimationFrame');
+util.cancelFrame = wrap('cancelAnimationFrame');
 }(this));
