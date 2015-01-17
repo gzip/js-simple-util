@@ -228,6 +228,19 @@ describe('SimpleUtil', function(){
 
     // don't run the following tests for node
     if (!isNode) {
+        describe('frag()', function(){
+            it('should return an empty fragment', function(){
+                var frag = util.frag();
+                eq('function', typeof frag.appendChild);
+            });
+            it('should return a full fragment', function(){
+                var frag = util.frag('<b>foo</b>'),
+                    ch = frag.childNodes;
+                eq(1, ch.length);
+                eq('B', ch[0].tagName);
+            });
+        });
+
         describe('byClass()', function(){
             it('should return an array of elements', function(){
                 var el = util.create('b', {className: 'bold', parentNode: document.body}),

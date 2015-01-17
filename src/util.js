@@ -640,11 +640,23 @@ SimpleUtil = function()
 
         /**
          * Create a document fragment.
+         * @param  {string} [content] Optional html to append to fragment.
          * @return {object} Document fragment.
          */
-        frag : function()
+        frag : function(content)
         {
-            return doc.createDocumentFragment();
+            var frag = doc.createDocumentFragment();
+            if (content) {
+                var d = util.create('div', {innerHTML: content}),
+                    ch = d.childNodes,
+                    cl = ch.length,
+                    c;
+
+                for (c = 0; c < cl; c++) {
+                    frag.appendChild(ch[c].cloneNode(true));
+                }
+            }
+            return frag;
         },
 
         /**
