@@ -614,10 +614,16 @@ SimpleUtil = function()
                                 el[attr] = attribute;
                             break;
                             case 'parentNode':
-                                attribute && attribute.appendChild(el);
+                                util.isDom(attribute) && attribute.appendChild(el);
                             break;
                             case 'styles':
                                 util.setStyles(el, attribute, true);
+                            break;
+                            case 'before':
+                            case 'front':
+                            case 'back':
+                            case 'after':
+                                util.adj(el, attribute, attr);
                             break;
                             default:
                                 el.setAttribute(attr, attribute);
@@ -669,6 +675,26 @@ SimpleUtil = function()
                 }
             }
             return frag;
+        },
+
+        /**
+         * Insert markup relative to a node (insertAdjacentHTML).
+         * @param  {node} DOM node to insert relative to.
+         * @param  {string} The content to insert.
+         * @param  {where} Where to insert; one of 'before' (beforeBegin), 'front' (afterBegin),
+         *          'back' (beforeEnd), or 'after' (afterEnd).
+         */
+        adj : function(node, content, where)
+        {
+            if (util.isDom(node) && util.isStr(content)) {
+                switch (where) {
+                    case 'before':  where = 'beforeBegin'; break;
+                    case 'front':   where = 'afterBegin'; break;
+                    case 'back':    where = 'beforeEnd'; break;
+                    case 'after':   where = 'afterEnd'; break;
+                }
+                node.insertAdjacentHTML(where, content);
+            }
         },
 
         /**

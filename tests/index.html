@@ -228,6 +228,24 @@ describe('SimpleUtil', function(){
 
     // don't run the following tests for node
     if (!isNode) {
+        describe('adj()', function(){
+            it('should support all locations', function(){
+                var div = util.create('div'),
+                    node = util.create('span', {innerHTML: 'foo', parentNode: div});
+
+                util.adj(node, 'B4', 'before');
+                util.adj(node, 'F', 'front');
+                util.adj(node, 'B', 'back');
+                util.adj(node, 'A', 'after');
+                util.adj(node, 'B4', 'beforeBegin');
+                util.adj(node, 'F', 'afterBegin');
+                util.adj(node, 'B', 'beforeEnd');
+                util.adj(node, 'A', 'afterEnd');
+
+                eq('B4B4<span>FFfooBB</span>AA', div.innerHTML);
+            });
+        });
+
         describe('frag()', function(){
             it('should return an empty fragment by default', function(){
                 var frag = util.frag();
