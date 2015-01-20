@@ -142,6 +142,16 @@ SimpleUtil = function()
         },
 
         /**
+         * Test for a dom object.
+         * @param  {mixed}  obj Object to test.
+         * @return {Boolean}
+         */
+        isDom : function(obj)
+        {
+            return util.isObj(obj) && obj.nodeType === 1;
+        },
+
+        /**
          * Convert `arguments` to an array.
          * @param  {object} args Arguments object.
          * @return {array} Arguments
@@ -640,13 +650,15 @@ SimpleUtil = function()
 
         /**
          * Create a document fragment.
-         * @param  {string} [content] Optional html to append to fragment.
+         * @param  {string|node} [content] Optional html or DOM node to append to the fragment.
          * @return {object} Document fragment.
          */
         frag : function(content)
         {
             var frag = doc.createDocumentFragment();
-            if (content) {
+            if (util.isDom(content)) {
+                frag.appendChild(content.cloneNode(true));
+            } else if (util.isStr(content)) {
                 var d = util.create('div', {innerHTML: content}),
                     ch = d.childNodes,
                     cl = ch.length,
