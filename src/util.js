@@ -9,12 +9,10 @@
  */
 SimpleUtil = function()
 {
-    var isA = function(obj, type)
-        {
-            return typeof obj == type;
-        },
-        owns = 'hasOwnProperty',
+    var clone = 'cloneNode',
+        len = 'length',
         proto = 'prototype',
+        owns = 'hasOwnProperty',
         val = 'value',
         regexTrim = /^\s+|\s+$/g;
 // #ifndef NODE
@@ -43,9 +41,49 @@ SimpleUtil = function()
             }
         };
 // #endifndef
-        
+    function isA(obj, type) {
+        return typeof obj == type;
+    }
+
+    function isUnd(obj) {
+        return isA(obj, 'undefined');
+    }
+
+    function isNull(obj) {
+        return obj === null;
+    }
+
+    function isObj(obj) {
+        return isA(obj, 'object') && obj !== null;
+    }
+
+    function isStr(obj) {
+        return isA(obj, 'string');
+    }
+
+    function isFunc(obj) {
+        return isA(obj, 'function');
+    }
+
+    function isNum(obj) {
+        return isA(obj, 'number');
+    }
+
+    function isBool(obj) {
+        return isA(obj, 'boolean');
+    }
+
+    function isArray(ar) {
+        return Object[proto].toString.call(ar) === '[object Array]';
+    }
+
+    function isDom(obj) {
+        var type = isObj(obj) && obj.nodeType;
+        return type === 1 || type === 11;
+    }
+
     function resolvePath(path) {
-        return util.isArray(path) && path || (util.isStr(path) ? path.split('.') : [])
+        return isArray(path) && path || (isStr(path) ? path.split('.') : [])
     }
 
     function toArray(collection)
@@ -53,7 +91,7 @@ SimpleUtil = function()
         var els = [],
             c, cl;
 
-        for (c = 0, cl = collection.length; c<cl; c++) {
+        for (c = 0, cl = collection[len]; c<cl; c++) {
             els.push(collection.item(c));
         }
 
@@ -66,91 +104,63 @@ SimpleUtil = function()
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isUnd : function(obj)
-        {
-            return isA(obj, 'undefined');
-        },
+        isUnd: isUnd,
  
         /**
          * Test for null.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isNull : function(obj)
-        {
-            return obj === null;
-        },
+        isNull: isNull,
 
         /**
          * Test for an object.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isObj : function(obj)
-        {
-            return isA(obj, 'object') && obj !== null;
-        },
+        isObj: isObj,
 
         /**
          * Test for a string.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isStr : function(obj)
-        {
-            return isA(obj, 'string');
-        },
+        isStr: isStr,
 
         /**
          * Test for a function.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isFunc : function(obj)
-        {
-            return isA(obj, 'function');
-        },
+        isFunc: isFunc,
 
         /**
          * Test for a number.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isNum : function(obj)
-        {
-            return isA(obj, 'number');
-        },
+        isNum: isNum,
 
         /**
          * Test for a boolean.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isBool : function(obj)
-        {
-            return isA(obj, 'boolean');
-        },
+        isBool: isBool,
 
         /**
          * Test for an array.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isArray : function(ar)
-        {
-            return Object[proto].toString.call(ar) === '[object Array]';
-        },
+        isArray: Array.isArray || isArray,
 
         /**
          * Test for a DOM object (HTMLElement or DocumentFragment).
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isDom : function(obj)
-        {
-            var type = util.isObj(obj) && obj.nodeType;
-            return type === 1 || type === 11;
-        },
+        isDom: isDom,
 
         /**
          * Convert `arguments` to an array.
@@ -171,9 +181,9 @@ SimpleUtil = function()
          */
         get : function(obj, path, def)
         {
-            var isObj = util.isObj(obj),
+            var valid = isObj(obj),
                 props = resolvePath(path),
-                pl = isObj ? props.length : 0,
+                pl = valid ? props[len] : 0,
                 p = 0;
             
             for (; p<pl && obj; p++)
@@ -181,7 +191,7 @@ SimpleUtil = function()
                 obj = obj[props[p]];
             }
             
-            return !isObj || !pl || util.isUnd(obj) ? def : obj;
+            return !valid || !pl || isUnd(obj) ? def : obj;
         },
 
         /**
@@ -194,16 +204,16 @@ SimpleUtil = function()
          */
         set : function(obj, path, val, conditional)
         {
-            var props = util.isObj(obj) ? resolvePath(path) : [],
+            var props = isObj(obj) ? resolvePath(path) : [],
                 prop,
-                pl = props.length,
+                pl = props[len],
                 p = 0;
             
             for (; p<pl; p++)
             {
                 prop = props[p];
                 if (!obj[owns](prop) || (p === pl-1 && !conditional)) {
-                    obj[prop] = p < pl-1 || util.isUnd(val) ? {} : val;
+                    obj[prop] = p < pl-1 || isUnd(val) ? {} : val;
                 }
                 obj = obj[prop];
             }
@@ -219,7 +229,7 @@ SimpleUtil = function()
          */
         remix : function(obj, keys)
         {
-            if (!util.isObj(obj) || !util.isObj(keys)) {
+            if (!isObj(obj) || !isObj(keys)) {
                 return false;
             }
             
@@ -244,7 +254,7 @@ SimpleUtil = function()
          */
         merge : function(mergeTo, mergeFrom, clone)
         {
-            var obj = util.isObj;
+            var obj = isObj;
             if (clone) {
                 mergeTo = util.merge({}, mergeTo);
             }
@@ -252,7 +262,7 @@ SimpleUtil = function()
             if (obj(mergeTo) && obj(mergeFrom)) {
                 for (var prop in mergeFrom) {
                     if (mergeFrom[owns](prop)) {
-                        if (obj(mergeFrom[prop]) && !util.isNull(mergeTo[prop])) {
+                        if (obj(mergeFrom[prop]) && !isNull(mergeTo[prop])) {
                             mergeTo[prop] = util.merge(mergeTo[prop], mergeFrom[prop], clone);
                         } else {
                             mergeTo[prop] = mergeFrom[prop];
@@ -281,12 +291,12 @@ SimpleUtil = function()
          */
         each : function(obj, fn)
         {
-            if (util.isFunc(fn)) {
-                if (util.isArray(obj)) {
-                    for (var o = 0, ol = obj.length; o<ol; o++) {
+            if (isFunc(fn)) {
+                if (isArray(obj)) {
+                    for (var o = 0, ol = obj[len]; o<ol; o++) {
                         fn(obj[o], o, obj);
                     }
-                } else if (util.isObj(obj)) {
+                } else if (isObj(obj)) {
                     for (var o in obj) {
                         if (obj[owns](o)) {
                             fn(obj[o], o, obj);
@@ -343,8 +353,8 @@ SimpleUtil = function()
          */
         capitalize : function(str)
         {
-            if (util.isStr(str) && str) {
-                str = str.charAt(0).toUpperCase() + (str.length > 1 ? str.substr(1) : "");
+            if (isStr(str) && str) {
+                str = str.charAt(0).toUpperCase() + (str[len] > 1 ? str.substr(1) : "");
             }
             return str;
         },
@@ -385,7 +395,7 @@ SimpleUtil = function()
                 if (resolve) {
                     style = util.resolvePrefix(style, objStyle);
                 }
-                objStyle[style] = util.isNum(val) && style !== 'zIndex' ? val + 'px' : val;
+                objStyle[style] = isNum(val) && style !== 'zIndex' ? val + 'px' : val;
             }
         },
 
@@ -397,7 +407,7 @@ SimpleUtil = function()
          */
         setStyles : function(obj, styles, resolve)
         {
-            if (util.isObj(styles)) {
+            if (isObj(styles)) {
                 for (var style in styles) {
                     util.setStyle(obj, style, styles[style], resolve);
                 }
@@ -564,7 +574,7 @@ SimpleUtil = function()
         {
             var els = [],
                 collection = (parent || doc).getElementsByClassName(cln) || [],
-                cl = collection.length,
+                cl = collection[len],
                 c = 0;
 
             for (; c<cl; c++) {
@@ -615,14 +625,14 @@ SimpleUtil = function()
                                 el[attr] = attribute;
                             break;
                             case 'parentNode':
-                                util.isDom(attribute) && attribute.appendChild(el);
+                                isDom(attribute) && attribute.appendChild(el);
                             break;
                             case 'styles':
                                 util.setStyles(el, attribute, true);
                             break;
                             case 'children':
                                 util.each(attribute, function (child) {
-                                    if (util.isDom(child)) {
+                                    if (isDom(child)) {
                                         el.appendChild(child);
                                     }
                                 });
@@ -670,16 +680,16 @@ SimpleUtil = function()
         frag : function(content)
         {
             var frag = doc.createDocumentFragment();
-            if (util.isDom(content)) {
-                frag.appendChild(content.cloneNode(true));
-            } else if (util.isStr(content)) {
+            if (isDom(content)) {
+                frag.appendChild(content[clone](true));
+            } else if (isStr(content)) {
                 var d = util.create('div', {innerHTML: content}),
                     ch = d.childNodes,
-                    cl = ch.length,
+                    cl = ch[len],
                     c;
 
                 for (c = 0; c < cl; c++) {
-                    frag.appendChild(ch[c].cloneNode(true));
+                    frag.appendChild(ch[c][clone](true));
                 }
             }
             return frag;
@@ -694,7 +704,7 @@ SimpleUtil = function()
          */
         adj : function(node, content, where)
         {
-            if (util.isDom(node) && util.isStr(content)) {
+            if (isDom(node) && isStr(content)) {
                 switch (where) {
                     case 'before':  where = 'beforeBegin'; break;
                     case 'front':   where = 'afterBegin'; break;
@@ -713,28 +723,28 @@ SimpleUtil = function()
          */
         render : function(frag, data)
         {
-            var node = frag.cloneNode(true);
+            var node = frag[clone](true);
             util.each(data, function eachData(attrs, selector) {
                 var target = util.bySelector(selector, node),
-                    num = target.length,
+                    num = target[len],
                     firstTarget;
                 if (num) {
-                    if (util.isStr(attrs)) {
+                    if (isStr(attrs)) {
                         attrs = {innerHTML: attrs};
                     }
 
-                    if (util.isArray(attrs)) {
+                    if (isArray(attrs)) {
                         firstTarget = target[0];
                         util.each(attrs, function eachAttr(attr, index) {
                             var nthTarget = target[index];
-                            if (util.isStr(attr)) {
+                            if (isStr(attr)) {
                                 attr = {innerHTML: attr};
                             }
                             if (nthTarget) {
                                 util.setAttrs(nthTarget, attr);
                             } else {
                                 attr.parentNode = firstTarget.parentNode;
-                                util.setAttrs(firstTarget.cloneNode(true), attr);
+                                util.setAttrs(firstTarget[clone](true), attr);
                             }
                         });
                     } else {
@@ -806,11 +816,11 @@ SimpleUtil = function()
                 data = opts.data || null,
                 json = opts.json;
             
-            if (!util.isFunc(cb)) {
+            if (!isFunc(cb)) {
                 return req;
             }
             
-            if (!util.isUnd(json)) {
+            if (!isUnd(json)) {
                 headers['Content-Type'] = 'application/json';
                 try {
                     data = JSON.stringify(json);
@@ -847,7 +857,7 @@ SimpleUtil = function()
                                 util.each(headers, function(hdr)
                                 {
                                     var parsed = hdr.split(': ');
-                                    if (parsed.length === 2) {
+                                    if (parsed[len] === 2) {
                                         req.headers[parsed[0].toLowerCase()] = parsed[1];
                                     }
                                 });
@@ -855,7 +865,7 @@ SimpleUtil = function()
                             
                             resp = req.responseText;
                             
-                            if (!util.isUnd(json)) {
+                            if (!isUnd(json)) {
                                 try {
                                     resp = JSON.parse(resp);
                                 } catch(e) {
@@ -883,7 +893,7 @@ SimpleUtil = function()
          */
         listen : function(obj, type, fn)
         {
-            if(!util.isObj(obj)) return;
+            if(!isObj(obj)) return;
             
             var add = 'addEventListener',
                 attach = 'attachEvent',

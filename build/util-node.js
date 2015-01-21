@@ -9,17 +9,55 @@
  */
 SimpleUtil = function()
 {
-    var isA = function(obj, type)
-        {
-            return typeof obj == type;
-        },
-        owns = 'hasOwnProperty',
+    var clone = 'cloneNode',
+        len = 'length',
         proto = 'prototype',
+        owns = 'hasOwnProperty',
         val = 'value',
         regexTrim = /^\s+|\s+$/g;
-        
+    function isA(obj, type) {
+        return typeof obj == type;
+    }
+
+    function isUnd(obj) {
+        return isA(obj, 'undefined');
+    }
+
+    function isNull(obj) {
+        return obj === null;
+    }
+
+    function isObj(obj) {
+        return isA(obj, 'object') && obj !== null;
+    }
+
+    function isStr(obj) {
+        return isA(obj, 'string');
+    }
+
+    function isFunc(obj) {
+        return isA(obj, 'function');
+    }
+
+    function isNum(obj) {
+        return isA(obj, 'number');
+    }
+
+    function isBool(obj) {
+        return isA(obj, 'boolean');
+    }
+
+    function isArray(ar) {
+        return Object[proto].toString.call(ar) === '[object Array]';
+    }
+
+    function isDom(obj) {
+        var type = isObj(obj) && obj.nodeType;
+        return type === 1 || type === 11;
+    }
+
     function resolvePath(path) {
-        return util.isArray(path) && path || (util.isStr(path) ? path.split('.') : [])
+        return isArray(path) && path || (isStr(path) ? path.split('.') : [])
     }
 
     function toArray(collection)
@@ -27,7 +65,7 @@ SimpleUtil = function()
         var els = [],
             c, cl;
 
-        for (c = 0, cl = collection.length; c<cl; c++) {
+        for (c = 0, cl = collection[len]; c<cl; c++) {
             els.push(collection.item(c));
         }
 
@@ -40,91 +78,63 @@ SimpleUtil = function()
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isUnd : function(obj)
-        {
-            return isA(obj, 'undefined');
-        },
+        isUnd: isUnd,
  
         /**
          * Test for null.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isNull : function(obj)
-        {
-            return obj === null;
-        },
+        isNull: isNull,
 
         /**
          * Test for an object.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isObj : function(obj)
-        {
-            return isA(obj, 'object') && obj !== null;
-        },
+        isObj: isObj,
 
         /**
          * Test for a string.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isStr : function(obj)
-        {
-            return isA(obj, 'string');
-        },
+        isStr: isStr,
 
         /**
          * Test for a function.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isFunc : function(obj)
-        {
-            return isA(obj, 'function');
-        },
+        isFunc: isFunc,
 
         /**
          * Test for a number.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isNum : function(obj)
-        {
-            return isA(obj, 'number');
-        },
+        isNum: isNum,
 
         /**
          * Test for a boolean.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isBool : function(obj)
-        {
-            return isA(obj, 'boolean');
-        },
+        isBool: isBool,
 
         /**
          * Test for an array.
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isArray : function(ar)
-        {
-            return Object[proto].toString.call(ar) === '[object Array]';
-        },
+        isArray: Array.isArray || isArray,
 
         /**
          * Test for a DOM object (HTMLElement or DocumentFragment).
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
-        isDom : function(obj)
-        {
-            var type = util.isObj(obj) && obj.nodeType;
-            return type === 1 || type === 11;
-        },
+        isDom: isDom,
 
         /**
          * Convert `arguments` to an array.
@@ -145,9 +155,9 @@ SimpleUtil = function()
          */
         get : function(obj, path, def)
         {
-            var isObj = util.isObj(obj),
+            var valid = isObj(obj),
                 props = resolvePath(path),
-                pl = isObj ? props.length : 0,
+                pl = valid ? props[len] : 0,
                 p = 0;
             
             for (; p<pl && obj; p++)
@@ -155,7 +165,7 @@ SimpleUtil = function()
                 obj = obj[props[p]];
             }
             
-            return !isObj || !pl || util.isUnd(obj) ? def : obj;
+            return !valid || !pl || isUnd(obj) ? def : obj;
         },
 
         /**
@@ -168,16 +178,16 @@ SimpleUtil = function()
          */
         set : function(obj, path, val, conditional)
         {
-            var props = util.isObj(obj) ? resolvePath(path) : [],
+            var props = isObj(obj) ? resolvePath(path) : [],
                 prop,
-                pl = props.length,
+                pl = props[len],
                 p = 0;
             
             for (; p<pl; p++)
             {
                 prop = props[p];
                 if (!obj[owns](prop) || (p === pl-1 && !conditional)) {
-                    obj[prop] = p < pl-1 || util.isUnd(val) ? {} : val;
+                    obj[prop] = p < pl-1 || isUnd(val) ? {} : val;
                 }
                 obj = obj[prop];
             }
@@ -193,7 +203,7 @@ SimpleUtil = function()
          */
         remix : function(obj, keys)
         {
-            if (!util.isObj(obj) || !util.isObj(keys)) {
+            if (!isObj(obj) || !isObj(keys)) {
                 return false;
             }
             
@@ -218,7 +228,7 @@ SimpleUtil = function()
          */
         merge : function(mergeTo, mergeFrom, clone)
         {
-            var obj = util.isObj;
+            var obj = isObj;
             if (clone) {
                 mergeTo = util.merge({}, mergeTo);
             }
@@ -226,7 +236,7 @@ SimpleUtil = function()
             if (obj(mergeTo) && obj(mergeFrom)) {
                 for (var prop in mergeFrom) {
                     if (mergeFrom[owns](prop)) {
-                        if (obj(mergeFrom[prop]) && !util.isNull(mergeTo[prop])) {
+                        if (obj(mergeFrom[prop]) && !isNull(mergeTo[prop])) {
                             mergeTo[prop] = util.merge(mergeTo[prop], mergeFrom[prop], clone);
                         } else {
                             mergeTo[prop] = mergeFrom[prop];
@@ -255,12 +265,12 @@ SimpleUtil = function()
          */
         each : function(obj, fn)
         {
-            if (util.isFunc(fn)) {
-                if (util.isArray(obj)) {
-                    for (var o = 0, ol = obj.length; o<ol; o++) {
+            if (isFunc(fn)) {
+                if (isArray(obj)) {
+                    for (var o = 0, ol = obj[len]; o<ol; o++) {
                         fn(obj[o], o, obj);
                     }
-                } else if (util.isObj(obj)) {
+                } else if (isObj(obj)) {
                     for (var o in obj) {
                         if (obj[owns](o)) {
                             fn(obj[o], o, obj);
@@ -317,8 +327,8 @@ SimpleUtil = function()
          */
         capitalize : function(str)
         {
-            if (util.isStr(str) && str) {
-                str = str.charAt(0).toUpperCase() + (str.length > 1 ? str.substr(1) : "");
+            if (isStr(str) && str) {
+                str = str.charAt(0).toUpperCase() + (str[len] > 1 ? str.substr(1) : "");
             }
             return str;
         },
