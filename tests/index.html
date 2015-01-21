@@ -11,6 +11,7 @@
 // decide which build to load
 var isNode = location.search.indexOf('node=1') !== -1,
     src = isNode ? '../build/util.node.js' : '../build/util.js';
+
 document.write('<script src="' + src + '"><\/script>');
 </script>
 <body>
@@ -275,16 +276,16 @@ describe('SimpleUtil', function(){
                     ]}),
                     result = util.render(frag, {'.sp': 'bar'});
 
-                eq('<div><span class="sp">bar</span></div>', result.firstElementChild.outerHTML);
+                eq('<span class="sp">bar</span>', result.firstChild.innerHTML);
             });
             it('should accept an html element', function(){
-                var div = util.frag('<div><i></i></div>').firstElementChild,
+                var div = util.create('div', {children: [util.create('i')]}),
                     result = util.render(div, {'i': 'baz'});
 
                 eq('<i>baz</i>', result.innerHTML);
             });
             it('should traverse arrays', function(){
-                var ul = util.frag('<ul><li></li></ul>').firstElementChild,
+                var ul = util.create('ul', {children: [util.create('li')]}),
                     result = util.render(ul, {'li': ['foo', 'bar', {className: 'last', innerHTML: ''}]});
 
                 eq('<li>foo</li><li>bar</li><li class="last"></li>', result.innerHTML);
