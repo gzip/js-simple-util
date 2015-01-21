@@ -21,7 +21,19 @@ SimpleUtil = function()
     function resolvePath(path) {
         return util.isArray(path) && path || (util.isStr(path) ? path.split('.') : [])
     }
-    
+
+    function toArray(collection)
+    {
+        var els = [],
+            c, cl;
+
+        for (c = 0, cl = collection.length; c<cl; c++) {
+            els.push(collection.item(c));
+        }
+
+        return els;
+    }
+
     return {
         /**
          * Test for undefined.
@@ -104,6 +116,16 @@ SimpleUtil = function()
         },
 
         /**
+         * Test for a dom object.
+         * @param  {mixed}  obj Object to test.
+         * @return {Boolean}
+         */
+        isDom : function(obj)
+        {
+            return util.isObj(obj) && obj.nodeType === 1;
+        },
+
+        /**
          * Convert `arguments` to an array.
          * @param  {object} args Arguments object.
          * @return {array} Arguments
@@ -166,7 +188,7 @@ SimpleUtil = function()
          * Pick keys from an object to generate a new object.
          * @param  {object} obj Object to get values from.
          * @param  {object} keys Object containing the desired keys.
-         * @return {mixed} New object or false on error.
+         * @return {object|boolean} New object or false on error.
          */
         remix : function(obj, keys)
         {
@@ -227,21 +249,21 @@ SimpleUtil = function()
  
         /**
          * Apply a function to each value in an array or object.
-         * @param  {object,array}  obj Collection to apply to.
+         * @param  {object|array} obj Object or array to apply to.
          * @param  {function} fn Function to apply.
          */
         each : function(obj, fn)
         {
             if (util.isFunc(fn)) {
-                if (util.isObj(obj)) {
+                if (util.isArray(obj)) {
+                    for (var o = 0, ol = obj.length; o<ol; o++) {
+                        fn(obj[o], o, obj);
+                    }
+                } else if (util.isObj(obj)) {
                     for (var o in obj) {
                         if (obj[owns](o)) {
                             fn(obj[o], o, obj);
                         }
-                    }
-                } else if (util.isArray(obj)) {
-                    for (var o = 0, ol = obj.length; o<ol; o++) {
-                        fn(obj[o], o, obj);
                     }
                 }
             }
@@ -312,8 +334,6 @@ SimpleUtil = function()
     };
 }();
 var util = SimpleUtil;
-if (typeof module !== 'undefined') {
-    module.exports = util;
-}
-}(this));
-
+module.exports = util;
+}(
+));

@@ -6,10 +6,9 @@ var fs = require('fs'),
     ver = pkg.version,
     build = root + 'build/',
     buildv = build + ver + '/',
-    out = buildv + 'util.js',
-    outmin = buildv + 'util-min.js',
-    outcoremin = buildv + 'util-core-min.js',
+    out = build + 'util.js',
     outnode = build + 'util-node.js',
+    outmin = buildv + 'util-min.js',
     srcin = root + 'src/util.js',
     src = fs.readFileSync(srcin, 'utf-8');
 
@@ -19,12 +18,12 @@ function min(src, opts) {
 
 try {
     var minOpts = {output: {comments: /Copyright/}},
-        stripOpts = {path: srcin, preprocess: {NODE: true}},
+        stripOpts = {path: srcin, preprocess: {NODE: false}},
+        stripOptsNode = {path: srcin, preprocess: {NODE: true}},
         builds = [
-            {path: out, src: src},
-            {path: outmin, src: min(srcin, minOpts)},
-            {path: outnode, src: strip(stripOpts)},
-            {path: outcoremin, src: function () { return min(outnode, minOpts) + '\n'; }}
+            {path: out, src: strip(stripOpts)},
+            {path: outmin, src: min(out, minOpts)},
+            {path: outnode, src: strip(stripOptsNode)}
         ];
 
     // make build dir

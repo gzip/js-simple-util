@@ -992,16 +992,20 @@ SimpleUtil = function()
     };
 }();
 var util = SimpleUtil;
-util.getVendorPrefix();
 // #ifdef NODE
-if (typeof module !== 'undefined') {
-    module.exports = util;
-}
+module.exports = util;
 // #endifdef
+// #ifndef NODE
+util.getVendorPrefix();
 function wrap(name)
 {
     return function(f){ return win[util.resolvePrefix(name, win, true)](f); };
 };
 util.onFrame = wrap('requestAnimationFrame');
 util.cancelFrame = wrap('cancelAnimationFrame');
-}(this));
+// #endifndef
+}(
+// #ifndef NODE
+window
+// #endifndef
+));
