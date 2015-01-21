@@ -142,13 +142,14 @@ SimpleUtil = function()
         },
 
         /**
-         * Test for a dom object.
+         * Test for a DOM object (HTMLElement or DocumentFragment).
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
         isDom : function(obj)
         {
-            return util.isObj(obj) && obj.nodeType === 1;
+            var type = util.isObj(obj) && obj.nodeType;
+            return type === 1 || type === 11;
         },
 
         /**
@@ -699,7 +700,7 @@ SimpleUtil = function()
 
         /**
          * Use a document fragment or node to render a new piece of DOM.
-         * @param  {object} frag Document fragment to render to.
+         * @param  {DocumentFragment|HTMLElement} frag Document fragment or element to render to.
          * @param  {object} data Data to render.
          * @return {object} Cloned and rendered fragment ready to append to your document.
          */
