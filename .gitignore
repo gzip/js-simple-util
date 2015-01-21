@@ -1,3 +1,4 @@
 *.log
+*.tmproj
 node_modules
 .DS_Store
