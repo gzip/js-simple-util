@@ -230,8 +230,10 @@ describe('SimpleUtil', function(){
     if (!isNode) {
         describe('adj()', function(){
             it('should support all locations', function(){
-                var div = util.create('div'),
-                    node = util.create('span', {innerHTML: 'foo', parentNode: div});
+                var div = util.create('div', {children: [
+                        util.create('span', {innerHTML: 'foo'})
+                    ]}),
+                    node = div.firstChild;
 
                 util.adj(node, 'B4', 'before');
                 util.adj(node, 'F', 'front');
@@ -268,8 +270,9 @@ describe('SimpleUtil', function(){
         describe('render()', function(){
             it('should accept a document fragment', function(){
                 var frag = util.frag(),
-                    div = util.create('div', {parentNode: frag}),
-                    node = util.create('span', {innerHTML: 'foo', className: 'sp', parentNode: div}),
+                    div = util.create('div', {parentNode: frag, children: [
+                        util.create('span', {innerHTML: 'foo', className: 'sp'})
+                    ]}),
                     result = util.render(frag, {'.sp': 'bar'});
 
                 eq('<div><span class="sp">bar</span></div>', result.firstElementChild.outerHTML);

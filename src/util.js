@@ -597,7 +597,7 @@ SimpleUtil = function()
          * Set attributes and properties on an element.
          * @param {object} el DOM Node
          * @param {object} attrs Key/value pairs including special handling for className,
-         *  innerHTML, parentNode, and styles. Anything else will be set as an attribute.
+         *  innerHTML, parentNode, children, and styles. Anything else will be set as an attribute.
          * @param {object} [events] Optional collection of listener functions keyed by event name.
          * @return {object} The DOM Node.
          */
@@ -619,6 +619,13 @@ SimpleUtil = function()
                             break;
                             case 'styles':
                                 util.setStyles(el, attribute, true);
+                            break;
+                            case 'children':
+                                util.each(attribute, function (child) {
+                                    if (util.isDom(child)) {
+                                        el.appendChild(child);
+                                    }
+                                });
                             break;
                             case 'before':
                             case 'front':
