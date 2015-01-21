@@ -116,13 +116,14 @@ SimpleUtil = function()
         },
 
         /**
-         * Test for a dom object.
+         * Test for a DOM object (HTMLElement or DocumentFragment).
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
         isDom : function(obj)
         {
-            return util.isObj(obj) && obj.nodeType === 1;
+            var type = util.isObj(obj) && obj.nodeType;
+            return type === 1 || type === 11;
         },
 
         /**
