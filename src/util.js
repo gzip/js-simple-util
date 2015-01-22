@@ -368,6 +368,7 @@ SimpleUtil = function()
         {
             return str.replace(regexTrim, '');
         },
+
 // #ifndef NODE
         /**
          * Get a CSS property from a DOM Node.
@@ -631,11 +632,15 @@ SimpleUtil = function()
                                 util.setStyles(el, attribute, true);
                             break;
                             case 'children':
-                                util.each(attribute, function (child) {
-                                    if (isDom(child)) {
-                                        el.appendChild(child);
-                                    }
-                                });
+                                if (isDom(attribute)) {
+                                    el.appendChild(attribute);
+                                } else if (isArray(attribute)) {
+                                    util.each(attribute, function (child) {
+                                        if (isDom(child)) {
+                                            el.appendChild(child);
+                                        }
+                                    });
+                                }
                             break;
                             case 'before':
                             case 'front':
