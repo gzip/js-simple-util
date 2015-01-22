@@ -1,25 +1,23 @@
 // Copyright (c) 2013 Yahoo! Inc. All rights reserved. Copyrights licensed under the MIT License.
 // See the accompanying LICENSE file for terms.
 
-// TODO SimpleStyle SimpleDom
-(function(win) {
+(function (win) {
 /**
  * A lightweight utility library when a full Javascript framework isn't necessary.
  * @namespace SimpleUtil
  */
-SimpleUtil = function()
+SimpleUtil = function ()
 {
     var clone = 'cloneNode',
         len = 'length',
         proto = 'prototype',
         owns = 'hasOwnProperty',
         val = 'value',
-        regexTrim = /^\s+|\s+$/g;
-// #ifndef NODE
-    var doc = win.document || {},
+        regexTrim = /^\s+|\s+$/g,
+        doc = win.document || {},
         docEl = doc.documentElement || {},
-        docStyle = docEl.style,
-        docBody = doc.body,
+        docStyle = docEl.style || {},
+        docBody = doc.body || {},
         click = 'click',
         checked = 'checked',
         cln = 'className',
@@ -40,7 +38,7 @@ SimpleUtil = function()
                 'optimizeSpeed': 'webkitOptimizeContrast'
             }
         };
-// #endifndef
+
     function isA(obj, type) {
         return typeof obj == type;
     }
@@ -82,8 +80,14 @@ SimpleUtil = function()
         return type === 1 || type === 11;
     }
 
+    function append(el, child) {
+        if (isDom(el) && isDom(child)) {
+            el.appendChild(child);
+        }
+    }
+
     function resolvePath(path) {
-        return isArray(path) && path || (isStr(path) ? path.split('.') : [])
+        return isArray(path) && path || (isStr(path) ? path.split('.') : []);
     }
 
     function toArray(collection)
@@ -369,7 +373,6 @@ SimpleUtil = function()
             return str.replace(regexTrim, '');
         },
 
-// #ifndef NODE
         /**
          * Get a CSS property from a DOM Node.
          * @param  {object} obj DOM Node to get a CSS property from.
@@ -468,9 +471,10 @@ SimpleUtil = function()
             {
                 var prefix = util.getVendorPrefix(prop),
                     exception = util.get(vendorExceptions, prefix + '.' + prop),
-                    obj = obj || docStyle,
                     prefixed;
-                
+
+                obj = obj || docStyle;
+
                 if (exception) {
                     prop = exception;
                 } else {
@@ -605,6 +609,13 @@ SimpleUtil = function()
         },
 
         /**
+         * Safely append an element to another.
+         * @param  {HTMLElement|DocumentFragment} el Node to append to.
+         * @param  {HTMLElement|DocumentFragment} child Node to append.
+         */
+        append: append,
+
+        /**
          * Set attributes and properties on an element.
          * @param {object} el DOM Node
          * @param {object} attrs Key/value pairs including special handling for className,
@@ -626,20 +637,16 @@ SimpleUtil = function()
                                 el[attr] = attribute;
                             break;
                             case 'parentNode':
-                                isDom(attribute) && attribute.appendChild(el);
+                                append(attribute, el);
                             break;
                             case 'styles':
                                 util.setStyles(el, attribute, true);
                             break;
                             case 'children':
                                 if (isDom(attribute)) {
-                                    el.appendChild(attribute);
+                                    append(el, attribute);
                                 } else if (isArray(attribute)) {
-                                    util.each(attribute, function (child) {
-                                        if (isDom(child)) {
-                                            el.appendChild(child);
-                                        }
-                                    });
+                                    util.each(attribute, util.bind(append, null, [el]));
                                 }
                             break;
                             case 'before':
@@ -679,7 +686,7 @@ SimpleUtil = function()
          */
         create : function(el, attrs, events)
         {
-            var el = doc.createElement(el);
+            el = doc.createElement(el);
             return util.setAttrs(el, attrs, events);
         },
 
@@ -692,7 +699,7 @@ SimpleUtil = function()
         {
             var frag = doc.createDocumentFragment();
             if (isDom(content)) {
-                frag.appendChild(content[clone](true));
+                append(frag, content[clone](true));
             } else if (isStr(content)) {
                 var d = util.create('div', {innerHTML: content}),
                     ch = d.childNodes,
@@ -700,7 +707,7 @@ SimpleUtil = function()
                     c;
 
                 for (c = 0; c < cl; c++) {
-                    frag.appendChild(ch[c][clone](true));
+                    append(frag, ch[c][clone](true));
                 }
             }
             return frag;
@@ -806,7 +813,7 @@ SimpleUtil = function()
                 util.listen(script, 'error', opts.error);
             }
 
-            (head || doc).appendChild(script);
+            append(head || doc, script);
         },
 
         /**
@@ -991,7 +998,7 @@ SimpleUtil = function()
             if (el) {
                 x = el[offsetLeft];
                 y = el[offsetTop];
-                while(parentNode = parentNode.offsetParent) {
+                while((parentNode = parentNode.offsetParent)) {
                     x += parentNode[offsetLeft];
                     y += parentNode[offsetTop];
                 }
@@ -1015,12 +1022,11 @@ SimpleUtil = function()
         cancelFrame : function ()
         {
         }
-// #endifndef
     };
 }();
 
 var util = SimpleUtil;
-if (typeof module !== undefined) {
+if (typeof module !== 'undefined') {
     module.exports = util;
 }
 
@@ -1029,12 +1035,9 @@ util.getVendorPrefix();
 
 function wrap(name) {
     return function(f){ return win[util.resolvePrefix(name, win, true)](f); };
-};
+}
 util.onFrame = wrap('requestAnimationFrame');
 util.cancelFrame = wrap('cancelAnimationFrame');
 // #endifndef
-}(
-// #ifndef NODE
-window
-// #endifndef
-));
+
+})(typeof window !== 'undefined' ? window : global);

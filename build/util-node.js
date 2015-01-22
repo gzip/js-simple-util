@@ -1,20 +1,44 @@
 // Copyright (c) 2013 Yahoo! Inc. All rights reserved. Copyrights licensed under the MIT License.
 // See the accompanying LICENSE file for terms.
 
-// TODO SimpleStyle SimpleDom
-(function(win) {
+(function (win) {
 /**
  * A lightweight utility library when a full Javascript framework isn't necessary.
  * @namespace SimpleUtil
  */
-SimpleUtil = function()
+SimpleUtil = function ()
 {
     var clone = 'cloneNode',
         len = 'length',
         proto = 'prototype',
         owns = 'hasOwnProperty',
         val = 'value',
-        regexTrim = /^\s+|\s+$/g;
+        regexTrim = /^\s+|\s+$/g,
+        doc = win.document || {},
+        docEl = doc.documentElement || {},
+        docStyle = docEl.style || {},
+        docBody = doc.body || {},
+        click = 'click',
+        checked = 'checked',
+        cln = 'className',
+        innerHtml = 'innerHTML',
+        clRegex = function(cl)
+        {
+            return new RegExp('(?:^|\\s+)' + cl + '(?:\\s+|$)');
+        },
+        vendorPrefix = null,
+        vendorPrefixCss = null,
+        vendors = ['Webkit','Moz','O','ms'],
+        // FF: transitionend, Opera: oTransitionEnd: (otransitionend v12), WebKit: webkitTransitionEnd, IE: MSTransitionEnd
+        vendorExceptions = {
+            //'Moz': {},
+            'Webkit': {
+                'transitionend': 'webkitTransitionEnd',
+                'cancelAnimationFrame': 'webkitCancelRequestAnimationFrame',
+                'optimizeSpeed': 'webkitOptimizeContrast'
+            }
+        };
+
     function isA(obj, type) {
         return typeof obj == type;
     }
@@ -56,8 +80,14 @@ SimpleUtil = function()
         return type === 1 || type === 11;
     }
 
+    function append(el, child) {
+        if (isDom(el) && isDom(child)) {
+            el.appendChild(child);
+        }
+    }
+
     function resolvePath(path) {
-        return isArray(path) && path || (isStr(path) ? path.split('.') : [])
+        return isArray(path) && path || (isStr(path) ? path.split('.') : []);
     }
 
     function toArray(collection)
@@ -343,13 +373,662 @@ SimpleUtil = function()
             return str.replace(regexTrim, '');
         },
 
+        /**
+         * Get a CSS property from a DOM Node.
+         * @param  {object} obj DOM Node to get a CSS property from.
+         * @param  {string} style CSS property in camelCase.
+         * @param  {string} [def] Default value if property is not set.
+         * @return {string} Property value.
+         */
+        getStyle : function(obj, style, def)
+        {
+            return util.get(obj, 'style.' + style, def);
+        },
+
+        /**
+         * Set a CSS property on a DOM Node.
+         * @param  {object} obj DOM Node to set a CSS property on.
+         * @param  {string} style CSS property in camelCase.
+         * @param  {string} val Property value. Note that "px" will automatically be appended to numeric values.
+         * @param  {boolean} [resolve=false] Resolve vendor prefix.
+         */
+        setStyle : function(obj, style, val, resolve)
+        {
+            var objStyle = obj ? obj.style : null;
+            if (objStyle) {
+                if (resolve) {
+                    style = util.resolvePrefix(style, objStyle);
+                }
+                objStyle[style] = isNum(val) && style !== 'zIndex' ? val + 'px' : val;
+            }
+        },
+
+        /**
+         * Set multiple CSS properties on a DOM Node.
+         * @param  {object} obj DOM Node to set CSS properties on.
+         * @param  {string} styles Object containing key/values for CSS properties in camelCase.
+         * @param  {boolean} [resolve=false] Resolve vendor prefix.
+         */
+        setStyles : function(obj, styles, resolve)
+        {
+            if (isObj(styles)) {
+                for (var style in styles) {
+                    util.setStyle(obj, style, styles[style], resolve);
+                }
+            }
+        },
+
+        /**
+         * Get the vendor prefix for the current browser.
+         * @param  {string} prop CSS property to test.
+         * @param  {boolean} [forCss=false] Return CSS formatting (e.g. "-moz-" instead of "Moz"). 
+         * @return {string} Vendor prefix.
+         */
+        getVendorPrefix : function(prop, forCss)
+        {
+            // resolve vendor prefix on first call
+            if (vendorPrefix === null)
+            {
+                util.each(vendors, function(vendor)
+                {
+                    if (vendor + util.capitalize(prop || 'transform') in docStyle) {
+                        vendorPrefix = vendor;
+                        vendorPrefixCss = '-' + vendor.toLowerCase() + '-';
+                    }
+                });
+            }
+            
+            return forCss ? vendorPrefixCss : vendorPrefix;
+        },
+        
+        // for unit testing
+        resetPrefix : function(val)
+        {
+            vendorPrefix = val || null;
+        },
+
+        /**
+         * Get the vendor prefixed property name.
+         * @param  {string} prop CSS property to prefix.
+         * @return {string} Vendor prefix.
+         * @todo  Test that the property is actually prefixed.
+         */
+        resolveProperty : function(prop)
+        {
+            return util.getVendorPrefix(null, true) + prop;
+        },
+
+        /**
+         * Get the vendor prefixed property name.
+         * @param  {string} prop CSS property to resolve.
+         * @param {boolean} obj Optional object to test against.
+         * @param {boolean} [lower] Use camelCase instead of CapitalCase.
+         * @return {string} Prefixed property.
+         */
+        resolvePrefix : function(prop, obj, lower)
+        {
+            if (obj || prop.substr(0, 5) === 'trans')
+            {
+                var prefix = util.getVendorPrefix(prop),
+                    exception = util.get(vendorExceptions, prefix + '.' + prop),
+                    prefixed;
+
+                obj = obj || docStyle;
+
+                if (exception) {
+                    prop = exception;
+                } else {
+                    prefixed = (lower && prefix ? prefix.toLowerCase() : prefix || '') + util.capitalize(prop);
+                }
+                
+                prop = prefixed && prefixed in obj ? prefixed : prop;
+            }
+            
+            return prop;
+        },
+
+        /**
+         * Test if a DOM Node has a particular class.
+         * @param  {object}  el DOM Node to check.
+         * @param  {string}  class Class name to check for.
+         * @return {boolean}
+         */
+        hasClass : function(el, cl)
+        {
+            return clRegex(cl).test(util.get(el, cln));
+        },
+
+        /**
+         * Add a class to DOM Node.
+         * @param {object} el DOM Node to add a class to.
+         * @param {string} class The class to add.
+         */
+        addClass : function(el, cl)
+        {
+            if (!util.hasClass(el, cl)) {
+                util.setClass(el, util.trim(util.get(el, cln) + ' ' + cl));
+            }
+        },
+
+        /**
+         * Set the class on a DOM Node.
+         * @param {object} el DOM Node to set the class on.
+         * @param {string} class The class to set.
+         */
+        setClass : function(el, cl)
+        {
+            util.set(el, cln, cl);
+        },
+
+        /**
+         * Remove a class from a DOM Node.
+         * @param {object} el DOM Node to remove a class from.
+         * @param {string} class The class to remove.
+         */
+        delClass : function(el, cl)
+        {
+            var c = util.get(el, cln),
+                regex;
+            
+            if (c) {
+                regex = clRegex(cl);
+                util.set(el, cln, c.replace(regex, ''));
+            }
+        },
+
+        /**
+         * Get an element by name. 
+         * @param  {string} name Node name.
+         * @return {object} DOM Node or empty object.
+         */
+        byName : function(n)
+        {
+            var el = doc.getElementsByName(n);
+            return el ? el[0] : {};
+        },
+
+        /**
+         * Get an element by tag name.
+         * @param  {string} tag Tag name.
+         * @param  {object} [parent=document] Optional DOM Node to start from.
+         * @return {array} An array which will be empty if nothing is found
+         */
+        byTag : function(tag, parent)
+        {
+            var collection = (parent || doc).getElementsByTagName(tag);
+            return toArray(collection);
+        },
+
+        /**
+         * Get an element by id.
+         * @param  {string} id Element ID.
+         * @return {object} DOM Node or empty object.
+         */
+        byId : function(id)
+        {
+            return doc.getElementById(id) || {};
+        },
+
+        /**
+         * Get an array of elements by class name.
+         * @param  {string} class Class name(s), space separated.
+         * @param  {object} [parent=document] Optional DOM Node to start from.
+         * @return {array} Array of elements.
+         */
+        byClass : function(cln, parent)
+        {
+            var els = [],
+                collection = (parent || doc).getElementsByClassName(cln) || [],
+                cl = collection[len],
+                c = 0;
+
+            for (; c<cl; c++) {
+                els.push(collection.item(c));
+            }
+
+            return els;
+        },
+
+        /**
+         * Get an array of elements by CSS selector.
+         * @param  {string} selector Selector(s), comma separated.
+         * @param  {object} [parent=document] Optional DOM Node to start from.
+         * @return {array} Array of elements.
+         */
+        bySelector : function(s, parent)
+        {
+            var collection;
+
+            try {
+                collection = (parent || doc).querySelectorAll(s);
+            } catch (e) {
+                collection = [];
+            }
+
+            return toArray(collection);
+        },
+
+        /**
+         * Safely append an element to another.
+         * @param  {HTMLElement|DocumentFragment} el Node to append to.
+         * @param  {HTMLElement|DocumentFragment} child Node to append.
+         */
+        append: append,
+
+        /**
+         * Set attributes and properties on an element.
+         * @param {object} el DOM Node
+         * @param {object} attrs Key/value pairs including special handling for className,
+         *  innerHTML, parentNode, children, and styles. Anything else will be set as an attribute.
+         * @param {object} [events] Optional collection of listener functions keyed by event name.
+         * @return {object} The DOM Node.
+         */
+        setAttrs : function(el, attrs, events)
+        {
+            if (el) {
+                if (attrs) {
+                    var attr, attribute;
+                    for (attr in attrs) {
+                        attribute = attrs[attr];
+                        switch(attr)
+                        {
+                            case cln:
+                            case innerHtml:
+                                el[attr] = attribute;
+                            break;
+                            case 'parentNode':
+                                append(attribute, el);
+                            break;
+                            case 'styles':
+                                util.setStyles(el, attribute, true);
+                            break;
+                            case 'children':
+                                if (isDom(attribute)) {
+                                    append(el, attribute);
+                                } else if (isArray(attribute)) {
+                                    util.each(attribute, util.bind(append, null, [el]));
+                                }
+                            break;
+                            case 'before':
+                            case 'front':
+                            case 'back':
+                            case 'after':
+                                util.adj(el, attribute, attr);
+                            break;
+                            case 'remove':
+                                if (attribute) {
+                                    util.remove(el);
+                                    return;
+                                }
+                            break;
+                            default:
+                                el.setAttribute(attr, attribute);
+                            break;
+                        }
+                    }
+                }
+                if (events) {
+                    for (var ev in events) {
+                        util.listen(el, ev, events[ev]);
+                    }
+                }
+            }
+            return el;
+        },
+
+        /**
+         * Create a new element.
+         * @param  {string} el Tag name.
+         * @param  {object} attrs Optional attributes passed to setAttrs.
+         * @param  {object} [events] Optional events passed to setAttrs.
+         * @see  <a href="#.setAttrs">setAttrs</a>
+         * @return {object} New DOM Node.
+         */
+        create : function(el, attrs, events)
+        {
+            el = doc.createElement(el);
+            return util.setAttrs(el, attrs, events);
+        },
+
+        /**
+         * Create a document fragment.
+         * @param  {string|node} [content] Optional html or DOM node to append to the fragment.
+         * @return {object} Document fragment.
+         */
+        frag : function(content)
+        {
+            var frag = doc.createDocumentFragment();
+            if (isDom(content)) {
+                append(frag, content[clone](true));
+            } else if (isStr(content)) {
+                var d = util.create('div', {innerHTML: content}),
+                    ch = d.childNodes,
+                    cl = ch[len],
+                    c;
+
+                for (c = 0; c < cl; c++) {
+                    append(frag, ch[c][clone](true));
+                }
+            }
+            return frag;
+        },
+
+        /**
+         * Insert markup relative to a node (insertAdjacentHTML).
+         * @param  {node} DOM node to insert relative to.
+         * @param  {string} The content to insert.
+         * @param  {where} Where to insert; one of 'before' (beforeBegin), 'front' (afterBegin),
+         *          'back' (beforeEnd), or 'after' (afterEnd).
+         */
+        adj : function(node, content, where)
+        {
+            if (isDom(node) && isStr(content)) {
+                switch (where) {
+                    case 'before':  where = 'beforeBegin'; break;
+                    case 'front':   where = 'afterBegin'; break;
+                    case 'back':    where = 'beforeEnd'; break;
+                    case 'after':   where = 'afterEnd'; break;
+                }
+                node.insertAdjacentHTML(where, content);
+            }
+        },
+
+        /**
+         * Use a document fragment or node to render a new piece of DOM.
+         * @param  {DocumentFragment|HTMLElement} frag Document fragment to clone or element to render to.
+         * @param  {object} data Data to render.
+         * @return {object} Cloned and rendered fragment ready to append to your document.
+         */
+        render : function(frag, data)
+        {
+            var node = frag && frag.nodeType === 11 ? frag[clone](true) : frag;
+            util.each(data, function eachData(attrs, selector) {
+                var target = util.bySelector(selector, node),
+                    num = target[len],
+                    firstTarget;
+                if (num) {
+                    if (isStr(attrs)) {
+                        attrs = {innerHTML: attrs};
+                    }
+
+                    if (isArray(attrs)) {
+                        firstTarget = target[0];
+                        util.each(attrs, function eachAttr(attr, index) {
+                            var nthTarget = target[index];
+                            if (isStr(attr)) {
+                                attr = {innerHTML: attr};
+                            }
+                            if (nthTarget) {
+                                util.setAttrs(nthTarget, attr);
+                            } else {
+                                attr.parentNode = firstTarget.parentNode;
+                                util.setAttrs(firstTarget[clone](true), attr);
+                            }
+                        });
+                    } else {
+                        util.setAttrs(target[0], attrs);
+                    }
+                }
+            });
+            return node;
+        },
+
+        /**
+         * Remove an element from the DOM.
+         * @param  {object} el DOM Node
+         */
+        remove : function(el)
+        {
+            util.parent(el).removeChild(el);
+        },
+
+        /**
+         * Get the parentNode for a given element.
+         * @param  {object} el DOM Node.
+         * @param  {int} [level=1] The number of levels to traverse.
+         * @return {object} DOM Node or empty object.
+         */
+        parent : function(el, level)
+        {
+            level = level || 1;
+            do{
+                el = el.parentNode;
+            } while (--level);
+            return el || {};
+        },
+
+        /**
+         * Add a script to the page.
+         * @param {string} src Script src.
+         * @param {object} [opts] Optional listeners for "load" and/or "error".
+         */
+        addScript : function (src, opts)
+        {
+            var script = util.create('script', {src:src}),
+                head = util.byTag('head').pop();
+
+            opts = opts || {};
+            util.listen(script, 'load', opts.load || function() { util.remove(this); });
+            if (opts.error) {
+                util.listen(script, 'error', opts.error);
+            }
+
+            append(head || doc, script);
+        },
+
+        /**
+         * Make an XHR request.
+         * @param  {string} url URL.
+         * @param  {object} [opts] Options containing any of: callback (function),
+         *  data (string), headers (object), json (object), method (string),
+         *  parseHeaders (boolean), and props (object).
+         * @return {object} XMLHttpRequest object.
+         */
+        request : function (url, opts)
+        {
+            opts = opts || {};
+            var req = new XMLHttpRequest(),
+                cb = opts.callback,
+                method = opts.method || 'GET',
+                headers = opts.headers || {},
+                data = opts.data || null,
+                json = opts.json;
+            
+            if (!isFunc(cb)) {
+                return req;
+            }
+            
+            if (!isUnd(json)) {
+                headers['Content-Type'] = 'application/json';
+                try {
+                    data = JSON.stringify(json);
+                } catch(e) {
+                    if (cb) {
+                        cb(e, null, req);
+                    }
+                }
+            }
+            
+            if (url)
+            {
+                req.open(method, url);
+                
+                util.each(headers, function(value, key)
+                {
+                    req.setRequestHeader(key, value);
+                });
+                util.each(opts.props, function(value, key)
+                {
+                    req[key] = value;
+                });
+                
+                req.onreadystatechange = function()
+                {
+                    var resp, status, headers;
+                    if (req.readyState === 4) {
+                        status = req.status;
+                        resp = req.responseText;
+                        // TODO inspect Content-Type?
+                        if (!isUnd(json)) {
+                            try {
+                                resp = JSON.parse(resp);
+                            } catch(e) {
+                                cb(e, resp, req);
+                            }
+                        }
+                        // TODO follow redirects? (opts.follow, opts.depth)
+                        if (status < 300 & status > 199) {
+                            if (opts.parseHeaders) {
+                                req.headers = {};
+                                headers = req.getAllResponseHeaders().split("\n");
+                                util.each(headers, function(hdr)
+                                {
+                                    var parsed = hdr.split(': ');
+                                    if (parsed[len] === 2) {
+                                        req.headers[parsed[0].toLowerCase()] = parsed[1];
+                                    }
+                                });
+                            }
+                            cb(null, resp, req);
+                        } else {
+                            cb({status: status, message: 'Non-200 returned.'}, resp, req);
+                        }
+                    }
+                };
+                req.send(data);
+            }
+            
+            return req;
+        },
+
+        /**
+         * Listen to an event.
+         * @param  {object}   obj DOM Node to listen for events on.
+         * @param  {string}   type Event type, e.g. "click".
+         * @param  {function} fn Callback function.
+         */
+        listen : function(obj, type, fn)
+        {
+            if(!isObj(obj)) return;
+            
+            var add = 'addEventListener',
+                attach = 'attachEvent',
+                ev = 'on'+type;
+            
+            if (obj[add]) {
+                obj[add](type, fn, false);
+            } else if (obj[attach]) {
+                obj[attach](ev, function() { fn(window.event); } );
+            } else {
+                obj[ev] = fn;
+            }
+        },
+
+        /**
+         * Process an event.
+         * @param  {object} e Event object.
+         * @param  {boolean} [prevent] Prevent default.
+         * @param  {boolean} [stop] Stop propagation.
+         * @return {object} Event target.
+         */
+        processEvent : function(e, prevent, stop)
+        {
+            e = e || window.event;
+            var el = e.target || e.srcElement;
+            if (prevent) {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                    if (stop) {
+                        e.stopPropagation();
+                    }
+                }
+                e.returnValue = false;
+                if (stop) {
+                    e.cancelBubble = true;
+                }
+            }
+            return el;
+        },
+
+        /**
+         * Parse a query string into an object of key/value pairs.
+         * @param str Optional query string, otherwise use current URL.
+         * @return {object} Query params object.
+         */
+        parseQuery : function(str)
+        {
+            var params = {},
+                split = 'split',
+                query = str || location.href[split](/[?#]/)[1];
+            
+            if (query) {
+                query = query[split](/&/);
+                for (var q in query) {
+                    q = query[q][split](/=/);
+                    params[q[0]] = q[1] || 1;
+                }
+            }
+            
+            return params;
+        },
+
+        /**
+         * Get the scroll position of the current window.
+         * @return {integer} Scroll position.
+         */
+        getScroll : function ()
+        {
+            var scrollTop = 'scrollTop';
+            return docEl[scrollTop] || docBody[scrollTop];
+        },
+
+        /**
+         * Get the  offset position of an element.
+         * @param  {object} el DOM Node to get offset for.
+         * @return {object} Object containing "x" and "y".
+         */
+        getOffset : function(el)
+        {
+            var parentNode = el,
+                offsetLeft = 'offsetLeft',
+                offsetTop = 'offsetTop',
+                x = 0,
+                y = 0;
+            
+            if (el) {
+                x = el[offsetLeft];
+                y = el[offsetTop];
+                while((parentNode = parentNode.offsetParent)) {
+                    x += parentNode[offsetLeft];
+                    y += parentNode[offsetTop];
+                }
+            }
+            
+            return {x: x, y: y};
+        },
+
+        /**
+         * Listen for animation frame (requestAnimationFrame).
+         * @param {function} fn Function to execute for each frame.
+         */
+        onFrame : function ()
+        {
+        },
+
+        /**
+         * Cancel animation frame (cancelAnimationFrame).
+         * @param {function} fn Function to cancel.
+         */
+        cancelFrame : function ()
+        {
+        }
     };
 }();
 
 var util = SimpleUtil;
-if (typeof module !== undefined) {
+if (typeof module !== 'undefined') {
     module.exports = util;
 }
 
-}(
-));
+
+})(typeof window !== 'undefined' ? window : global);

@@ -22,15 +22,17 @@ try {
         stripOptsNode = {path: srcin, preprocess: {NODE: true}},
         builds = [
             {path: out, src: strip(stripOpts)},
-            {path: outmin, src: min(out, minOpts)},
+            //{path: outmin, src: min(out, minOpts)},
             {path: outnode, src: strip(stripOptsNode)}
         ];
 
     // make build dir
+    /*
     if (!fs.existsSync(buildv)) {
         fs.mkdirSync(buildv);
         console.log('Created dir ' + buildv);
     }
+    */
 
     // write each build file
     builds.forEach(function eachBuild(build) {
