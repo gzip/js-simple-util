@@ -648,6 +648,12 @@ SimpleUtil = function()
                             case 'after':
                                 util.adj(el, attribute, attr);
                             break;
+                            case 'remove':
+                                if (attribute) {
+                                    util.remove(el);
+                                    return;
+                                }
+                            break;
                             default:
                                 el.setAttribute(attr, attribute);
                             break;
