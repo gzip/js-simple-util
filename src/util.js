@@ -728,13 +728,13 @@ SimpleUtil = function()
 
         /**
          * Use a document fragment or node to render a new piece of DOM.
-         * @param  {DocumentFragment|HTMLElement} frag Document fragment or element to render to.
+         * @param  {DocumentFragment|HTMLElement} frag Document fragment to clone or element to render to.
          * @param  {object} data Data to render.
          * @return {object} Cloned and rendered fragment ready to append to your document.
          */
         render : function(frag, data)
         {
-            var node = frag[clone](true);
+            var node = frag && frag.nodeType === 11 ? frag[clone](true) : frag;
             util.each(data, function eachData(attrs, selector) {
                 var target = util.bySelector(selector, node),
                     num = target[len],
