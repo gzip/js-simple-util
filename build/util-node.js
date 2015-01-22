@@ -342,6 +342,7 @@ SimpleUtil = function()
         {
             return str.replace(regexTrim, '');
         },
+
     };
 }();
 var util = SimpleUtil;

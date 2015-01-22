@@ -366,6 +366,7 @@ SimpleUtil = function()
         {
             return str.replace(regexTrim, '');
         },
+
         /**
          * Get a CSS property from a DOM Node.
          * @param  {object} obj DOM Node to get a CSS property from.
@@ -628,17 +629,27 @@ SimpleUtil = function()
                                 util.setStyles(el, attribute, true);
                             break;
                             case 'children':
-                                util.each(attribute, function (child) {
-                                    if (isDom(child)) {
-                                        el.appendChild(child);
-                                    }
-                                });
+                                if (isDom(attribute)) {
+                                    el.appendChild(attribute);
+                                } else if (isArray(attribute)) {
+                                    util.each(attribute, function (child) {
+                                        if (isDom(child)) {
+                                            el.appendChild(child);
+                                        }
+                                    });
+                                }
                             break;
                             case 'before':
                             case 'front':
                             case 'back':
                             case 'after':
                                 util.adj(el, attribute, attr);
+                            break;
+                            case 'remove':
+                                if (attribute) {
+                                    util.remove(el);
+                                    return;
+                                }
                             break;
                             default:
                                 el.setAttribute(attr, attribute);
@@ -714,13 +725,13 @@ SimpleUtil = function()
 
         /**
          * Use a document fragment or node to render a new piece of DOM.
-         * @param  {DocumentFragment|HTMLElement} frag Document fragment or element to render to.
+         * @param  {DocumentFragment|HTMLElement} frag Document fragment to clone or element to render to.
          * @param  {object} data Data to render.
          * @return {object} Cloned and rendered fragment ready to append to your document.
          */
         render : function(frag, data)
         {
-            var node = frag[clone](true);
+            var node = frag && frag.nodeType === 11 ? frag[clone](true) : frag;
             util.each(data, function eachData(attrs, selector) {
                 var target = util.bySelector(selector, node),
                     num = target[len],
@@ -846,6 +857,15 @@ SimpleUtil = function()
                     var resp, status, headers;
                     if (req.readyState === 4) {
                         status = req.status;
+                        resp = req.responseText;
+                        // TODO inspect Content-Type?
+                        if (!isUnd(json)) {
+                            try {
+                                resp = JSON.parse(resp);
+                            } catch(e) {
+                                cb(e, resp, req);
+                            }
+                        }
                         // TODO follow redirects? (opts.follow, opts.depth)
                         if (status < 300 & status > 199) {
                             if (opts.parseHeaders) {
@@ -859,20 +879,9 @@ SimpleUtil = function()
                                     }
                                 });
                             }
-                            
-                            resp = req.responseText;
-                            
-                            if (!isUnd(json)) {
-                                try {
-                                    resp = JSON.parse(resp);
-                                } catch(e) {
-                                    cb(e, resp, req);
-                                }
-                            }
-                            
                             cb(null, resp, req);
                         } else {
-                            cb({status: status, message: 'Non-200 returned.'}, null, req);
+                            cb({status: status, message: 'Non-200 returned.'}, resp, req);
                         }
                     }
                 };
