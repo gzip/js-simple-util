@@ -1014,10 +1014,15 @@ SimpleUtil = function()
         }
     };
 }();
+
 var util = SimpleUtil;
+if (typeof module !== undefined) {
+    module.exports = util;
+}
+
 util.getVendorPrefix();
-function wrap(name)
-{
+
+function wrap(name) {
     return function(f){ return win[util.resolvePrefix(name, win, true)](f); };
 };
 util.onFrame = wrap('requestAnimationFrame');

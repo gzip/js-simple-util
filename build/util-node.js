@@ -345,7 +345,11 @@ SimpleUtil = function()
 
     };
 }();
+
 var util = SimpleUtil;
-module.exports = util;
+if (typeof module !== undefined) {
+    module.exports = util;
+}
+
 }(
 ));

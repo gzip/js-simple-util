@@ -1018,14 +1018,16 @@ SimpleUtil = function()
 // #endifndef
     };
 }();
+
 var util = SimpleUtil;
-// #ifdef NODE
-module.exports = util;
-// #endifdef
+if (typeof module !== undefined) {
+    module.exports = util;
+}
+
 // #ifndef NODE
 util.getVendorPrefix();
-function wrap(name)
-{
+
+function wrap(name) {
     return function(f){ return win[util.resolvePrefix(name, win, true)](f); };
 };
 util.onFrame = wrap('requestAnimationFrame');

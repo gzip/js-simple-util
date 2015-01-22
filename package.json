@@ -2,7 +2,7 @@
   "author": "Gamaiel Zavala <gamaiel@yahoo.com>",
   "name": "simple-util",
   "description": "Small utility lib.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/gzip/js-simple-util.git"
