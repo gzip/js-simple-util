@@ -860,6 +860,15 @@ SimpleUtil = function()
                     var resp, status, headers;
                     if (req.readyState === 4) {
                         status = req.status;
+                        resp = req.responseText;
+                        // TODO inspect Content-Type?
+                        if (!isUnd(json)) {
+                            try {
+                                resp = JSON.parse(resp);
+                            } catch(e) {
+                                cb(e, resp, req);
+                            }
+                        }
                         // TODO follow redirects? (opts.follow, opts.depth)
                         if (status < 300 & status > 199) {
                             if (opts.parseHeaders) {
@@ -873,20 +882,9 @@ SimpleUtil = function()
                                     }
                                 });
                             }
-                            
-                            resp = req.responseText;
-                            
-                            if (!isUnd(json)) {
-                                try {
-                                    resp = JSON.parse(resp);
-                                } catch(e) {
-                                    cb(e, resp, req);
-                                }
-                            }
-                            
                             cb(null, resp, req);
                         } else {
-                            cb({status: status, message: 'Non-200 returned.'}, null, req);
+                            cb({status: status, message: 'Non-200 returned.'}, resp, req);
                         }
                     }
                 };
