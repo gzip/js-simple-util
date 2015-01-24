@@ -10,7 +10,7 @@
   "main": "build/util-node.js",
   "browser": "build/util.js",
   "scripts": {
-    "test": "cd tests; phantomjs runner.js",
+    "test": "npm run build && cd tests; phantomjs runner.js",
     "build": "node build",
     "docs": "jsdoc src/ -d=docs/api"
   },
