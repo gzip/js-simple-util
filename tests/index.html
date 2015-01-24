@@ -129,15 +129,16 @@ describe('SimpleUtil', function(){
     });
 
     describe('merge()', function(){
-        it('should clobber', function(){
+        it('should clobber with different type', function(){
             var to = {foo: {bar: 'BAR'}};
             util.merge(to, {foo: 'FOO'});
             eq('FOO', to.foo);
         });
         it('should go deep', function(){
             var to = {foo: {bar: {baz: 'BAZ'}}};
-            util.merge(to, {foo: {bar: {quuz:''}}});
+            util.merge(to, {foo: {bar: {quuz:'QUUZ'}}});
             eq('BAZ', to.foo.bar.baz);
+            eq('QUUZ', to.foo.bar.quuz);
         });
         it('should handle null', function(){
             var to = {foo: null};
@@ -148,9 +149,15 @@ describe('SimpleUtil', function(){
         });
         it('should be able to clone', function(){
             var og = {foo: null},
-                to = util.merge(og, {foo: {bar: 'BAR'}}, true);
+                to = util.merge(og, {foo: {bar: 'BAR'}}, {clone: true});
             eq('BAR', to.foo.bar);
             eq(null, og.foo);
+        });
+        it('should be able to shallow merge', function(){
+            var to = {foo: {val: 'FOO'}},
+                result = util.merge(to, {foo: {bar: 'BAR'}}, {shallow: true});
+            eq(undefined, to.foo.val);
+            eq('BAR', to.foo.bar);
         });
     });
 
