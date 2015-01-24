@@ -253,21 +253,26 @@ SimpleUtil = function ()
          * Merge properties from one object to another.
          * @param  {object} mergeTo Object to merge to.
          * @param  {object} mergeFrom Object to merge from.
-         * @param  {boolean} [clone] Clone the object rather than augment.
+         * @param  {object} [options] Merge options.
+         * @param  {bool} [options.clone] Clone the object rather than augment.
+         * @param  {bool} [options.shallow] Shallow merge.
          * @return {object}
          */
-        merge : function(mergeTo, mergeFrom, clone)
+        merge : function(mergeTo, mergeFrom, options)
         {
-            var val;
+            var clone = options && options.clone,
+                shallow = options && options.shallow,
+                val;
+
             if (clone) {
                 mergeTo = util.merge({}, mergeTo);
             }
-            
+
             if (isObj(mergeTo) && isObj(mergeFrom)) {
                 for (var prop in mergeFrom) {
                     if (mergeFrom[owns](prop)) {
                         val = mergeFrom[prop];
-                        if (clone && isObj(val)) {
+                        if (!shallow && isObj(val)) {
                             mergeTo[prop] = isArray(val) ? val.slice() : util.merge(
                                 mergeTo[prop] || {}, val, clone
                             );
@@ -277,7 +282,7 @@ SimpleUtil = function ()
                     }
                 }
             }
-            
+
             return mergeTo;
         },
 
