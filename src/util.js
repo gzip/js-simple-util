@@ -258,18 +258,21 @@ SimpleUtil = function ()
          */
         merge : function(mergeTo, mergeFrom, clone)
         {
-            var obj = isObj;
+            var val;
             if (clone) {
                 mergeTo = util.merge({}, mergeTo);
             }
             
-            if (obj(mergeTo) && obj(mergeFrom)) {
+            if (isObj(mergeTo) && isObj(mergeFrom)) {
                 for (var prop in mergeFrom) {
                     if (mergeFrom[owns](prop)) {
-                        if (obj(mergeFrom[prop]) && !isNull(mergeTo[prop])) {
-                            mergeTo[prop] = util.merge(mergeTo[prop], mergeFrom[prop], clone);
+                        val = mergeFrom[prop];
+                        if (clone && isObj(val)) {
+                            mergeTo[prop] = isArray(val) ? val.slice() : util.merge(
+                                mergeTo[prop] || {}, val, clone
+                            );
                         } else {
-                            mergeTo[prop] = mergeFrom[prop];
+                            mergeTo[prop] = val;
                         }
                     }
                 }
