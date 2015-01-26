@@ -774,14 +774,21 @@ SimpleUtil = function ()
                         firstTarget = target[0];
                         util.each(attrs, function eachAttr(attr, index) {
                             var nthTarget = target[index];
-                            if (isStr(attr)) {
-                                attr = {innerHTML: attr};
-                            }
-                            if (nthTarget) {
-                                util.setAttrs(nthTarget, attr);
+                            // call recursively for array of arrays
+                            if (isArray(attr)) {
+                                util.each(attr, function eachInnerData(innerData) {
+                                    util.render(nthTarget, innerData);
+                                });
                             } else {
-                                attr.parentNode = firstTarget.parentNode;
-                                util.setAttrs(firstTarget[clone](true), attr);
+                                if (isStr(attr)) {
+                                    attr = {innerHTML: attr};
+                                }
+                                if (nthTarget) {
+                                    util.setAttrs(nthTarget, attr);
+                                } else {
+                                    attr.parentNode = firstTarget.parentNode;
+                                    util.setAttrs(firstTarget[clone](true), attr);
+                                }
                             }
                         });
                     } else {

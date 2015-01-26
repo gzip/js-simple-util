@@ -297,6 +297,24 @@ describe('SimpleUtil', function(){
 
                 eq('<li>foo</li><li>bar</li><li class="last"></li>', result.innerHTML);
             });
+            it('should traverse nested renders', function(){
+                var parent = util.create('div', {className: 'wrapper', children: [
+                        util.create('div', {className: 'item', children: [
+                            util.create('p'),
+                            util.create('p')
+                        ]}),
+                        util.create('div', {className: 'item', children: [
+                            util.create('p'),
+                            util.create('p')
+                        ]})
+                    ]}),
+                    result = util.render(parent, {'.item': [
+                        [{p: ['foo', 'bar']}],
+                        [{p: ['baz', {className: 'quuz', children: [util.create('span')]}]}]
+                    ]});
+
+                eq('<div class="item"><p>foo</p><p>bar</p></div><div class="item"><p>baz</p><p class="quuz"><span></span></p></div>', result.innerHTML);
+            });
         });
 
         describe('byClass()', function(){
