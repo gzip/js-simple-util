@@ -637,8 +637,9 @@ SimpleUtil = function ()
         /**
          * Set attributes and properties on an element.
          * @param {object} el DOM Node
-         * @param {object} attrs Key/value pairs including special handling for className,
+         * @param {object|string} attrs Key/value pairs including special handling for className,
          *  innerHTML, parentNode, children, and styles. Anything else will be set as an attribute.
+         *  A string may also be passed as a shorthand for innerHTML.
          * @param {object} [events] Optional collection of listener functions keyed by event name.
          * @return {object} The DOM Node.
          */
@@ -647,6 +648,9 @@ SimpleUtil = function ()
             if (el) {
                 if (attrs) {
                     var attr, attribute;
+                    if (isStr(attrs)) {
+                        attrs = {innerHTML: attrs};
+                    }
                     for (attr in attrs) {
                         attribute = attrs[attr];
                         switch(attr)
@@ -766,10 +770,6 @@ SimpleUtil = function ()
                     num = target[len],
                     firstTarget;
                 if (num) {
-                    if (isStr(attrs)) {
-                        attrs = {innerHTML: attrs};
-                    }
-
                     if (isArray(attrs)) {
                         firstTarget = target[0];
                         util.each(attrs, function eachAttr(attr, index) {
@@ -780,14 +780,10 @@ SimpleUtil = function ()
                                     util.render(nthTarget, innerData);
                                 });
                             } else {
-                                if (isStr(attr)) {
-                                    attr = {innerHTML: attr};
-                                }
                                 if (nthTarget) {
                                     util.setAttrs(nthTarget, attr);
                                 } else {
-                                    attr.parentNode = firstTarget.parentNode;
-                                    util.setAttrs(firstTarget[clone](true), attr);
+                                    append(firstTarget.parentNode, util.setAttrs(firstTarget[clone](true), attr));
                                 }
                             }
                         });

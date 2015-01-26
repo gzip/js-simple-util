@@ -268,10 +268,11 @@ describe('SimpleUtil', function(){
                 eq('B', ch[0].tagName);
             });
             it('should return a full fragment from dom node', function(){
-                var frag = util.frag(util.create('i', {'innerHTML': 'bar'})),
+                var frag = util.frag(util.create('i', 'bar')),
                     ch = frag.childNodes;
                 eq(1, ch.length);
                 eq('I', ch[0].tagName);
+                eq('bar', ch[0].innerHTML);
             });
         });
 
