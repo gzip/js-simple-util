@@ -598,12 +598,23 @@ SimpleUtil = function ()
         },
 
         /**
+         * Get a single element by CSS selector.
+         * @param  {string} selector Selector(s), comma separated.
+         * @param  {object} [parent=document] Optional DOM Node to start from.
+         * @return {array} Element or empty object..
+         */
+        bySelector : function(s, parent)
+        {
+            return (parent || doc).querySelector(s) || {};
+        },
+
+        /**
          * Get an array of elements by CSS selector.
          * @param  {string} selector Selector(s), comma separated.
          * @param  {object} [parent=document] Optional DOM Node to start from.
          * @return {array} Array of elements.
          */
-        bySelector : function(s, parent)
+        bySelectorAll : function(s, parent)
         {
             var collection;
 
@@ -751,7 +762,7 @@ SimpleUtil = function ()
         {
             var node = frag && frag.nodeType === 11 ? frag[clone](true) : frag;
             util.each(data, function eachData(attrs, selector) {
-                var target = util.bySelector(selector, node),
+                var target = util.bySelectorAll(selector, node),
                     num = target[len],
                     firstTarget;
                 if (num) {

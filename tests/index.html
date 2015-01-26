@@ -314,12 +314,25 @@ describe('SimpleUtil', function(){
         });
 
         describe('bySelector()', function(){
+            it('should return an object if nothing is found', function(){
+                eq({}, util.bySelector('.foo'));
+            });
+            it('should return an element', function(){
+                var el = util.create('b', {className: 'bold', parentNode: document.body}),
+                    result = util.bySelector('b.bold');
+                eq('B', result.tagName);
+                // clean up
+                util.remove(el);
+            });
+        });
+
+        describe('bySelectorAll()', function(){
             it('should return an array of elements', function(){
                 var parent = util.create('b', {className: 'bold', parentNode: document.body}),
                     el = util.create('i', {className: 'italic', parentNode: parent}),
-                    result = util.bySelector('.bold .italic'),
-                    none = util.bySelector('.bold .foo'),
-                    invalid = util.bySelector('-invalid#$$.selector');
+                    result = util.bySelectorAll('.bold .italic'),
+                    none = util.bySelectorAll('.bold .foo'),
+                    invalid = util.bySelectorAll('-invalid#$$.selector');
                 assert.isTrue(util.isArray(result));
                 assert.isTrue(util.isArray(none));
                 assert.isTrue(util.isArray(invalid));
