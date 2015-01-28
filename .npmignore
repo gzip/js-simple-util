@@ -1,0 +1,7 @@
+*.tmproj
+*.tgz
+.npmignore
+.travis.yml
+docs
+examples
+tests
