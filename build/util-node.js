@@ -105,6 +105,7 @@ SimpleUtil = function ()
     return {
         /**
          * Test for undefined.
+         * @method
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
@@ -112,6 +113,7 @@ SimpleUtil = function ()
  
         /**
          * Test for null.
+         * @method
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
@@ -119,6 +121,7 @@ SimpleUtil = function ()
 
         /**
          * Test for an object.
+         * @method
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
@@ -126,6 +129,7 @@ SimpleUtil = function ()
 
         /**
          * Test for a string.
+         * @method
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
@@ -133,6 +137,7 @@ SimpleUtil = function ()
 
         /**
          * Test for a function.
+         * @method
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
@@ -140,6 +145,7 @@ SimpleUtil = function ()
 
         /**
          * Test for a number.
+         * @method
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
@@ -147,6 +153,7 @@ SimpleUtil = function ()
 
         /**
          * Test for a boolean.
+         * @method
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
@@ -154,6 +161,7 @@ SimpleUtil = function ()
 
         /**
          * Test for an array.
+         * @method
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
@@ -161,6 +169,7 @@ SimpleUtil = function ()
 
         /**
          * Test for a DOM object (HTMLElement or DocumentFragment).
+         * @method
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
@@ -179,7 +188,7 @@ SimpleUtil = function ()
         /**
          * Get a value [deep] in an object.
          * @param  {object} obj Object to get a value from.
-         * @param  {string|array} path Property path, e.g. "foo.bar.baz".
+         * @param  {string|array} path Property path, e.g. "foo.bar.baz", or ["foo", "bar", "baz"].
          * @param  {mixed} [def] Default value if nothing is found.
          * @return {mixed} Value or default.
          */
@@ -201,9 +210,9 @@ SimpleUtil = function ()
         /**
          * Set a value [deep] in an object.
          * @param  {object} obj Object to set a value on.
-         * @param  {string|array} path Property path, e.g. "foo.bar.baz"
+         * @param  {string|array} path Property path, e.g. "foo.bar.baz" or ["foo", "bar", "baz"]
          * @param  {mixed} val Value to set.
-         * @param {boolean} [conditional] Only set if not already present.
+         * @param {boolean} [conditional=false] Only set value if one is not already present.
          * @return {object} Object.
          */
         set : function(obj, path, val, conditional)
@@ -254,8 +263,8 @@ SimpleUtil = function ()
          * @param  {object} mergeTo Object to merge to.
          * @param  {object} mergeFrom Object to merge from.
          * @param  {object} [options] Merge options.
-         * @param  {bool} [options.clone] Clone the object rather than augment.
-         * @param  {bool} [options.shallow] Shallow merge.
+         * @param  {bool} [options.clone=false] Clone the object rather than augment.
+         * @param  {bool} [options.shallow=false] Shallow merge.
          * @return {object}
          */
         merge : function(mergeTo, mergeFrom, options)
@@ -289,27 +298,29 @@ SimpleUtil = function ()
         /**
          * Clone an object.
          * @param  {object} obj Object to clone.
+         * @param  {bool} [shallow=false] Whether to create a shallow clone.
          * @return {object} Cloned object.
          */
-        clone : function(obj)
+        clone : function(obj, shallow)
         {
-            return util.merge({}, obj, true);
+            return util.merge({}, obj, {clone: true, shallow: shallow});
         },
  
         /**
          * Apply a function to each value in an array or object.
          * @param  {object|array} obj Object or array to apply to.
-         * @param  {function} fn Function to apply.
+         * @param  {function} fn Function to apply which should expect `value`, `index`, and `obj` arguments.
          */
         each : function(obj, fn)
         {
             if (isFunc(fn)) {
+                var o;
                 if (isArray(obj)) {
-                    for (var o = 0, ol = obj[len]; o<ol; o++) {
+                    for (o = 0, ol = obj[len]; o<ol; o++) {
                         fn(obj[o], o, obj);
                     }
                 } else if (isObj(obj)) {
-                    for (var o in obj) {
+                    for (o in obj) {
                         if (obj[owns](o)) {
                             fn(obj[o], o, obj);
                         }
@@ -322,8 +333,7 @@ SimpleUtil = function ()
          * Extend one class with another.
          * @param  {function} target Target class.
          * @param  {function} source Source class.
-         * @param  {array} [methods] Additional methods.
-         * @param  {array} [methods] Additional methods.
+         * @param  {object} [methods] Additional methods keyed by method name.
          */
         extend : function(target, source /*, methods, methods, methods...*/)
         {
@@ -337,8 +347,7 @@ SimpleUtil = function ()
             target[p][c] = source;
             
             // merge methods to prototype
-            util.each(methods, function(m)
-            {
+            util.each(methods, function(m) {
                 util.merge(target[proto], m);
             });
         },
@@ -400,14 +409,14 @@ SimpleUtil = function ()
          * @param  {string} val Property value. Note that "px" will automatically be appended to numeric values.
          * @param  {boolean} [resolve=false] Resolve vendor prefix.
          */
-        setStyle : function(obj, style, val, resolve)
+        setStyle : function(obj, prop, val, resolve)
         {
             var objStyle = obj ? obj.style : null;
             if (objStyle) {
                 if (resolve) {
-                    style = util.resolvePrefix(style, objStyle);
+                    prop = util.resolvePrefix(prop, objStyle);
                 }
-                objStyle[style] = isNum(val) && style !== 'zIndex' ? val + 'px' : val;
+                objStyle[prop] = isNum(val) && prop !== 'zIndex' ? val + 'px' : val;
             }
         },
 
@@ -416,6 +425,7 @@ SimpleUtil = function ()
          * @param  {object} obj DOM Node to set CSS properties on.
          * @param  {string} styles Object containing key/values for CSS properties in camelCase.
          * @param  {boolean} [resolve=false] Resolve vendor prefix.
+         * @see setStyle
          */
         setStyles : function(obj, styles, resolve)
         {
@@ -457,7 +467,7 @@ SimpleUtil = function ()
 
         /**
          * Get the vendor prefixed property name.
-         * @param  {string} prop CSS property to prefix.
+         * @param  {string} prop CSS property in dash-case to prefix.
          * @return {string} Vendor prefix.
          * @todo  Test that the property is actually prefixed.
          */
@@ -468,8 +478,8 @@ SimpleUtil = function ()
 
         /**
          * Get the vendor prefixed property name.
-         * @param  {string} prop CSS property to resolve.
-         * @param {boolean} obj Optional object to test against.
+         * @param  {string} prop CSS property in camelCase to resolve.
+         * @param {object} [obj] Optional DOM object to test property against.
          * @param {boolean} [lower] Use camelCase instead of CapitalCase.
          * @return {string} Prefixed property.
          */
@@ -556,7 +566,7 @@ SimpleUtil = function ()
         },
 
         /**
-         * Get an element by tag name.
+         * Get an array of elements by tag name.
          * @param  {string} tag Tag name.
          * @param  {object} [parent=document] Optional DOM Node to start from.
          * @return {array} An array which will be empty if nothing is found
@@ -628,20 +638,40 @@ SimpleUtil = function ()
         },
 
         /**
-         * Safely append an element to another.
+         * Safely append one element to another.
+         * @method
          * @param  {HTMLElement|DocumentFragment} el Node to append to.
          * @param  {HTMLElement|DocumentFragment} child Node to append.
          */
         append: append,
 
         /**
+         * Safely replace one element with another.
+         * @param  {HTMLElement} old Element to replace.
+         * @param  {HTMLElement} new Element to replace with.
+         */
+        replace: function(oldEl, newEl)
+        {
+            if (isDom(oldEl) && isDom(newEl)) {
+                oldEl.parentNode.replaceChild(newEl, oldEl);
+                return newEl;
+            }
+        },
+
+        /**
          * Set attributes and properties on an element.
-         * @param {object} el DOM Node
-         * @param {object|string} attrs Key/value pairs including special handling for className,
-         *  innerHTML, parentNode, children, and styles. Anything else will be set as an attribute.
-         *  A string may also be passed as a shorthand for innerHTML.
-         * @param {object} [events] Optional collection of listener functions keyed by event name.
+         * @param {HTMLElement|DocumentFragment} el Node
+         * @param {object|string} attrs A string or key/value pairs including special handling for:
+         * @param {string} [attrs.className] Class name.
+         * @param {string} [attrs.innerHTML] Content to set using innerHTML (also how `attrs`is handled when a string ).
+         * @param {HTMLElement|DocumentFragment} [attrs.parentNode] Parent node to append to.
+         * @param {array|HTMLElement|DocumentFragment} [attrs.children] Array of nodes or a single node to append.
+         * @param {object} [attrs.styles] Style object which is passed to `setStyles`.
+         * @param {string} [attrs.&lt;attr&gt;] Anything else will go through `el.setAttribute`.
+         * @param {object} [events] Optional collection of listener functions keyed by event name, as passed to `listen`.
          * @return {object} The DOM Node.
+         * @see setAttrs
+         * @see listen
          */
         setAttrs : function(el, attrs, events)
         {
@@ -702,9 +732,9 @@ SimpleUtil = function ()
         /**
          * Create a new element.
          * @param  {string} el Tag name.
-         * @param  {object} attrs Optional attributes passed to setAttrs.
+         * @param  {object} [attrs] Optional attributes passed to setAttrs.
          * @param  {object} [events] Optional events passed to setAttrs.
-         * @see  <a href="#.setAttrs">setAttrs</a>
+         * @see    setAttrs
          * @return {object} New DOM Node.
          */
         create : function(el, attrs, events)
@@ -716,6 +746,7 @@ SimpleUtil = function ()
         /**
          * Create a document fragment.
          * @param  {string|node} [content] Optional html or DOM node to append to the fragment.
+         *  DOM nodes will be cloned prior to append.
          * @return {object} Document fragment.
          */
         frag : function(content)
@@ -738,9 +769,9 @@ SimpleUtil = function ()
 
         /**
          * Insert markup relative to a node (insertAdjacentHTML).
-         * @param  {node} DOM node to insert relative to.
-         * @param  {string} The content to insert.
-         * @param  {where} Where to insert; one of 'before' (beforeBegin), 'front' (afterBegin),
+         * @param  {node} node DOM node to insert relative to.
+         * @param  {string} content The content to insert.
+         * @param  {string} where Where to insert; one of 'before' (beforeBegin), 'front' (afterBegin),
          *          'back' (beforeEnd), or 'after' (afterEnd).
          */
         adj : function(node, content, where)
@@ -760,35 +791,61 @@ SimpleUtil = function ()
          * Use a document fragment or node to render a new piece of DOM.
          * @param  {DocumentFragment|HTMLElement} frag Document fragment to clone or element to render to.
          * @param  {object} data Data to render.
-         * @return {object} Cloned and rendered fragment ready to append to your document.
+         * @return {DocumentFragment|HTMLElement} Cloned and rendered fragment ready to append to your document or element which was rendered to.
          */
         render : function(frag, data)
         {
             var node = frag && frag.nodeType === 11 ? frag[clone](true) : frag;
             util.each(data, function eachData(attrs, selector) {
-                var target = util.bySelectorAll(selector, node),
+                var target = selector === 'root' ? [node] : util.bySelectorAll(selector, node),
                     num = target[len],
-                    firstTarget;
+                    firstTarget,
+                    targetFrag,
+                    parent,
+                    nthTarget,
+                    index = 0,
+                    subRender,
+                    attr;
+
                 if (num) {
+                    firstTarget = target[0];
+                    parent = firstTarget.parentNode;
+                    // clone early so modifications aren't picked up
+                    targetFrag = firstTarget[clone](true);
                     if (isArray(attrs)) {
-                        firstTarget = target[0];
-                        util.each(attrs, function eachAttr(attr, index) {
-                            var nthTarget = target[index];
-                            // call recursively for array of arrays
-                            if (isArray(attr)) {
-                                util.each(attr, function eachInnerData(innerData) {
-                                    util.render(nthTarget, innerData);
-                                });
-                            } else {
+                        while (attrs.length) {
+                            attr = attrs.shift();
+                            nthTarget = target[index];
+
+                            // call recursively for subrenders
+                            subRender = attr.render;
+                            if (subRender) {
+                                if (nthTarget) {
+                                    util.render(nthTarget, subRender);
+                                } else {
+                                    append(
+                                        parent,
+                                        util.render(targetFrag[clone](true), subRender)
+                                    );
+                                }
+                                delete attr.render;
+                            }
+
+                            if (!subRender || Object.keys(attr).length) {
                                 if (nthTarget) {
                                     util.setAttrs(nthTarget, attr);
                                 } else {
-                                    append(firstTarget.parentNode, util.setAttrs(firstTarget[clone](true), attr));
+                                    append(
+                                        parent,
+                                        util.setAttrs(targetFrag[clone](true), attr)
+                                    );
                                 }
                             }
-                        });
+
+                            index++;
+                        }
                     } else {
-                        util.setAttrs(target[0], attrs);
+                        util.setAttrs(firstTarget, attrs);
                     }
                 }
             });
@@ -841,9 +898,15 @@ SimpleUtil = function ()
         /**
          * Make an XHR request.
          * @param  {string} url URL.
-         * @param  {object} [opts] Options containing any of: callback (function),
-         *  data (string), headers (object), json (object), method (string),
-         *  parseHeaders (boolean), and props (object).
+         * @param  {object} [opts] Options containing any of: 
+         * @param  {function} [opts.callback] Callback function which should expect `error`, `response`, and `request` arguments.
+         * @param  {string} [opts.data] Data to send in the request body.
+         * @param  {object} [opts.headers] Key/value collection of headers to include in the request.
+         * @param  {object} [opts.json] Object which will be JSON encoded and sent in the request body (see data).
+         * @param  {string} [opts.method='GET'] HTTP method to use in the request.
+         * @param  {bool} [opts.parseHeaders=false] Whether to parse the response headers and include them in
+         *         `request.headers` as passed to the callback.
+         * @param  {object} [opts.props] Arbitrary properties set directly to the `XMLHttpRequest` object.
          * @return {object} XMLHttpRequest object.
          */
         request : function (url, opts)
@@ -927,7 +990,7 @@ SimpleUtil = function ()
          * Listen to an event.
          * @param  {object}   obj DOM Node to listen for events on.
          * @param  {string}   type Event type, e.g. "click".
-         * @param  {function} fn Callback function.
+         * @param  {function} fn Function to call when event fires.
          */
         listen : function(obj, type, fn)
         {
@@ -1006,8 +1069,8 @@ SimpleUtil = function ()
 
         /**
          * Get the  offset position of an element.
-         * @param  {object} el DOM Node to get offset for.
-         * @return {object} Object containing "x" and "y".
+         * @param  {object} el DOM Node to get an offset for.
+         * @return {object} Object containing "x" and "y" properties.
          */
         getOffset : function(el)
         {
