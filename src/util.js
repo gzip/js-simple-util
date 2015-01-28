@@ -646,6 +646,19 @@ SimpleUtil = function ()
         append: append,
 
         /**
+         * Safely replace one element with another.
+         * @param  {HTMLElement} old Element to replace.
+         * @param  {HTMLElement} new Element to replace with.
+         */
+        replace: function(oldEl, newEl)
+        {
+            if (isDom(oldEl) && isDom(newEl)) {
+                oldEl.parentNode.replaceChild(newEl, oldEl);
+                return newEl;
+            }
+        },
+
+        /**
          * Set attributes and properties on an element.
          * @param {HTMLElement|DocumentFragment} el Node
          * @param {object|string} attrs A string or key/value pairs including special handling for:
