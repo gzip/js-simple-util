@@ -797,19 +797,33 @@ SimpleUtil = function ()
         {
             var node = frag && frag.nodeType === 11 ? frag[clone](true) : frag;
             util.each(data, function eachData(attrs, selector) {
-                var target = util.bySelectorAll(selector, node),
+                var target = selector === 'root' ? node : util.bySelectorAll(selector, node),
                     num = target[len],
-                    firstTarget;
+                    firstTarget,
+                    nthTarget,
+                    innerData,
+                    index = 0,
+                    attr;
+
                 if (num) {
                     if (isArray(attrs)) {
                         firstTarget = target[0];
-                        util.each(attrs, function eachAttr(attr, index) {
-                            var nthTarget = target[index];
+                        while (attrs.length) {
+                            attr = attrs.shift();
+                            nthTarget = target[index];
                             // call recursively for array of arrays
                             if (isArray(attr)) {
-                                util.each(attr, function eachInnerData(innerData) {
-                                    util.render(nthTarget, innerData);
-                                });
+                                while (attr.length) {
+                                    innerData = attr.shift();
+                                    if (nthTarget) {
+                                        util.render(nthTarget, innerData);
+                                    } else {
+                                        append(
+                                            firstTarget.parentNode,
+                                            util.render(firstTarget[clone](true), innerData)
+                                        );
+                                    }
+                                }
                             } else {
                                 if (nthTarget) {
                                     util.setAttrs(nthTarget, attr);
@@ -817,7 +831,8 @@ SimpleUtil = function ()
                                     append(firstTarget.parentNode, util.setAttrs(firstTarget[clone](true), attr));
                                 }
                             }
-                        });
+                            index++;
+                        }
                     } else {
                         util.setAttrs(target[0], attrs);
                     }

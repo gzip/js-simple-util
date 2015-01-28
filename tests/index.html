@@ -311,10 +311,13 @@ describe('SimpleUtil', function(){
                     ]}),
                     result = util.render(parent, {'.item': [
                         [{p: ['foo', 'bar']}],
-                        [{p: ['baz', {className: 'quuz', children: [util.create('span')]}]}]
+                        [{p: ['baz', {className: 'quuz', children: [util.create('span')]}]}],
+                        [{p: ['FOO', 'BAR']}]
                     ]});
 
-                eq('<div class="item"><p>foo</p><p>bar</p></div><div class="item"><p>baz</p><p class="quuz"><span></span></p></div>', result.innerHTML);
+                eq('<div class="item"><p>foo</p><p>bar</p></div>' +
+                   '<div class="item"><p>baz</p><p class="quuz"><span></span></p></div>' +
+                   '<div class="item"><p>FOO</p><p>BAR</p></div>', result.innerHTML);
             });
         });
 
