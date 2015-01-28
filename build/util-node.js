@@ -105,7 +105,6 @@ SimpleUtil = function ()
     return {
         /**
          * Test for undefined.
-         * @method
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
@@ -187,6 +186,7 @@ SimpleUtil = function ()
 
         /**
          * Get a value [deep] in an object.
+         * @memberof SimpleUtil
          * @param  {object} obj Object to get a value from.
          * @param  {string|array} path Property path, e.g. "foo.bar.baz", or ["foo", "bar", "baz"].
          * @param  {mixed} [def] Default value if nothing is found.

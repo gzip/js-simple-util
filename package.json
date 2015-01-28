@@ -5,17 +5,18 @@
   "version": "0.1.3",
   "repository": {
     "type": "git",
-    "url": "git://github.com/gzip/js-simple-util.git"
+    "url":  "git://github.com/gzip/js-simple-util.git"
   },
   "main": "build/util-node.js",
   "browser": "build/util.js",
   "scripts": {
-    "test": "npm run build && cd tests; phantomjs runner.js",
     "build": "node build",
-    "docs": "jsdoc src/ -d=docs/api"
+    "docs":  "npm run build && jsdoc src/ -d docs/api",
+    "test":  "npm run build && cd tests; phantomjs runner.js"
   },
   "dependencies": {},
   "devDependencies": {
+    "jsdoc": "~3.3.0",
     "stripper": "*",
     "uglify-js": "~2.4.3"
   },
