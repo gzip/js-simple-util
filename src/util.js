@@ -803,6 +803,7 @@ SimpleUtil = function ()
                     nthTarget,
                     innerData,
                     index = 0,
+                    method,
                     attr;
 
                 if (num) {
@@ -825,10 +826,19 @@ SimpleUtil = function ()
                                     }
                                 }
                             } else {
-                                if (nthTarget) {
-                                    util.setAttrs(nthTarget, attr);
+                                if (attr.render) {
+                                    method = util.render;
+                                    delete attr.render;
                                 } else {
-                                    append(firstTarget.parentNode, util.setAttrs(firstTarget[clone](true), attr));
+                                    method = util.setAttrs;
+                                }
+                                if (nthTarget) {
+                                    method(nthTarget, attr);
+                                } else {
+                                    append(
+                                        firstTarget.parentNode,
+                                        method(firstTarget[clone](true), attr)
+                                    );
                                 }
                             }
                             index++;
