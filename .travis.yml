@@ -1,2 +1,1 @@
-before_script: cd tests
-script: phantomjs runner.js
+script: npm run test
