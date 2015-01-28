@@ -665,7 +665,7 @@ SimpleUtil = function ()
          * @param {string} [attrs.className] Class name.
          * @param {string} [attrs.innerHTML] Content to set using innerHTML (also how `attrs`is handled when a string ).
          * @param {HTMLElement|DocumentFragment} [attrs.parentNode] Parent node to append to.
-         * @param {array} [attrs.children] Array of nodes to append.
+         * @param {array|HTMLElement|DocumentFragment} [attrs.children] Array of nodes or a single node to append.
          * @param {object} [attrs.styles] Style object which is passed to `setStyles`.
          * @param {string} [attrs.&lt;attr&gt;] Anything else will go through `el.setAttribute`.
          * @param {object} [events] Optional collection of listener functions keyed by event name, as passed to `listen`.
@@ -797,54 +797,55 @@ SimpleUtil = function ()
         {
             var node = frag && frag.nodeType === 11 ? frag[clone](true) : frag;
             util.each(data, function eachData(attrs, selector) {
-                var target = selector === 'root' ? node : util.bySelectorAll(selector, node),
+                var target = selector === 'root' ? [node] : util.bySelectorAll(selector, node),
                     num = target[len],
                     firstTarget,
+                    targetFrag,
+                    parent,
                     nthTarget,
-                    innerData,
                     index = 0,
-                    method,
+                    subRender,
                     attr;
 
                 if (num) {
+                    firstTarget = target[0];
+                    parent = firstTarget.parentNode;
+                    // clone early so modifications aren't picked up
+                    targetFrag = firstTarget[clone](true);
                     if (isArray(attrs)) {
-                        firstTarget = target[0];
                         while (attrs.length) {
                             attr = attrs.shift();
                             nthTarget = target[index];
-                            // call recursively for array of arrays
-                            if (isArray(attr)) {
-                                while (attr.length) {
-                                    innerData = attr.shift();
-                                    if (nthTarget) {
-                                        util.render(nthTarget, innerData);
-                                    } else {
-                                        append(
-                                            firstTarget.parentNode,
-                                            util.render(firstTarget[clone](true), innerData)
-                                        );
-                                    }
-                                }
-                            } else {
-                                if (attr.render) {
-                                    method = util.render;
-                                    delete attr.render;
-                                } else {
-                                    method = util.setAttrs;
-                                }
+
+                            // call recursively for subrenders
+                            subRender = attr.render;
+                            if (subRender) {
                                 if (nthTarget) {
-                                    method(nthTarget, attr);
+                                    util.render(nthTarget, subRender);
                                 } else {
                                     append(
-                                        firstTarget.parentNode,
-                                        method(firstTarget[clone](true), attr)
+                                        parent,
+                                        util.render(targetFrag[clone](true), subRender)
+                                    );
+                                }
+                                delete attr.render;
+                            }
+
+                            if (!subRender || Object.keys(attr).length) {
+                                if (nthTarget) {
+                                    util.setAttrs(nthTarget, attr);
+                                } else {
+                                    append(
+                                        parent,
+                                        util.setAttrs(targetFrag[clone](true), attr)
                                     );
                                 }
                             }
+
                             index++;
                         }
                     } else {
-                        util.setAttrs(target[0], attrs);
+                        util.setAttrs(firstTarget, attrs);
                     }
                 }
             });

@@ -293,31 +293,39 @@ describe('SimpleUtil', function(){
                 eq('<i>baz</i>', result.innerHTML);
             });
             it('should traverse arrays', function(){
-                var ul = util.create('ul', {children: [util.create('li')]}),
-                    result = util.render(ul, {'li': ['foo', 'bar', {className: 'last', innerHTML: ''}]});
+                var ul = util.create('ul', {children: util.create('li')}),
+                    result = util.render(ul, {li: ['foo', 'bar', {className: 'last', innerHTML: ''}]});
 
                 eq('<li>foo</li><li>bar</li><li class="last"></li>', result.innerHTML);
             });
             it('should traverse nested renders', function(){
-                var parent = util.create('div', {className: 'wrapper', children: [
-                        util.create('div', {className: 'item', children: [
-                            util.create('p'),
-                            util.create('p')
-                        ]}),
-                        util.create('div', {className: 'item', children: [
-                            util.create('p'),
-                            util.create('p')
-                        ]})
-                    ]}),
-                    result = util.render(parent, {'.item': [
-                        [{p: ['foo', 'bar']}],
-                        [{p: ['baz', {className: 'quuz', children: [util.create('span')]}]}],
-                        [{p: ['FOO', 'BAR']}]
-                    ]});
+                var parent = util.create('div', {
+                        className: 'wrapper',
+                        children: [
+                            util.create('div', {className: 'item', children: [
+                                util.create('p'),
+                                util.create('p')
+                            ]}),
+                            util.create('div', {className: 'item', children: [
+                                util.create('p'),
+                                util.create('p')
+                            ]})
+                        ]
+                    }),
+                    result = util.render(parent, {
+                        '.item': [
+                            {'data-foo': 'FOO', render: {p: ['foo', 'bar']}},
+                            {render: {p: ['baz', {className: 'quuz', children: util.create('span')}]}},
+                            {render: {p: ['FOO', 'BAR']}}
+                        ],
+                        root: {'data-wrap': 'true'}
+                    });
 
-                eq('<div class="item"><p>foo</p><p>bar</p></div>' +
-                   '<div class="item"><p>baz</p><p class="quuz"><span></span></p></div>' +
-                   '<div class="item"><p>FOO</p><p>BAR</p></div>', result.innerHTML);
+                eq( '<div class="wrapper" data-wrap="true">' +
+                        '<div class="item" data-foo="FOO"><p>foo</p><p>bar</p></div>' +
+                        '<div class="item"><p>baz</p><p class="quuz"><span></span></p></div>' +
+                        '<div class="item"><p>FOO</p><p>BAR</p></div>' +
+                    '</div>', result.outerHTML);
             });
         });
 
