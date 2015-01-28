@@ -314,12 +314,13 @@ SimpleUtil = function ()
         each : function(obj, fn)
         {
             if (isFunc(fn)) {
+                var o;
                 if (isArray(obj)) {
-                    for (var o = 0, ol = obj[len]; o<ol; o++) {
+                    for (o = 0, ol = obj[len]; o<ol; o++) {
                         fn(obj[o], o, obj);
                     }
                 } else if (isObj(obj)) {
-                    for (var o in obj) {
+                    for (o in obj) {
                         if (obj[owns](o)) {
                             fn(obj[o], o, obj);
                         }
