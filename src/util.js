@@ -808,10 +808,10 @@ SimpleUtil = function ()
 
                 if (num) {
                     firstTarget = target[0];
-                    parent = firstTarget.parentNode;
-                    // clone early so modifications aren't picked up
-                    targetFrag = firstTarget[clone](true);
                     if (isArray(attrs)) {
+                        // clone early so modifications aren't picked up
+                        targetFrag = firstTarget[clone](true);
+                        parent = firstTarget.parentNode;
                         while (attrs.length) {
                             attr = attrs.shift();
                             nthTarget = target[index];
@@ -841,6 +841,12 @@ SimpleUtil = function ()
                                 }
                             }
 
+                            index++;
+                        }
+
+                        // prune any nodes left over
+                        while (index < num) {
+                            util.remove(target[index]);
                             index++;
                         }
                     } else {

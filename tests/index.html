@@ -292,10 +292,16 @@ describe('SimpleUtil', function(){
                 eq('<span class="sp">bar</span>', result.firstChild.innerHTML);
             });
             it('should accept an html element', function(){
-                var div = util.create('div', {children: [util.create('i')]}),
+                var div = util.create('div', {children: util.create('i')}),
                     result = util.render(div, {'i': 'baz'});
 
                 eq('<i>baz</i>', result.innerHTML);
+            });
+            it('should prune remaining children', function(){
+                var ul = util.create('ul', {children: [util.create('li'), util.create('li'), util.create('li'), util.create('li')]}),
+                    result = util.render(ul, {'li': ['foo', 'bar']});
+
+                eq('<li>foo</li><li>bar</li>', result.innerHTML);
             });
             it('should traverse arrays', function(){
                 var ul = util.create('ul', {children: util.create('li')}),

@@ -4,7 +4,6 @@
 (function (win) {
 /**
  * A lightweight utility library when a full Javascript framework isn't necessary.
- * @namespace SimpleUtil
  */
 SimpleUtil = function ()
 {
@@ -105,6 +104,7 @@ SimpleUtil = function ()
     return {
         /**
          * Test for undefined.
+         * @method
          * @param  {mixed}  obj Object to test.
          * @return {Boolean}
          */
@@ -186,7 +186,6 @@ SimpleUtil = function ()
 
         /**
          * Get a value [deep] in an object.
-         * @memberof SimpleUtil
          * @param  {object} obj Object to get a value from.
          * @param  {string|array} path Property path, e.g. "foo.bar.baz", or ["foo", "bar", "baz"].
          * @param  {mixed} [def] Default value if nothing is found.
@@ -809,10 +808,10 @@ SimpleUtil = function ()
 
                 if (num) {
                     firstTarget = target[0];
-                    parent = firstTarget.parentNode;
-                    // clone early so modifications aren't picked up
-                    targetFrag = firstTarget[clone](true);
                     if (isArray(attrs)) {
+                        // clone early so modifications aren't picked up
+                        targetFrag = firstTarget[clone](true);
+                        parent = firstTarget.parentNode;
                         while (attrs.length) {
                             attr = attrs.shift();
                             nthTarget = target[index];
@@ -842,6 +841,12 @@ SimpleUtil = function ()
                                 }
                             }
 
+                            index++;
+                        }
+
+                        // prune any nodes left over
+                        while (index < num) {
+                            util.remove(target[index]);
                             index++;
                         }
                     } else {
@@ -1095,9 +1100,16 @@ SimpleUtil = function ()
         /**
          * Listen for animation frame (requestAnimationFrame).
          * @param {function} fn Function to execute for each frame.
+         * @param {object} [scope=window] Scope to execute function in.
+         * @param {mixed} [args] Any further arguments get passed to the function.
+         *        Note that the last argument will be the timestamp of when the frame is executed.
          */
-        onFrame : function ()
+        onFrame : function (fn, scope, args)
         {
+            if (args || scope) {
+                fn = util.bind(fn, scope, util.args(arguments).slice(2));
+            }
+            return raf(fn);
         },
 
         /**
