@@ -27,7 +27,7 @@ Which yields:
 
 Note that the special keyword `'root'` is used to designate changes on the root node (which otherwise can't be targeted by a selector).
 
-This example is equivalent to the following so `render` is not really necessary. Let's take a look at something more interesting.
+This example is equivalent to the following so `render` is not really necessary.
 ```html
 <script>util.setAttrs(util.byId('foo'), {'data-foo': 'foo', innerHTML: 'bar'});</script>
 ```
