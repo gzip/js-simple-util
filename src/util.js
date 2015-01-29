@@ -1094,9 +1094,16 @@ SimpleUtil = function ()
         /**
          * Listen for animation frame (requestAnimationFrame).
          * @param {function} fn Function to execute for each frame.
+         * @param {object} [scope=window] Scope to execute function in.
+         * @param {mixed} [args] Any further arguments get passed to the function.
+         *        Note that the last argument will be the timestamp of when the frame is executed.
          */
-        onFrame : function ()
+        onFrame : function (fn, scope, args)
         {
+            if (args || scope) {
+                fn = util.bind(fn, scope, util.args(arguments).slice(2));
+            }
+            return raf(fn);
         },
 
         /**
@@ -1120,7 +1127,9 @@ util.getVendorPrefix();
 function wrap(name) {
     return function(f){ return win[util.resolvePrefix(name, win, true)](f); };
 }
-util.onFrame = wrap('requestAnimationFrame');
+
+var raf = wrap('requestAnimationFrame');
+
 util.cancelFrame = wrap('cancelAnimationFrame');
 // #endifndef
 

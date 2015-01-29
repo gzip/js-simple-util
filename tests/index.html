@@ -8,6 +8,11 @@
 <script src="lib/mocha.js"></script>
 <script src="lib/xhr.js"></script>
 <script>
+if (window.isPhantom) {
+    // cheap polyfill
+    window.requestAnimationFrame = window.setTimeout;
+}
+
 // decide which build to load
 var isNode = location.search.indexOf('node=1') !== -1,
     src = isNode ? '../build/util.node.js' : '../build/util.js';
@@ -453,6 +458,24 @@ describe('SimpleUtil', function(){
                 var obj = {webkitTransitionEnd: ''};
                 eq('webkitTransitionEnd', prefix('transitionend', obj));
                 util.resetPrefix();
+            });
+        });
+
+        describe('onFrame()', function(){
+            it('should execute', function(done){
+                util.onFrame(function (){
+                    done();
+                });
+            });
+            it('should execute with given scope and arguments', function(done){
+                var obj = {
+                  foo: 'foo',
+                  fn: function(arg1, arg2, timestamp) {
+                      eq('foobarbaz', this.foo + arg1 + arg2);
+                      done();
+                  }
+                };
+                util.onFrame(obj.fn, obj, 'bar', 'baz');
             });
         });
 
