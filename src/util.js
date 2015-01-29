@@ -791,7 +791,7 @@ SimpleUtil = function ()
          * @param  {DocumentFragment|HTMLElement} frag Document fragment to clone or element to render to.
          * @param  {object} data Data to render.
          * @return {DocumentFragment|HTMLElement} Cloned and rendered fragment ready to append to your document or element which was rendered to.
-         * @see {@link https://github.com/gzip/js-simple-util/docs/render/|Examples}
+         * @see {@link https://github.com/gzip/js-simple-util/tree/master/docs/render/|Examples}
          */
         render : function(frag, data)
         {
