@@ -1,1 +1,1 @@
-script: npm run test
+script: npm i && npm run test
