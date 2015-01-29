@@ -1,6 +1,6 @@
 # Simple Util Docs
 
-View the [API docs](https://rawgithub.com/gzip/js-simple-util/master/docs/api/symbols/SimpleUtil.html)
+View the [API docs](https://rawgithub.com/gzip/js-simple-util/master/docs/api/global.html)
 
 To generate API docs install `jsdoc` and execute it from the repo root:
 ```
