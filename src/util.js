@@ -912,6 +912,8 @@ SimpleUtil = function ()
          * @param  {string} [opts.method='GET'] HTTP method to use in the request.
          * @param  {bool} [opts.parseHeaders=false] Whether to parse the response headers and include them in
          *         `request.headers` as passed to the callback.
+         * @param  {object} [opts.parseJson] Parse the response as JSON. This will happen by default if the
+         *         `Content-Type` response header contains "json".
          * @param  {object} [opts.props] Arbitrary properties set directly to the `XMLHttpRequest` object.
          * @return {object} XMLHttpRequest object.
          */
@@ -955,12 +957,12 @@ SimpleUtil = function ()
                 
                 req.onreadystatechange = function()
                 {
-                    var resp, status, headers;
+                    var resp, status, headers,
+                        rawHeaders = req.getAllResponseHeaders();
                     if (req.readyState === 4) {
                         status = req.status;
                         resp = req.responseText;
-                        // TODO inspect Content-Type?
-                        if (!isUnd(json)) {
+                        if (opts.parseJson || rawHeaders.match(/^Content-Type: [a-z\/-]+json/im)) {
                             try {
                                 resp = JSON.parse(resp);
                             } catch(e) {
@@ -971,7 +973,7 @@ SimpleUtil = function ()
                         if (status < 300 & status > 199) {
                             if (opts.parseHeaders) {
                                 req.headers = {};
-                                headers = req.getAllResponseHeaders().split("\n");
+                                headers = rawHeaders.split("\n");
                                 util.each(headers, function(hdr)
                                 {
                                     var parsed = hdr.split(': ');

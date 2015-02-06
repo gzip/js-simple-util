@@ -520,14 +520,23 @@ describe('SimpleUtil', function(){
                     }, done);
                 }, headers: {Foo: 'foo'}});
             });
-            it('should support json', function(done){
+            it('should support json data', function(done){
                 request('foo', {callback: function(err, resp, req){
                     test(function(){
                         eq('application/json', req.headers['Content-Type']);
                         eq('{"foo":"FOO"}', req.data);
+                    }, done);
+                }, json: {foo: 'FOO'}});
+            });
+            it('should parse response json', function(done){
+                request('foo', {callback: function(err, resp, req){
+                    test(function(){
                         eq('BAR', resp.bar);
                     }, done);
-                }, json: {foo: 'FOO'}, props: {responseText: '{"bar":"BAR"}'}});
+                }, props: {
+                    responseText: '{"bar":"BAR"}',
+                    responseHeaders: {'Foo': 'foo', 'content-typE': 'application/JSON', 'Bar': 'bar'}
+                }});
             });
             it('should parse headers', function(done){
                 request('foo', {callback: function(err, resp, req){
