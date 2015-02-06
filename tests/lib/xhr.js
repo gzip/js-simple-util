@@ -18,8 +18,9 @@ mockXhr = function() {
         },
         getAllResponseHeaders: function(){
             var self = this,
-                headerText = '';
-            for(header in self.responseHeaders) {
+                headerText = '',
+                header;
+            for (header in self.responseHeaders) {
                 headerText += (headerText ? '\n' : '') + header + ': ' + self.responseHeaders[header];
             }
             return headerText;
