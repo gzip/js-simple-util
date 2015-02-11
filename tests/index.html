@@ -339,16 +339,16 @@ describe('SimpleUtil', function(){
                     }),
                     result = util.render(parent, {
                         '.item': [
-                            {'data-foo': 'FOO', render: {p: ['foo', 'bar']}},
-                            {render: {p: ['baz', {className: 'quuz', children: util.create('span')}]}},
+                            {render: {p: ['foo', 'bar']}},
+                            {render: {p: [{innerHTML: 'baz', 'data-foo': 'FOO'}, {className: 'quuz', children: util.create('span')}]}},
                             {render: {p: ['FOO', 'BAR']}}
                         ],
-                        root: {'data-wrap': 'true'}
+                        root: {className: 'wrap'}
                     });
 
-                eq( '<div class="wrapper" data-wrap="true">' +
-                        '<div class="item" data-foo="FOO"><p>foo</p><p>bar</p></div>' +
-                        '<div class="item"><p>baz</p><p class="quuz"><span></span></p></div>' +
+                eq('<div class="wrap">' +
+                        '<div class="item"><p>foo</p><p>bar</p></div>' +
+                        '<div class="item"><p data-foo="FOO">baz</p><p class="quuz"><span></span></p></div>' +
                         '<div class="item"><p>FOO</p><p>BAR</p></div>' +
                     '</div>', result.outerHTML);
             });
