@@ -23,7 +23,7 @@ SimpleUtil = function ()
         innerHtml = 'innerHTML',
         clRegex = function(cl)
         {
-            return new RegExp('(?:^|\\s+)' + cl + '(?:\\s+|$)');
+            return new RegExp('(^|\\s+)' + cl + '(\\s+|$)');
         },
         vendorPrefix = null,
         vendorPrefixCss = null,
@@ -549,7 +549,7 @@ SimpleUtil = function ()
             
             if (c) {
                 regex = clRegex(cl);
-                util.set(el, cln, c.replace(regex, ''));
+                util.set(el, cln, c.replace(regex, '$1$2'));
             }
         },
 

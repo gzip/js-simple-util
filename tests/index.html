@@ -241,6 +241,20 @@ describe('SimpleUtil', function(){
 
     // don't run the following tests for node
     if (!isNode) {
+        describe('delClass()', function(){
+            it('should remove a class', function(){
+                var el = util.create('b', {className: 'foo bar baz', parentNode: document.body});
+                util.delClass(el, 'quuz');
+                eq('foo bar baz', el.className);
+                util.delClass(el, 'bar');
+                eq('foo  baz', el.className);
+                util.delClass(el, 'baz');
+                eq('foo  ', el.className);
+                // clean up
+                util.remove(el);
+            });
+        });
+
         describe('adj()', function(){
             it('should support all locations', function(){
                 var div = util.create('div', {children: [
