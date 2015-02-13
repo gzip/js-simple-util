@@ -927,10 +927,6 @@ SimpleUtil = function ()
                 data = opts.data || null,
                 json = opts.json;
             
-            if (!isFunc(cb)) {
-                return req;
-            }
-            
             if (!isUnd(json)) {
                 headers['Content-Type'] = 'application/json';
                 try {
