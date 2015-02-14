@@ -953,11 +953,11 @@ SimpleUtil = function ()
                 
                 req.onreadystatechange = function()
                 {
-                    var resp, status, headers,
-                        rawHeaders = req.getAllResponseHeaders();
+                    var resp, status, headers, rawHeaders;
                     if (req.readyState === 4) {
                         status = req.status;
                         resp = req.responseText;
+                        rawHeaders = req.getAllResponseHeaders();
                         if (opts.parseJson || rawHeaders.match(/^Content-Type: [a-z\/-]+json/im)) {
                             try {
                                 resp = JSON.parse(resp);
