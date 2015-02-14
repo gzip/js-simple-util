@@ -88,7 +88,7 @@ a:hover { text-decoration: underline; }
         switcher = util.byId('switch'),
         wrap = util.byId('cards'),
         cards = util.byClass('card', wrap),
-        foot = util.bySelector('#switch-foot .ctrls').pop(),
+        foot = util.bySelector('#switch-foot .ctrls'),
         state = {
             zindex: 0,
             totalCards: cards.length,
