@@ -241,6 +241,35 @@ describe('SimpleUtil', function(){
 
     // don't run the following tests for node
     if (!isNode) {
+        describe('parent()', function(){
+            it('should find a parent node by level', function(){
+                var el = util.create('b', {parentNode: document.body, children: [
+                        util.create('i', {children:
+                            util.create('s')
+                        })
+                    ]}),
+                    grandchild = util.byTag('s', el)[0],
+                    result = util.parent(grandchild, 2);
+                eq('B', result.tagName);
+                // clean up
+                util.remove(el);
+            });
+            it('should find a parent node by callback', function(){
+                var el = util.create('b', {parentNode: document.body, children:
+                        util.create('i', {className: 'foo', children:
+                            util.create('s', {children:
+                                util.create('em')
+                            })
+                        })
+                    }),
+                    grandchild = util.byTag('em', el)[0],
+                    result = util.parent(grandchild, util.bind(util.hasClass, null, null, ['foo']));
+                eq('I', result.tagName);
+                // clean up
+                util.remove(el);
+            });
+        });
+
         describe('delClass()', function(){
             it('should remove a class', function(){
                 var el = util.create('b', {className: 'foo bar baz', parentNode: document.body});
