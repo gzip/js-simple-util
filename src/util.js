@@ -868,7 +868,7 @@ SimpleUtil = function ()
         },
 
         /**
-         * Get the parent or ancenstor of a given element.
+         * Get the parent or ancestor of a given element.
          * @param  {object} el DOM Node.
          * @param  {int|function} [level=1] The number of levels to traverse or a function to test each node against.
          *         The function should return truthy if the desired node is located. Traversal will stop
