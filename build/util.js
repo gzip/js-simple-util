@@ -868,18 +868,36 @@ SimpleUtil = function ()
         },
 
         /**
-         * Get the parentNode for a given element.
+         * Get the parent or ancenstor of a given element.
          * @param  {object} el DOM Node.
-         * @param  {int} [level=1] The number of levels to traverse.
+         * @param  {int|function} [level=1] The number of levels to traverse or a function to test each node against.
+         *         The function should return truthy if the desired node is located. Traversal will stop
+         *         without a result and return `undefined` if the function returns -1.
          * @return {object} DOM Node or empty object.
          */
         parent : function(el, level)
         {
             level = level || 1;
-            do{
-                el = el.parentNode;
-            } while (--level);
-            return el || {};
+            var isFn = isFunc(level),
+                fnResult,
+                result;
+
+            while ((el = el.parentNode)) {
+                if (isFn) {
+                    fnResult = level(el);
+                    if (fnResult) {
+                        if (fnResult !== -1) {
+                            result = el;
+                        }
+                        break;
+                    }
+                } else if (--level === 0) {
+                    result = el;
+                    break;
+                }
+            }
+
+            return result || {};
         },
 
         /**
