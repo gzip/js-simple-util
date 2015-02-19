@@ -222,6 +222,16 @@ describe('SimpleUtil', function(){
         });
     });
 
+    describe('setDoc()', function(){
+        it('should set the document', function(){
+            util.setDoc({getElementsByName: function () { return ['foo']; }})
+            var result = util.byName();
+            eq('foo', result);
+            // reset
+            util.setDoc(document);
+        });
+    });
+
     describe('bind()', function(){
         var bind = util.bind;
         it('should change scope', function(){
