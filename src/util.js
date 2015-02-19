@@ -13,10 +13,10 @@ SimpleUtil = function ()
         owns = 'hasOwnProperty',
         val = 'value',
         regexTrim = /^\s+|\s+$/g,
-        doc = win.document || {},
-        docEl = doc.documentElement || {},
-        docStyle = docEl.style || {},
-        docBody = doc.body || {},
+        doc,
+        docEl,
+        docStyle,
+        docBody,
         click = 'click',
         checked = 'checked',
         cln = 'className',
@@ -37,6 +37,14 @@ SimpleUtil = function ()
                 'optimizeSpeed': 'webkitOptimizeContrast'
             }
         };
+
+    function setDoc(d) {
+        doc = d || {};
+        docEl = doc.documentElement || {};
+        docStyle = docEl.style || {};
+        docBody = doc.body || {};
+        return d;
+    }
 
     function isA(obj, type) {
         return typeof obj == type;
@@ -102,6 +110,14 @@ SimpleUtil = function ()
     }
 
     return {
+        /**
+         * Set the document used by SimpleUtil. Useful for Node.js.
+         * @method
+         * @param  {HTMLDocument} doc Document to set.
+         * @return {HTMLDocument} The document passed in.
+         */
+        setDoc: setDoc,
+
         /**
          * Test for undefined.
          * @method
@@ -1142,6 +1158,8 @@ var util = SimpleUtil;
 if (typeof module !== 'undefined') {
     module.exports = util;
 }
+
+util.setDoc(win.document);
 
 // #ifndef NODE
 util.getVendorPrefix();
