@@ -595,11 +595,11 @@ SimpleUtil = function ()
         /**
          * Get an element by id.
          * @param  {string} id Element ID.
-         * @return {object} DOM Node or empty object.
+         * @return {object} DOM Node or null.
          */
         byId : function(id)
         {
-            return doc.getElementById(id) || {};
+            return doc.getElementById(id);
         },
 
         /**
@@ -626,11 +626,11 @@ SimpleUtil = function ()
          * Get a single element by CSS selector.
          * @param  {string} selector Selector(s), comma separated.
          * @param  {object} [parent=document] Optional DOM Node to start from.
-         * @return {array} Element or empty object..
+         * @return {array} Element or null.
          */
         bySelector : function(s, parent)
         {
-            return (parent || doc).querySelector(s) || {};
+            return (parent || doc).querySelector(s);
         },
 
         /**
@@ -913,7 +913,7 @@ SimpleUtil = function ()
                 }
             }
 
-            return result || {};
+            return result;
         },
 
         /**
