@@ -57,6 +57,18 @@ describe('SimpleUtil', function(){
         });
     });
 
+    describe('byName()', function(){
+        it('should return null if nothing is found', function(){
+            eq(null, util.byName('foo'));
+        });
+        it('should return an element', function(){
+            var el = util.create('b', {parentNode: document.body, name: 'foo'});
+            eq('B', util.byName('foo').tagName);
+            // clean up
+            util.remove(el);
+        });
+    });
+
     describe('byTag()', function(){
         it('should return an empty array if nothing is found', function(){
             eq(util.byTag('foo').length, 0);
@@ -275,6 +287,13 @@ describe('SimpleUtil', function(){
                     grandchild = util.byTag('em', el)[0],
                     result = util.parent(grandchild, util.bind(util.hasClass, null, null, ['foo']));
                 eq('I', result.tagName);
+                // clean up
+                util.remove(el);
+            });
+            it('should return null if nothing is found', function(){
+                var el = util.create('b', {parentNode: document.body}),
+                    result = util.parent(el, util.bind(util.hasClass, null, null, ['bar']));
+                eq(null, result);
                 // clean up
                 util.remove(el);
             });
