@@ -408,8 +408,8 @@ describe('SimpleUtil', function(){
         });
 
         describe('bySelector()', function(){
-            it('should return an object if nothing is found', function(){
-                eq({}, util.bySelector('.foo'));
+            it('should return null if nothing is found', function(){
+                eq(null, util.bySelector('.foo'));
             });
             it('should return an element', function(){
                 var el = util.create('b', {className: 'bold', parentNode: document.body}),
