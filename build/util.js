@@ -572,12 +572,12 @@ SimpleUtil = function ()
         /**
          * Get an element by name. 
          * @param  {string} name Node name.
-         * @return {object} DOM Node or empty object.
+         * @return {object} DOM Node or null.
          */
         byName : function(n)
         {
             var el = doc.getElementsByName(n);
-            return el ? el[0] : {};
+            return el && el[0] || null;
         },
 
         /**
@@ -889,14 +889,14 @@ SimpleUtil = function ()
          * @param  {int|function} [level=1] The number of levels to traverse or a function to test each node against.
          *         The function should return truthy if the desired node is located. Traversal will stop
          *         without a result and return `undefined` if the function returns -1.
-         * @return {object} DOM Node or empty object.
+         * @return {object} DOM Node or null.
          */
         parent : function(el, level)
         {
             level = level || 1;
             var isFn = isFunc(level),
                 fnResult,
-                result;
+                result = null;
 
             while ((el = el.parentNode)) {
                 if (isFn) {
