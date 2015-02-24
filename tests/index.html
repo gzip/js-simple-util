@@ -621,6 +621,26 @@ describe('SimpleUtil', function(){
                 mockXhr.teardown();
             });
         });
+
+        describe('parseQuery()', function(){
+            var parse = util.parseQuery;
+            it('should return an empty object by default', function(){
+                eq({}, parse());
+            });
+            it('should parse and decode a query string', function(){
+                eq({'q,': '+=-"', foo: 'bar', baz: 1}, parse('q%2C=%2B%3D-%22&foo=bar&baz'));
+            });
+        });
+
+        describe('buildQuery()', function(){
+            var build = util.buildQuery;
+            it('should return an empty string by default', function(){
+                eq('', build());
+            });
+            it('should build and encode a query string', function(){
+                eq('q%2C=%2B%3D-%22&foo=bar&baz=', build({'q,': '+=-"', foo: 'bar', baz: ''}));
+            });
+        });
     }
 });
 
