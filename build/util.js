@@ -1075,23 +1075,42 @@ SimpleUtil = function ()
         /**
          * Parse a query string into an object of key/value pairs.
          * @param str Optional query string, otherwise use current URL.
+         *        Note that parameters without a value will be assigned a value of 1.
          * @return {object} Query params object.
          */
         parseQuery : function(str)
         {
             var params = {},
                 split = 'split',
+                dec = decodeURIComponent,
                 query = str || location.href[split](/[?#]/)[1];
-            
+
             if (query) {
                 query = query[split](/&/);
                 for (var q in query) {
                     q = query[q][split](/=/);
-                    params[q[0]] = q[1] || 1;
+                    params[dec(q[0])] = dec(q[1] || '') || 1;
                 }
             }
-            
+
             return params;
+        },
+
+        /**
+         * Build a query string from an object containing key/value pairs.
+         * @param {object} object containing key/value pairs which will be url encoded.
+         * @return {string} Query params string.
+         */
+        buildQuery : function(params)
+        {
+            var result = '',
+                enc = encodeURIComponent;
+
+            util.each(params, function (val, key) {
+                result += (result ? '&' : '') + enc(key) + '=' + enc(val);
+            });
+
+            return result;
         },
 
         /**
