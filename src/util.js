@@ -329,7 +329,7 @@ SimpleUtil = function ()
         each : function(obj, fn)
         {
             if (isFunc(fn)) {
-                var o;
+                var o, ol;
                 if (isArray(obj)) {
                     for (o = 0, ol = obj[len]; o<ol; o++) {
                         fn(obj[o], o, obj);
