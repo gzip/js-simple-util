@@ -329,7 +329,7 @@ SimpleUtil = function ()
         each : function(obj, fn)
         {
             if (isFunc(fn)) {
-                var o;
+                var o, ol;
                 if (isArray(obj)) {
                     for (o = 0, ol = obj[len]; o<ol; o++) {
                         fn(obj[o], o, obj);
@@ -454,7 +454,7 @@ SimpleUtil = function ()
         /**
          * Get the vendor prefix for the current browser.
          * @param  {string} prop CSS property to test.
-         * @param  {boolean} [forCss=false] Return CSS formatting (e.g. "-moz-" instead of "Moz"). 
+         * @param  {boolean} [forCss=false] Return CSS formatting (e.g. "-moz-" instead of "Moz").
          * @return {string} Vendor prefix.
          */
         getVendorPrefix : function(prop, forCss)
@@ -570,7 +570,7 @@ SimpleUtil = function ()
         },
 
         /**
-         * Get an element by name. 
+         * Get an element by name.
          * @param  {string} name Node name.
          * @return {object} DOM Node or null.
          */
@@ -880,7 +880,8 @@ SimpleUtil = function ()
          */
         remove : function(el)
         {
-            util.parent(el).removeChild(el);
+            var p = util.parent(el);
+            p && p.removeChild(el);
         },
 
         /**
@@ -940,7 +941,7 @@ SimpleUtil = function ()
          * @param  {string} url URL.
          * @param  {function} [callback] Callback function which should expect `error`,
                    `response` (text or JSON object), and `request` (XMLHttpRequest object) arguments.
-         * @param  {object} [opts] Options containing any of: 
+         * @param  {object} [opts] Options containing any of:
          * @param  {string} [opts.data] Data to send in the request body.
          * @param  {object} [opts.headers] Key/value collection of headers to include in the request.
          * @param  {object} [opts.json] Object which will be JSON encoded and sent in the request body (see data).

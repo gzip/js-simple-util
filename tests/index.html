@@ -263,6 +263,18 @@ describe('SimpleUtil', function(){
 
     // don't run the following tests for node
     if (!isNode) {
+        describe('remove()', function(){
+            it('should remove a node', function(){
+                var el = util.create('b', {parentNode: document.body});
+                util.remove(el);
+                eq(0, util.byTag('b', document.body).length);
+            });
+            it('should fail gracefully if no parent is found', function(){
+                var el = util.create('b');
+                util.remove(el);
+            });
+        });
+        
         describe('parent()', function(){
             it('should find a parent node by level', function(){
                 var el = util.create('b', {parentNode: document.body, children: [
