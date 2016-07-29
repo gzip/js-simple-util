@@ -492,7 +492,7 @@ SimpleUtil = function ()
         },
 
         /**
-         * Get the vendor prefixed property name.
+         * Get the vendor prefixed property name if available while favoring standard if also present.
          * @param  {string} prop CSS property in camelCase to resolve.
          * @param {object} [obj] Optional DOM object to test property against.
          * @param {boolean} [lower] Use camelCase instead of CapitalCase.
@@ -509,12 +509,12 @@ SimpleUtil = function ()
                 obj = obj || docStyle;
 
                 if (exception) {
-                    prop = exception;
+                    prefixed = exception;
                 } else {
                     prefixed = (lower && prefix ? prefix.toLowerCase() : prefix || '') + util.capitalize(prop);
                 }
                 
-                prop = prefixed && prefixed in obj ? prefixed : prop;
+                prop = prefixed && prefixed in obj && !(prop in obj) ? prefixed : prop;
             }
             
             return prop;

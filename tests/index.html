@@ -540,13 +540,20 @@ describe('SimpleUtil', function(){
         describe('resolvePrefix()', function(){
             var prefix = util.resolvePrefix;
             it('should resolve prefix', function(){
-                eq('MozTransform', prefix('transform'));
+                var obj = {MozTransform: ''};
+                eq('MozTransform', prefix('transform', obj));
                 eq('border', prefix('border'));
             });
             it('should resolve exceptions', function(){
                 util.resetPrefix('Webkit');
                 var obj = {webkitTransitionEnd: ''};
                 eq('webkitTransitionEnd', prefix('transitionend', obj));
+                util.resetPrefix();
+            });
+            it('should favor standard if both are available', function(){
+                util.resetPrefix('Webkit');
+                var obj = {webkitTransitionEnd: '', transitionend: ''};
+                eq('transitionend', prefix('transitionend', obj));
                 util.resetPrefix();
             });
         });
